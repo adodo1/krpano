@@ -1,0 +1,178 @@
+﻿<krpano onstart="loadscene(0,null,MERGE|KEEPVIEW);">
+
+	<!-- add VR support -->
+	<include url="%SWFPATH%/plugins/webvr.xml" />
+
+	<!-- enable the fake VR mode for testing -->
+	<plugin name="WebVR" mobilevr_fake_support="true" />
+
+	<!-- remove the webvr.xml SPACE key handling -->
+	<events name="webvr_events" onkeydown="" />
+
+	<!-- hide the VR cursor by default and show it only when hovering hotspots -->
+	<hotspot name="vr_cursor" alpha="0.0" />
+	<plugin name="WebVR"
+		vr_cursor_onover="tween(hotspot[vr_cursor].alpha,1,0.05); if(handcursor, tween(hotspot[vr_cursor].scale,0.4,0.1); vr_auto_click(get(vr_timeout)); );"
+		vr_cursor_onout="tween(hotspot[vr_cursor].alpha,0.0,1.0); tween(hotspot[vr_cursor].scale,0.3,0.1);"
+		/>
+
+	<!-- stereo display mode button -->
+	<layer name="stereo" keep="true"
+		style="webvr_button_style"
+		html="Stereo Display: off"
+		align="bottom" y="24"
+		onclick="switch(display.stereo); calc(html, 'Stereo Display: ' + (display.stereo ? 'on' : 'off'));"
+		/>
+
+	<!-- switch stereo/mono hotspot -->
+	<hotspot name="switch" keep="true"
+		url="text.png"
+		crop="4|133|446|106"
+		crop_mono="4|13|435|110"
+		crop_stereo="4|133|446|106"
+		distorted="true"
+		ath="0" atv="25"
+		depth="800"
+		scale="0.5"
+		zorder="99"
+		onclick="switch_mono_stereo_panos();"
+		/>
+
+	<!-- mask out the 'inverse stereo' parts (when looking 'behind') -->
+	<hotspot name="mask" keep="true"
+		url="mask.png"
+		distorted="true"
+		ath="0"
+		atv="90"
+		depth="1000"
+		scale="100"
+		enabled="false"
+		/>
+
+	<!-- the hotspots follow the view -->
+	<events onviewchange="onviewchange_updates(); webvr_menu_following();" />
+
+	<action name="onviewchange_updates">
+		add(hotspot[mask].rotate, view.hlookat, view.camroll);
+	</action>
+
+	<action name="webvr_menu_following" type="Javascript" devices="html5"><![CDATA[
+		var hs = krpano.get("hotspot[switch]");
+		if(!hs.hovering)
+		{
+			var f = 0.01;	// following speed factor
+			var h = krpano.view.hlookat;
+			var v = krpano.view.vlookat;
+			var hsh = hs.ath;
+			var hsv = hs.atv;
+			h   = (h  -(h|0))   + (((h|0)  +360180)%360) - 180.0;
+			v   = (v  -(v|0))   + (((v|0)  +360180)%360) - 180.0;
+			hsh = (hsh-(hsh|0)) + (((hsh|0)+360180)%360) - 180.0;
+			var dh = h - hsh;
+			dh += (dh > 180) ? -360 : (dh < -180) ? 360 : 0
+			hsh += dh*f;
+			var a = Math.abs(v - hsv) / 90.0;
+			a = 1.0 * Math.max(1.0 - 2.0*Math.sqrt(a), 0);
+			v = v + 35.0 - v*1.5;
+			hsv = hsv*(1.0 - f) + v*f;
+			hs.ath = hsh;
+			hs.atv = hsv;
+			hs.alpha = a;
+		}
+	]]></action>
+
+	<!-- keyboard - change the mono/stereo image when pressing the SPACE key -->
+	<events onkeydown="if(keycode == 32, switch_mono_stereo_panos() );" />
+
+	<!-- toggle between the mono and the stereo images -->
+	<action name="switch_mono_stereo_panos">
+		set(old_scene, get(scene[get(xml.scene)].name));
+		set(new_scene, null);
+		set(is_stereo, false);
+
+		if(old_scene == 'scene_pano1_mono',   set(new_scene, 'scene_pano1_stereo'); set(is_stereo, true); );
+		if(old_scene == 'scene_pano1_stereo', set(new_scene, 'scene_pano1_mono'); );
+		if(old_scene == 'scene_pano2_mono',   set(new_scene, 'scene_pano2_stereo'); set(is_stereo, true); );
+		if(old_scene == 'scene_pano2_stereo', set(new_scene, 'scene_pano2_mono'); );
+
+		loadscene(get(new_scene), null, KEEPVIEW|KEEPMOVING|NOPREVIEW, BLEND(0.5));
+
+		if(is_stereo,
+			copy(hotspot[switch].crop, hotspot[switch].crop_mono);
+		  ,
+			copy(hotspot[switch].crop, hotspot[switch].crop_stereo);
+		  );
+	</action>
+
+
+	<!-- animated hotspot -->
+	<action name="do_crop_animation">
+		<!-- add attributes to the hotspot -->
+		registerattribute(xframes, calc((imagewidth / %1) BOR 0));
+		registerattribute(yframes, calc((imageheight / %2) BOR 0));
+		registerattribute(frames, calc(xframes * yframes));
+		registerattribute(frame, 0);
+		set(crop, '0|0|%1|%2');
+		setinterval(calc('crop_anim_' + name), calc(1.0 / %3),
+			if(loaded,
+				inc(frame);
+				if(frame GE frames, if(onlastframe !== null, onlastframe() ); set(frame,0); );
+				mod(xpos, frame, xframes);
+				div(ypos, frame, xframes);
+				Math.floor(ypos);
+				mul(xpos, %1);
+				mul(ypos, %2);
+				calc(crop, xpos + '|' + ypos + '|%1|%2');
+			  ,
+				clearinterval(calc('crop_anim_' + name));
+			  );
+		  );
+	</action>
+
+	<!-- startup view -->
+	<view hlookat="-102" />
+
+	<!-- spots -->
+	<style name="spot1" ath="-150.7" atv="-20.5" edge="bottom" distorted="true" depth="3000" url="target.png" onloaded="do_crop_animation(128,128, 60);" scale="1" onover="tween(alpha,0.25,0.2);" onout="tween(alpha,1);" onclick="loadpano_no(2);" />
+	<style name="spot2" ath="-142.6" atv="+38.5" edge="bottom" distorted="true" depth="3000" url="target.png" onloaded="do_crop_animation(128,128, 60);" scale="1" onover="tween(alpha,0.25,0.2);" onout="tween(alpha,1);" onclick="loadpano_no(1);" />
+
+	<action name="loadpano_no">
+		indexoftxt(contains_stereo, get(scene[get(xml.scene)].name), 'stereo');
+		loadscene(calc(contains_stereo GT 0 ? 'scene_pano%1_stereo' : 'scene_pano%1_mono'), null, KEEPVIEW|KEEPMOVING|NOPREVIEW, BLEND(0.5));
+	</action>
+
+
+	<!-- the pano images -->
+	<scene name="scene_pano1_mono">
+		<preview url="panos/pano1_mono/preview.jpg" />
+		<image>
+			<cube url="panos/pano1_mono/pano_%s.jpg" />
+		</image>
+		<hotspot name="spot1" style="spot1" />
+	</scene>
+
+	<scene name="scene_pano1_stereo">
+		<preview url="panos/pano1_mono/preview.jpg" />
+		<image stereo="true" stereolabels="l|r">
+			<cube url="panos/pano1_stereo_%t/pano_%s.jpg" />
+		</image>
+		<hotspot name="spot1" style="spot1" />
+	</scene>
+
+	<scene name="scene_pano2_mono">
+		<preview url="panos/pano2_mono/preview.jpg" />
+		<image>
+			<cube url="panos/pano2_mono/pano_%s.jpg" />
+		</image>
+		<hotspot name="spot2" style="spot2" />
+	</scene>
+
+	<scene name="scene_pano2_stereo">
+		<preview url="panos/pano2_mono/preview.jpg" />
+		<image stereo="true" stereolabels="l|r">
+			<cube url="panos/pano2_stereo_%t/pano_%s.jpg" />
+		</image>
+		<hotspot name="spot2" style="spot2" />
+	</scene>
+
+</krpano>

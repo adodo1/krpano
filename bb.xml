@@ -1,0 +1,32 @@
+﻿<krpano onstart="loadscene(stpeterssquare,null,MERGE);">
+
+    <layer name="map" keep="true"
+           url="bingmaps.swf" alturl="./plugins/bingmaps.js"
+           align="lefttop" x="0" y="0" width="30%" height="100%"
+           key="...your Bing Maps API key..."
+           maptype="satellite"
+           lat="41.90050" lng="12.46705" zoom="15"
+           >
+        <spot name="stpeterssquare" active="true"
+              lat="41.90255" lng="12.45708" heading="64.5"
+              onclick="loadscene(stpeterssquare,null,MERGE,BLEND(1));activatespot();"
+              />
+        <spot name="fourrivers"
+              lat="41.89877" lng="12.47311" heading="270.0"
+              onclick="loadscene(fourrivers,null,MERGE,BLEND(1));activatespot();"
+              />
+        <radar visible="true" zoomwithmap="true" size="50" />
+        <maptypecontrol visible="true" buttonalign="V" />
+    </layer>
+
+    <scene name="stpeterssquare">
+        <preview type="grid(cube,64,64,512,0xCCCCCC,0xF6F6F6,0x999999);" />
+        <view hlookat="103" vlookat="-2" fov="100" />
+    </scene>
+
+    <scene name="fourrivers">
+        <preview type="grid(cube,64,64,512,0xCCCCCC,0xF6F6F6,0x999999);" />
+        <view hlookat="-1" vlookat="-4" fov="100" />
+    </scene>
+
+</krpano>
