@@ -169,7 +169,7 @@ var krpanoplugin = function () {
             _document_div.addEventListener("gesturestart", ba, false);      // 当有两根或多根手指放到屏幕上的时候触发
             _document_div.addEventListener("gesturechange", ba, false);     // 当有两根或多根手指在屏幕上，并且有手指移动的时候触发
             _document_div.addEventListener("gestureend", ba, false);        // 当倒数第二根手指提起的时候触发，结束gesture
-            null == _timers && (_timers = setInterval(redrawMAP, 1E3 / 60));    // 周期执行刷新地图
+            null == _timers && (_timers = setInterval(redrawMAP, 1E3 / 60));    // 周期执行刷新地图 单位毫秒 每秒60帧
             _viewRadarOBJECT = new viewRadarClass;
             updateSpots();
             scaleSpotArray();
@@ -798,10 +798,10 @@ var krpanoplugin = function () {
         // 鼠标移动
         function stroke_MouseMoveEvent(a) {
             if (null == _krpanointerface) stroke_MouseUpEvent(a);
-            else if (null != g && null != _this_viewRadar.bmspot) {
+            else if (null != radarSVG && null != _this_viewRadar.bmspot) {
                 var f = 0, d = 0;
                 var c = { x: 0, y: 0 };
-                var I = g.svg.parentNode.getBoundingClientRect();
+                var I = radarSVG.svg.parentNode.getBoundingClientRect();
                 _krpanointerface_events && _krpanointerface_events.touch ? (a = a.changedTouches ? a.changedTouches : [a], 0 < a.length && (d = a[0], f = Math.round(d.clientX - I.left), d = Math.round(d.clientY - I.top))) : (f = Math.round(a.clientX - I.left), d = Math.round(a.clientY - I.top));
                 c = 180 * Math.atan2(d - c.y, f - c.x) / Math.PI;
                 c -= _this_viewRadar.bmspot.heading;
@@ -817,10 +817,10 @@ var krpanoplugin = function () {
         // 初始化视野范围样式
         function initViewRadar() {
             _this_viewRadar.needredraw = true;
-            g && (g.path.setAttribute("stroke", setRGB(_this_viewRadar.linecolor)), g.path.setAttribute("stroke-width", _this_viewRadar.linewidth), g.path.setAttribute("stroke-opacity", _this_viewRadar.linealpha * _this_viewRadar.alpha), g.path.setAttribute("fill", setRGB(_this_viewRadar.fillcolor)), g.path.setAttribute("fill-opacity", _this_viewRadar.fillalpha * _this_viewRadar.alpha))
+            radarSVG && (radarSVG.path.setAttribute("stroke", setRGB(_this_viewRadar.linecolor)), radarSVG.path.setAttribute("stroke-width", _this_viewRadar.linewidth), radarSVG.path.setAttribute("stroke-opacity", _this_viewRadar.linealpha * _this_viewRadar.alpha), radarSVG.path.setAttribute("fill", setRGB(_this_viewRadar.fillcolor)), radarSVG.path.setAttribute("fill-opacity", _this_viewRadar.fillalpha * _this_viewRadar.alpha))
         }
         var _this_viewRadar = this,
-          g = null;
+          radarSVG = null;
         _this_viewRadar.visible = false;
         _this_viewRadar.dragable = true;
         _this_viewRadar.size = 100;
@@ -845,8 +845,8 @@ var krpanoplugin = function () {
           t = null,
           y = 0,
           p = 0,
-          w = -1E3,
-          I = -1E3,
+          _bmspot_lat = -1E3,
+          _bmspot_lng = -1E3,
           sa = -1,
           _radarOBJ = _pluginobject.radar;
         _radarOBJ || (_krpanointerface.set(_pluginpath + ".radar.visible", false), _radarOBJ = _pluginobject.radar);
@@ -861,7 +861,9 @@ var krpanoplugin = function () {
         };
         // 刷新视野雷达
         _this_viewRadar.updatehandler = function () {
-            if (_document_div_maps && (null == l && null != _this_viewRadar.bmspot && (l = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng), {
+            if (_document_div_maps &&
+                (null == l && null != _this_viewRadar.bmspot &&
+                 (l = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng), {
                 icon: otherPoint.src,
                 anchor: {
                 x: 0,
@@ -873,43 +875,54 @@ var krpanoplugin = function () {
             }), _document_div_maps.entities.push(l)), null != l)) {
                 if (null == l._krpdom) {
                     a: {
-                        var a = l,
-                          b;
-                        for (b in a)
-                            if (a[b] && "object" === typeof a[b] && a[b].dom && a[b].dom.childNodes && a[b].dom.childNodes[0]) {
-                                a._krpdom = a[b].dom;
-                                a._krpimg = a[b].dom.childNodes[0];
+                        var d_lookat = l, d_fov;
+                        for (d_fov in d_lookat)
+                            if (d_lookat[d_fov] && "object" === typeof d_lookat[d_fov] && d_lookat[d_fov].dom && d_lookat[d_fov].dom.childNodes && d_lookat[d_fov].dom.childNodes[0]) {
+                                d_lookat._krpdom = d_lookat[d_fov].dom;
+                                d_lookat._krpimg = d_lookat[d_fov].dom.childNodes[0];
                                 break a
                             }
                     }
                     if (null == l._krpdom) return;
-                    g = setViewRadarSmart(500, 500);
+                    radarSVG = setViewRadarSmart(500, 500);
                     initViewRadar();
                     l._krpimg.style.display = "none";
                     l._krpdom.style.overflow = "visible";
-                    l._krpdom.appendChild(g.svg);
-                    _krpanointerface_events.mouse && g.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
-                    _krpanointerface_events.touch && g.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
+                    l._krpdom.appendChild(radarSVG.svg);
+                    _krpanointerface_events.mouse && radarSVG.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
+                    _krpanointerface_events.touch && radarSVG.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
                 }
-                if (null == _this_viewRadar.bmspot || 0 == _this_viewRadar.visible) g && g.hide();
+                if (null == _this_viewRadar.bmspot || 0 == _this_viewRadar.visible) radarSVG && radarSVG.hide();
                 else {
-                    g && g.show();
-                    a = Number(_krpanointerface.view.hlookat);
-                    b = Number(_krpanointerface.view.hfov);
-                    a += _this_viewRadar.bmspot.heading;
-                    a += _this_viewRadar.headingoffset;
-                    if (w != _this_viewRadar.bmspot.lat || I != _this_viewRadar.bmspot.lng) w = _this_viewRadar.bmspot.lat, I = _this_viewRadar.bmspot.lng, l.setLocation(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
-                    if (_this_viewRadar.bmspot != t || a != y || b != p) t = _this_viewRadar.bmspot, y = a, p = b, _this_viewRadar.needredraw = true;
+                    radarSVG && radarSVG.show();
+                    d_lookat = Number(_krpanointerface.view.hlookat);	// 朝向
+                    d_fov = Number(_krpanointerface.view.hfov);         // 视角大小
+                    d_lookat += _this_viewRadar.bmspot.heading;
+                    d_lookat += _this_viewRadar.headingoffset;
+                    if (_bmspot_lat != _this_viewRadar.bmspot.lat || _bmspot_lng != _this_viewRadar.bmspot.lng) {
+                        _bmspot_lat = _this_viewRadar.bmspot.lat;
+                        _bmspot_lng = _this_viewRadar.bmspot.lng;
+                        l.setLocation(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
+                    }
+                    if (_this_viewRadar.bmspot != t || d_lookat != y || d_fov != p) {
+                        t = _this_viewRadar.bmspot;
+                        y = d_lookat;
+                        p = d_fov;
+                        _this_viewRadar.needredraw = true;
+                    }
                     if (_this_viewRadar.needredraw) {
                         l && l._krpdom && (l._krpdom.style.overflow = "visible");
                         var f = _this_viewRadar.zoomwithmap ? Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
                           f = 1 * _this_viewRadar.size * f * _krpanointerface_device_pixelratio;
                         2800 < f && (f = 2800);
-                        if (g) {
-                            var d = 16 *
-                              (Math.floor(2 * f / 16) + 1) + 16;
-                            d != sa && (sa = d, g.svg.setAttribute("width", d), g.svg.setAttribute("height", d), g.svg.style.left = -d / 2 + "px", g.svg.style.top = -d / 2 + "px", g.centerx = d / 2, g.centery = d / 2);
-                            g.drawpie(d / 2, d / 2, f, a - .5 * b, a + .5 * b)
+                        if (radarSVG) {
+                            var d = 16 * (Math.floor(2 * f / 16) + 1) + 16;
+                            d != sa && (sa = d, radarSVG.svg.setAttribute("width", d),
+                                radarSVG.svg.setAttribute("height", d),
+                                radarSVG.svg.style.left = -d / 2 + "px", radarSVG.svg.style.top = -d / 2 + "px",
+                                radarSVG.centerx = d / 2,
+                                radarSVG.centery = d / 2);
+                            radarSVG.drawpie(d / 2, d / 2, f, d_lookat - .5 * d_fov, d_lookat + .5 * d_fov)
                         }
                     }
                     _this_viewRadar.needredraw = false
@@ -1108,8 +1121,7 @@ var krpanoplugin = function () {
 
         function f(a) {
             for (var b in a)
-                if (a[b] && "object" === typeof a[b] && a[b].dom && a[b].dom.childNodes &&
-                  a[b].dom.childNodes[0]) {
+                if (a[b] && "object" === typeof a[b] && a[b].dom && a[b].dom.childNodes && a[b].dom.childNodes[0]) {
                     a._krpdom = a[b].dom;
                     a._krpimg = a[b].dom.childNodes[0];
                     break
@@ -1439,6 +1451,7 @@ var krpanoplugin = function () {
             else {
                 window._krpano_bmap_loadedcallbacks_ = [];
                 _krpano_bmap_cb_var = "_krpano_bmap_cb_";
+                // 生成随机的URL标识
                 for (krpanointerface = 0; 16 > krpanointerface; krpanointerface++) _krpano_bmap_cb_var += String.fromCharCode(65 + 32 * Math.round(Math.random()) + Math.floor(25 * Math.random()));
                 window[_krpano_bmap_cb_var] = reinitBingMap;
                 krpanointerface = "";
@@ -1448,7 +1461,6 @@ var krpanoplugin = function () {
                 pluginobject = document.createElement("script");
                 pluginobject.type = "text/javascript";
                 pluginobject.src = pluginpath + krpanointerface + "&onscriptload=" + _krpano_bmap_cb_var;
-                debugger;
                 document.body.appendChild(pluginobject)
             }
         }
