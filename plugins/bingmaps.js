@@ -11,14 +11,14 @@ var krpanoplugin = function () {
     function setRGB(a) {
         return "rgb(" + (a >> 16 & 255) + "," + (a >> 8 & 255) + "," + (a & 255) + ")"
     }
-    // 设置视野范围标记
-    function setViewerStroke(a, c) {
+    // 设置视野范围标记SVG
+    function setViewRadarSmart(dwidth, dheight) {
         var b = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        b.setAttribute("width", a);
-        b.setAttribute("height", c);
+        b.setAttribute("width", dwidth);
+        b.setAttribute("height", dheight);
         b.style.position = "absolute";
-        b.style.left = -a / 2 + "px";
-        b.style.top = -c / 2 + "px";
+        b.style.left = -dwidth / 2 + "px";
+        b.style.top = -dheight / 2 + "px";
         var f = document.createElementNS("http://www.w3.org/2000/svg", "path");
         f.style.pointerEvents = "visiblePainted";
         f.style.cursor = "pointer";
@@ -29,8 +29,8 @@ var krpanoplugin = function () {
         var d = {};
         d.svg = b;
         d.path = f;
-        d.centerx = a / 2;
-        d.centery = c / 2;
+        d.centerx = dwidth / 2;
+        d.centery = dheight / 2;
         var e = -1;
         d.hide = function () {
             0 != e && (e = 0, b.style.display = "none")
@@ -151,7 +151,7 @@ var krpanoplugin = function () {
                 mapTypeId: roadaerial(D),
                 labelOverlay: showMAPS(D),
                 center: new Microsoft.Maps.Location(_pluginobject.lat, _pluginobject.lng),
-                zoom: r,
+                zoom: map_zoom,
                 enableSearchLogo: false,
                 enableClickableLogo: false,
                 showMapTypeSelector: false,
@@ -166,18 +166,18 @@ var krpanoplugin = function () {
             setBGColor();
             _document_div && _document_div.childNodes && _document_div.childNodes[0] && _document_div.childNodes[0].childNodes && _document_div.childNodes[0].childNodes[0] && "BUTTON" == _document_div.childNodes[0].childNodes[0].nodeName && _document_div.childNodes[0].removeChild(_document_div.childNodes[0].childNodes[0]);
             Microsoft.Maps.Events.addHandler(_document_div_maps, "mousewheel", mousewheelEvents);
-            _document_div.addEventListener("gesturestart", ba, false);
-            _document_div.addEventListener("gesturechange", ba, false);
-            _document_div.addEventListener("gestureend", ba, false);
-            null == _timers && (_timers = setInterval(redrawMAP, 1E3 / 60));
-            _strokeOBJECT = new strokeClass;
+            _document_div.addEventListener("gesturestart", ba, false);      // 当有两根或多根手指放到屏幕上的时候触发
+            _document_div.addEventListener("gesturechange", ba, false);     // 当有两根或多根手指在屏幕上，并且有手指移动的时候触发
+            _document_div.addEventListener("gestureend", ba, false);        // 当倒数第二根手指提起的时候触发，结束gesture
+            null == _timers && (_timers = setInterval(redrawMAP, 1E3 / 60));    // 周期执行刷新地图
+            _viewRadarOBJECT = new viewRadarClass;
             updateSpots();
             scaleSpotArray();
             initMapView();
             S = true;
             _krpanointerface.call(_pluginobject.onmapready, _pluginobject);
-            Microsoft.Maps.Events.addHandler(_document_div_maps, "imagerychanged", changeMaps);
-            Microsoft.Maps.Events.addHandler(_document_div_maps, "viewchange", updateEnve)
+            Microsoft.Maps.Events.addHandler(_document_div_maps, "imagerychanged", changeMaps);     // 切换地图事件
+            Microsoft.Maps.Events.addHandler(_document_div_maps, "viewchange", updateEnve)          // 地图范围刷新事件
         }
     }
     // 停止
@@ -202,14 +202,14 @@ var krpanoplugin = function () {
             }
         }
     }
-    // 更新地图区域
+    // 更新地图区域 同时更新视野雷达图
     function updateEnve() {
         if (_document_div_maps) {
             var a = _document_div_maps.getCenter();
-            if (y != a.latitude || w != a.longitude) y = a.latitude, w = a.longitude, _krpanointerface.call(_pluginobject.onmapmoved, _pluginobject);
+            if (map_lat != a.latitude || map_lng != a.longitude) map_lat = a.latitude, map_lng = a.longitude, _krpanointerface.call(_pluginobject.onmapmoved, _pluginobject);
             a = _document_div_maps.getZoom();
-            r != a && (_strokeOBJECT && (_strokeOBJECT.needredraw = true), r = a, _krpanointerface.call(_pluginobject.onmapzoomed,
-              _pluginobject), _strokeOBJECT && _strokeOBJECT.updatehandler(), scaleSpotArray())
+            map_zoom != a && (_viewRadarOBJECT && (_viewRadarOBJECT.needredraw = true), map_zoom = a, _krpanointerface.call(_pluginobject.onmapzoomed,
+              _pluginobject), _viewRadarOBJECT && _viewRadarOBJECT.updatehandler(), scaleSpotArray())
         }
     }
     // 缩放到点集合范围
@@ -218,7 +218,7 @@ var krpanoplugin = function () {
           c = null,
           b, f;
         f = a.length;
-        for (b = 0; b < f; b++) a[b] && (c = a[b].internalObject) && c.zoomwithmap && c.scalespot(Math.pow(2, r) / Math.pow(2, c.zoombaselevel))
+        for (b = 0; b < f; b++) a[b] && (c = a[b].internalObject) && c.zoomwithmap && c.scalespot(Math.pow(2, map_zoom) / Math.pow(2, c.zoombaselevel))
     }
     // 地图重绘
     function redrawMAP(a) {
@@ -234,7 +234,7 @@ var krpanoplugin = function () {
                 for (b = 0; b < f; b++) c = a[b].internalObject, c.needdom && c.try_dom_access(), c.needupdate &&
                   c.processupdate()
             }
-            _strokeOBJECT && _strokeOBJECT.updatehandler();
+            _viewRadarOBJECT && _viewRadarOBJECT.updatehandler();
             E && 0 == ((_krpanointerface.display.frame | 0) & 1) && (a = E.onhover, null != a && "" != a && _krpanointerface.call(a, E))
         }
     }
@@ -338,8 +338,7 @@ var krpanoplugin = function () {
             4 < a.length && (b.active = a[4]);
             5 < a.length && (b.onclick = a[5]);
             6 < a.length && (b.onhover = a[6]);
-            7 < a.length && (b.onover =
-              a[7]);
+            7 < a.length && (b.onover = a[7]);
             8 < a.length && (b.onout = a[8]);
             f = new spotClass(b);
             f.update();
@@ -403,7 +402,7 @@ var krpanoplugin = function () {
             var a = String(a[0]).toLowerCase(),
               c = null,
               b = null;
-            (c = _pluginobject.spot.getItem(a)) ? (b = c.internalObject, _strokeOBJECT && _strokeOBJECT.bmspot == b && (_strokeOBJECT.bmspot = null), b && b.destroy(), c.internalObject = null, _pluginobject.spot.removeItem(a)) : _krpanointerface.trace(3, "bingmaps plugin - removespot() - spot[" + a + "] not found!")
+            (c = _pluginobject.spot.getItem(a)) ? (b = c.internalObject, _viewRadarOBJECT && _viewRadarOBJECT.bmspot == b && (_viewRadarOBJECT.bmspot = null), b && b.destroy(), c.internalObject = null, _pluginobject.spot.removeItem(a)) : _krpanointerface.trace(3, "bingmaps plugin - removespot() - spot[" + a + "] not found!")
         } else _krpanointerface.trace(3, "bingmaps plugin - removespot() syntax error!")
     }
     // 移除所有点
@@ -415,7 +414,7 @@ var krpanoplugin = function () {
         h = a.length;
         for (f = 0; f < h; f++) c = a[f], (b = c.internalObject) && b.destroy(), c.internalObject = null;
         _pluginobject.spot.count = 0;
-        _strokeOBJECT && (_strokeOBJECT.bmspot = null)
+        _viewRadarOBJECT && (_viewRadarOBJECT.bmspot = null)
     }
     // 更新点
     function updateSpots() {
@@ -425,7 +424,7 @@ var krpanoplugin = function () {
           f, h;
         h = a.length;
         for (f = 0; f < h; f++) c = a[f], c = c.internalObject, c.processupdate(), c.active && (b = c);
-        b && _strokeOBJECT && (_strokeOBJECT.bmspot = b, _strokeOBJECT.update())
+        b && _viewRadarOBJECT && (_viewRadarOBJECT.bmspot = b, _viewRadarOBJECT.update())
     }
     // 激活点
     function activateSpot() {
@@ -439,17 +438,17 @@ var krpanoplugin = function () {
               e, k;
             k = c.length;
             for (e = 0; e < k; e++) b = c[e], f = b.internalObject, String(b.name).toLowerCase() == a ? (0 == f.active && (f.active = true, f.update(1)), u = f) : 0 != f.active && (f.active = false, f.update(1));
-            u && (0 == K && u.xmlobject == E && (E.event_out(null), E = null), _strokeOBJECT && (_strokeOBJECT.bmspot = u, _strokeOBJECT.update()))
+            u && (0 == _bool_activeSpotEnabled && u.xmlobject == E && (E.event_out(null), E = null), _viewRadarOBJECT && (_viewRadarOBJECT.bmspot = u, _viewRadarOBJECT.update()))
         } else _krpanointerface.trace(3, "bingmaps plugin - activatespot() syntax error!")
     }
     // 地图并缩放到位置和等级
     function updateMaps() {
         if (_document_div_maps) {
-            var a = new Microsoft.Maps.Location(y, w);
+            var a = new Microsoft.Maps.Location(map_lat, map_lng);
             _document_div_maps.setView({
                 animate: false,
                 center: a,
-                zoom: r
+                zoom: map_zoom
             })
         }
     }
@@ -478,12 +477,12 @@ var krpanoplugin = function () {
                 var c = Number(a[0]),
                   b = false;
                 1 < a.length && (b = activeSpotEnabled(a[1]));
-                r = c;
-                a = new Microsoft.Maps.Location(y, w);
+                map_zoom = c;
+                a = new Microsoft.Maps.Location(map_lat, map_lng);
                 _document_div_maps.setView({
                     animate: b,
                     center: a,
-                    zoom: r
+                    zoom: map_zoom
                 })
             } else _krpanointerface.trace(3, "bingmaps plugin - setzoom() syntax error!")
         }
@@ -516,15 +515,15 @@ var krpanoplugin = function () {
             }
             2 < a.length && activeSpotEnabled(a[2]);
             3 < a.length && activeSpotEnabled(a[3]);
-            a = r;
+            a = map_zoom;
             32 > a && (a += 1);
-            r = a;
-            c && (y = c.latitude, w = c.longitude);
-            c = new Microsoft.Maps.Location(y, w);
+            map_zoom = a;
+            c && (map_lat = c.latitude, map_lng = c.longitude);
+            c = new Microsoft.Maps.Location(map_lat, map_lng);
             _document_div_maps.setView({
                 animate: true,
                 center: c,
-                zoom: r
+                zoom: map_zoom
             })
         }
     }
@@ -539,16 +538,16 @@ var krpanoplugin = function () {
                 null != b && void 0 != b && "" != b && "null" != b && null != f && void 0 != f && "" != f && "null" != f && (c = new Microsoft.Maps.Location(Number(b), Number(f)))
             }
             2 < a.length && activeSpotEnabled(a[2]);
-            a = r;
+            a = map_zoom;
             --a;
             .5 > a && (a = .5);
-            r = a;
-            c && (y = c.latitude, w = c.longitude);
-            c = new Microsoft.Maps.Location(y, w);
+            map_zoom = a;
+            c && (map_lat = c.latitude, map_lng = c.longitude);
+            c = new Microsoft.Maps.Location(map_lat, map_lng);
             _document_div_maps.setView({
                 animate: true,
                 center: c,
-                zoom: r
+                zoom: map_zoom
             })
         }
     }
@@ -558,7 +557,7 @@ var krpanoplugin = function () {
             var a, c, b, f, h, e, q, g = _pluginobject.spot.getArray();
             e = g.length;
             if (!(1 > e))
-                if (1 == e) q = g[0].internalObject, setCenter(q.lat, q.lng, r);
+                if (1 == e) q = g[0].internalObject, setCenter(q.lat, q.lng, map_zoom);
                 else {
                     q = g[0].internalObject;
                     a = b = q.lat;
@@ -657,12 +656,12 @@ var krpanoplugin = function () {
             if (2 == a.length) {
                 var c = Number(a[0]),
                   a = Number(a[1]),
-                  b = _document_div_maps.tryLocationToPixel(new Microsoft.Maps.Location(y, w));
+                  b = _document_div_maps.tryLocationToPixel(new Microsoft.Maps.Location(map_lat, map_lng));
                 b && (b.x += c, b.y += a, (c = _document_div_maps.tryPixelToLocation(b)) &&
                   _document_div_maps.setView({
                       animate: true,
                       center: c,
-                      zoom: r
+                      zoom: map_zoom
                   }))
             } else _krpanointerface.trace(3, "bingmaps plugin - panby() syntax error!")
         }
@@ -695,27 +694,27 @@ var krpanoplugin = function () {
               "-ms-" == f ? c ? f + "linear-gradient(top, #b0b4ba, #6d7580)" : f + "linear-gradient(top, #f3f4f5, #bdc0ca)" : c ? f + "linear-gradient(to bottom, #b0b4ba, #6d7580)" : f + "linear-gradient(to bottom, #f3f4f5, #bdc0ca)";
             g && (a.style.backgroundPosition = "0px " + -(b - 1) * p[1] + "px")
         }
-
-        function f(a) {
+        // 鼠标抬起事件处理
+        function mouseupEventsMAP(a) {
             a && (a.stopPropagation(), a.preventDefault(), a.stopImmediatePropagation())
         }
         // 切换普通地图
         function setMAP_normal(a) {
-            a && (f(a), setMaptype("normal"));
+            a && (mouseupEventsMAP(a), setMaptype("normal"));
             mapTypeButtonStyle(m, 1, true);
             mapTypeButtonStyle(x, 2, false);
             mapTypeButtonStyle(r, 3, false)
         }
         // 切换街景图
         function setMAP_satellite(a) {
-            a && (f(a), setMaptype("satellite"));
+            a && (mouseupEventsMAP(a), setMaptype("satellite"));
             mapTypeButtonStyle(m, 1, false);
             mapTypeButtonStyle(x, 2, true);
             mapTypeButtonStyle(r, 3, false)
         }
         // 切换混合地图
         function setMAP_hybrid(a) {
-            a && (f(a), setMaptype("hybrid"));
+            a && (mouseupEventsMAP(a), setMaptype("hybrid"));
             mapTypeButtonStyle(m, 1, false);
             mapTypeButtonStyle(x, 2, false);
             mapTypeButtonStyle(r, 3, true)
@@ -769,83 +768,76 @@ var krpanoplugin = function () {
             z.appendChild(m);
             z.appendChild(x);
             z.appendChild(r);
-            _krpanointerface_events.mouse && (m.addEventListener("mousedown", setMAP_normal), m.addEventListener("mouseup", f));
-            _krpanointerface_events.touch && (m.addEventListener(_krpanointerface_events_touchstart, setMAP_normal), m.addEventListener(_krpanointerface_events_touchend, f));
-            _krpanointerface_events.mouse && (x.addEventListener("mousedown", setMAP_satellite), x.addEventListener("mouseup", f));
-            _krpanointerface_events.touch && (x.addEventListener(_krpanointerface_events_touchstart, setMAP_satellite), x.addEventListener(_krpanointerface_events_touchend, f));
-            _krpanointerface_events.mouse && (r.addEventListener("mousedown", setMAP_hybrid), r.addEventListener("mouseup", f));
-            _krpanointerface_events.touch && (r.addEventListener(_krpanointerface_events_touchstart, setMAP_hybrid), r.addEventListener(_krpanointerface_events_touchend, f));
+            _krpanointerface_events.mouse && (m.addEventListener("mousedown", setMAP_normal), m.addEventListener("mouseup", mouseupEventsMAP));
+            _krpanointerface_events.touch && (m.addEventListener(_krpanointerface_events_touchstart, setMAP_normal), m.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
+            _krpanointerface_events.mouse && (x.addEventListener("mousedown", setMAP_satellite), x.addEventListener("mouseup", mouseupEventsMAP));
+            _krpanointerface_events.touch && (x.addEventListener(_krpanointerface_events_touchstart, setMAP_satellite), x.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
+            _krpanointerface_events.mouse && (r.addEventListener("mousedown", setMAP_hybrid), r.addEventListener("mouseup", mouseupEventsMAP));
+            _krpanointerface_events.touch && (r.addEventListener(_krpanointerface_events_touchstart, setMAP_hybrid), r.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
             a = D;
             "normal" == a ? setMAP_normal() : "satellite" == a ? setMAP_satellite() : "hybrid" == a && setMAP_hybrid()
         })()
     }
-    // 视野范围类
-    function strokeClass() {
+    // 视野范围类视野雷达
+    function viewRadarClass() {
         function a(a) {
             a && (a.preventDefault(),
               a.stopImmediatePropagation(), a.stopPropagation())
         }
-
-        function c(c) {
-            _this_stroke_class.dragable && (m = true, f(c), _krpanointerface_events.mouse && (window.addEventListener("mousemove", f, true), window.addEventListener("mouseup", b, true)), _krpanointerface_events.touch && (window.addEventListener(_krpanointerface_events_touchmove, f, true), window.addEventListener(_krpanointerface_events_touchcancel, b, true), window.addEventListener(_krpanointerface_events_touchend, b, true)), a(c))
+        // 鼠标按下
+        function stroke_MouseDownEvent(c) {
+            _this_viewRadar.dragable && (m = true, stroke_MouseMoveEvent(c), _krpanointerface_events.mouse && (window.addEventListener("mousemove", stroke_MouseMoveEvent, true), window.addEventListener("mouseup", stroke_MouseUpEvent, true)), _krpanointerface_events.touch && (window.addEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true), window.addEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true), window.addEventListener(_krpanointerface_events_touchend, stroke_MouseUpEvent, true)), a(c))
         }
-
-        function b(c) {
-            _krpanointerface_events.mouse && (window.removeEventListener("mousemove", f, true), window.removeEventListener("mouseup", b, true));
-            _krpanointerface_events.touch && (window.removeEventListener(_krpanointerface_events_touchmove, f, true), window.removeEventListener(_krpanointerface_events_touchcancel, b, true), window.removeEventListener(_krpanointerface_events_touchend,
-              b, true));
+        // 鼠标抬起
+        function stroke_MouseUpEvent(c) {
+            _krpanointerface_events.mouse && (window.removeEventListener("mousemove", stroke_MouseMoveEvent, true), window.removeEventListener("mouseup", stroke_MouseUpEvent, true));
+            _krpanointerface_events.touch && (window.removeEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true), window.removeEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true), window.removeEventListener(_krpanointerface_events_touchend,
+              stroke_MouseUpEvent, true));
             a(c)
         }
-
-        function f(a) {
-            if (null == _krpanointerface) b(a);
-            else if (null != g && null != _this_stroke_class.bmspot) {
-                var c;
-                c = null;
-                var f = 0,
-                  d = 0;
-                c = {
-                    x: 0,
-                    y: 0
-                };
+        // 鼠标移动
+        function stroke_MouseMoveEvent(a) {
+            if (null == _krpanointerface) stroke_MouseUpEvent(a);
+            else if (null != g && null != _this_viewRadar.bmspot) {
+                var f = 0, d = 0;
+                var c = { x: 0, y: 0 };
                 var I = g.svg.parentNode.getBoundingClientRect();
                 _krpanointerface_events && _krpanointerface_events.touch ? (a = a.changedTouches ? a.changedTouches : [a], 0 < a.length && (d = a[0], f = Math.round(d.clientX - I.left), d = Math.round(d.clientY - I.top))) : (f = Math.round(a.clientX - I.left), d = Math.round(a.clientY - I.top));
                 c = 180 * Math.atan2(d - c.y, f - c.x) / Math.PI;
-                c -= _this_stroke_class.bmspot.heading;
+                c -= _this_viewRadar.bmspot.heading;
                 if (1 == m) r = c - Number(_krpanointerface.view.hlookat), m = false;
                 else {
                     for (c -= r; 180 < c;) c -= 360;
                     for (; -180 > c;) c += 360;
                     _krpanointerface.view.hlookat = c
                 }
-                _this_stroke_class.needredraw = true
+                _this_viewRadar.needredraw = true
             }
         }
         // 初始化视野范围样式
-        function initStroke() {
-            _this_stroke_class.needredraw = true;
-            g && (g.path.setAttribute("stroke", setRGB(_this_stroke_class.linecolor)), g.path.setAttribute("stroke-width", _this_stroke_class.linewidth), g.path.setAttribute("stroke-opacity", _this_stroke_class.linealpha * _this_stroke_class.alpha), g.path.setAttribute("fill", setRGB(_this_stroke_class.fillcolor)), g.path.setAttribute("fill-opacity", _this_stroke_class.fillalpha * _this_stroke_class.alpha))
+        function initViewRadar() {
+            _this_viewRadar.needredraw = true;
+            g && (g.path.setAttribute("stroke", setRGB(_this_viewRadar.linecolor)), g.path.setAttribute("stroke-width", _this_viewRadar.linewidth), g.path.setAttribute("stroke-opacity", _this_viewRadar.linealpha * _this_viewRadar.alpha), g.path.setAttribute("fill", setRGB(_this_viewRadar.fillcolor)), g.path.setAttribute("fill-opacity", _this_viewRadar.fillalpha * _this_viewRadar.alpha))
         }
-        var _this_stroke_class = this,
-          q = null,
+        var _this_viewRadar = this,
           g = null;
-        _this_stroke_class.visible = false;
-        _this_stroke_class.dragable = true;
-        _this_stroke_class.size = 100;
-        _this_stroke_class.zoomwithmap = false;
-        _this_stroke_class.alpha = .5;
-        _this_stroke_class.fillcolor = 16777215;
-        _this_stroke_class.fillalpha = 1;
-        _this_stroke_class.linewidth = 0;
-        _this_stroke_class.linecolor = 16777215;
-        _this_stroke_class.linealpha = 0;
-        _this_stroke_class.glow = true;
-        _this_stroke_class.glowcolor = 16777215;
-        _this_stroke_class.glowwidth = 4;
-        _this_stroke_class.glowstrength = 3;
-        _this_stroke_class.headingoffset = 90;
-        _this_stroke_class.bmspot = null;
-        _this_stroke_class.needredraw = true;
+        _this_viewRadar.visible = false;
+        _this_viewRadar.dragable = true;
+        _this_viewRadar.size = 100;
+        _this_viewRadar.zoomwithmap = false;
+        _this_viewRadar.alpha = .5;
+        _this_viewRadar.fillcolor = 16777215;
+        _this_viewRadar.fillalpha = 1;
+        _this_viewRadar.linewidth = 0;
+        _this_viewRadar.linecolor = 16777215;
+        _this_viewRadar.linealpha = 0;
+        _this_viewRadar.glow = true;
+        _this_viewRadar.glowcolor = 16777215;
+        _this_viewRadar.glowwidth = 4;
+        _this_viewRadar.glowstrength = 3;
+        _this_viewRadar.headingoffset = 90;
+        _this_viewRadar.bmspot = null;
+        _this_viewRadar.needredraw = true;
         var l = null,
           n = null,
           m = false,
@@ -856,19 +848,20 @@ var krpanoplugin = function () {
           w = -1E3,
           I = -1E3,
           sa = -1,
-          q = _pluginobject.radar;
-        q || (_krpanointerface.set(_pluginpath + ".radar.visible", false), q = _pluginobject.radar);
-        _this_stroke_class.destroy = function () {
-            _this_stroke_class.bmspot = null;
+          _radarOBJ = _pluginobject.radar;
+        _radarOBJ || (_krpanointerface.set(_pluginpath + ".radar.visible", false), _radarOBJ = _pluginobject.radar);
+        _this_viewRadar.destroy = function () {
+            _this_viewRadar.bmspot = null;
             n && _document_div_maps.entities.remove(n);
             l && _document_div_maps.entities.remove(l);
             n = l = null
         };
-        _this_stroke_class.update = function () {
-            _this_stroke_class.needredraw = true
+        _this_viewRadar.update = function () {
+            _this_viewRadar.needredraw = true
         };
-        _this_stroke_class.updatehandler = function () {
-            if (_document_div_maps && (null == l && null != _this_stroke_class.bmspot && (l = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(_this_stroke_class.bmspot.lat, _this_stroke_class.bmspot.lng), {
+        // 刷新视野雷达
+        _this_viewRadar.updatehandler = function () {
+            if (_document_div_maps && (null == l && null != _this_viewRadar.bmspot && (l = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng), {
                 icon: otherPoint.src,
                 anchor: {
                 x: 0,
@@ -889,22 +882,28 @@ var krpanoplugin = function () {
                                 break a
                             }
                     }
-                    if (null == l._krpdom) return; g = setViewerStroke(500, 500); initStroke(); l._krpimg.style.display = "none"; l._krpdom.style.overflow = "visible"; l._krpdom.appendChild(g.svg); _krpanointerface_events.mouse && g.path.addEventListener("mousedown", c, true); _krpanointerface_events.touch && g.path.addEventListener(_krpanointerface_events_touchstart, c, true)
+                    if (null == l._krpdom) return;
+                    g = setViewRadarSmart(500, 500);
+                    initViewRadar();
+                    l._krpimg.style.display = "none";
+                    l._krpdom.style.overflow = "visible";
+                    l._krpdom.appendChild(g.svg);
+                    _krpanointerface_events.mouse && g.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
+                    _krpanointerface_events.touch && g.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
                 }
-                if (null ==
-                  _this_stroke_class.bmspot || 0 == _this_stroke_class.visible) g && g.hide();
+                if (null == _this_viewRadar.bmspot || 0 == _this_viewRadar.visible) g && g.hide();
                 else {
                     g && g.show();
                     a = Number(_krpanointerface.view.hlookat);
                     b = Number(_krpanointerface.view.hfov);
-                    a += _this_stroke_class.bmspot.heading;
-                    a += _this_stroke_class.headingoffset;
-                    if (w != _this_stroke_class.bmspot.lat || I != _this_stroke_class.bmspot.lng) w = _this_stroke_class.bmspot.lat, I = _this_stroke_class.bmspot.lng, l.setLocation(new Microsoft.Maps.Location(_this_stroke_class.bmspot.lat, _this_stroke_class.bmspot.lng));
-                    if (_this_stroke_class.bmspot != t || a != y || b != p) t = _this_stroke_class.bmspot, y = a, p = b, _this_stroke_class.needredraw = true;
-                    if (_this_stroke_class.needredraw) {
+                    a += _this_viewRadar.bmspot.heading;
+                    a += _this_viewRadar.headingoffset;
+                    if (w != _this_viewRadar.bmspot.lat || I != _this_viewRadar.bmspot.lng) w = _this_viewRadar.bmspot.lat, I = _this_viewRadar.bmspot.lng, l.setLocation(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
+                    if (_this_viewRadar.bmspot != t || a != y || b != p) t = _this_viewRadar.bmspot, y = a, p = b, _this_viewRadar.needredraw = true;
+                    if (_this_viewRadar.needredraw) {
                         l && l._krpdom && (l._krpdom.style.overflow = "visible");
-                        var f = _this_stroke_class.zoomwithmap ? Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
-                          f = 1 * _this_stroke_class.size * f * _krpanointerface_device_pixelratio;
+                        var f = _this_viewRadar.zoomwithmap ? Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
+                          f = 1 * _this_viewRadar.size * f * _krpanointerface_device_pixelratio;
                         2800 < f && (f = 2800);
                         if (g) {
                             var d = 16 *
@@ -913,78 +912,79 @@ var krpanoplugin = function () {
                             g.drawpie(d / 2, d / 2, f, a - .5 * b, a + .5 * b)
                         }
                     }
-                    _this_stroke_class.needredraw = false
+                    _this_viewRadar.needredraw = false
                 }
             }
         };
+        // 读取属性
         (function () {
-            q.registerattribute("visible", _this_stroke_class.visible, function (a) {
-                _this_stroke_class.visible = activeSpotEnabled(a);
-                _this_stroke_class.update()
+            _radarOBJ.registerattribute("visible", _this_viewRadar.visible, function (a) {
+                _this_viewRadar.visible = activeSpotEnabled(a);
+                _this_viewRadar.update()
             }, function () {
-                return _this_stroke_class.visible
+                return _this_viewRadar.visible
             });
-            q.registerattribute("dragable", _this_stroke_class.dragable, function (a) {
-                _this_stroke_class.dragable = activeSpotEnabled(a)
+            _radarOBJ.registerattribute("dragable", _this_viewRadar.dragable, function (a) {
+                _this_viewRadar.dragable = activeSpotEnabled(a)
             }, function () {
-                return _this_stroke_class.dragable
+                return _this_viewRadar.dragable
             });
-            q.registerattribute("size", _this_stroke_class.size, function (a) {
-                _this_stroke_class.size =
+            _radarOBJ.registerattribute("size", _this_viewRadar.size, function (a) {
+                _this_viewRadar.size =
                   Number(a);
-                _this_stroke_class.update()
+                _this_viewRadar.update()
             }, function () {
-                return _this_stroke_class.size
+                return _this_viewRadar.size
             });
-            q.registerattribute("zoomwithmap", _this_stroke_class.zoomwithmap, function (a) {
-                _this_stroke_class.zoomwithmap = activeSpotEnabled(a);
-                _this_stroke_class.update()
+            _radarOBJ.registerattribute("zoomwithmap", _this_viewRadar.zoomwithmap, function (a) {
+                _this_viewRadar.zoomwithmap = activeSpotEnabled(a);
+                _this_viewRadar.update()
             }, function () {
-                return _this_stroke_class.zoomwithmap
+                return _this_viewRadar.zoomwithmap
             });
-            q.registerattribute("alpha", _this_stroke_class.alpha, function (a) {
-                _this_stroke_class.alpha = Number(a);
-                initStroke()
+            _radarOBJ.registerattribute("alpha", _this_viewRadar.alpha, function (a) {
+                _this_viewRadar.alpha = Number(a);
+                initViewRadar()
             }, function () {
-                return _this_stroke_class.alpha
+                return _this_viewRadar.alpha
             });
-            q.registerattribute("fillcolor", _this_stroke_class.fillcolor, function (a) {
-                _this_stroke_class.fillcolor = Number(a);
-                initStroke()
+            _radarOBJ.registerattribute("fillcolor", _this_viewRadar.fillcolor, function (a) {
+                _this_viewRadar.fillcolor = Number(a);
+                initViewRadar()
             }, function () {
-                return _this_stroke_class.fillcolor
+                return _this_viewRadar.fillcolor
             });
-            q.registerattribute("fillalpha", _this_stroke_class.fillalpha, function (a) {
-                _this_stroke_class.fillalpha = Number(a);
-                initStroke()
+            _radarOBJ.registerattribute("fillalpha", _this_viewRadar.fillalpha, function (a) {
+                _this_viewRadar.fillalpha = Number(a);
+                initViewRadar()
             }, function () {
-                return _this_stroke_class.fillalpha
+                return _this_viewRadar.fillalpha
             });
-            q.registerattribute("linewidth", _this_stroke_class.linewidth, function (a) {
-                _this_stroke_class.linewidth = Number(a);
-                initStroke()
+            _radarOBJ.registerattribute("linewidth", _this_viewRadar.linewidth, function (a) {
+                _this_viewRadar.linewidth = Number(a);
+                initViewRadar()
             }, function () {
-                return _this_stroke_class.linewidth
+                return _this_viewRadar.linewidth
             });
-            q.registerattribute("linecolor", _this_stroke_class.linecolor, function (a) {
-                _this_stroke_class.linecolor = Number(a);
-                initStroke()
+            _radarOBJ.registerattribute("linecolor", _this_viewRadar.linecolor, function (a) {
+                _this_viewRadar.linecolor = Number(a);
+                initViewRadar()
             }, function () {
-                return _this_stroke_class.linecolor
+                return _this_viewRadar.linecolor
             });
-            q.registerattribute("linealpha", _this_stroke_class.linealpha, function (a) {
-                _this_stroke_class.linealpha = Number(a);
-                initStroke()
+            _radarOBJ.registerattribute("linealpha", _this_viewRadar.linealpha, function (a) {
+                _this_viewRadar.linealpha = Number(a);
+                initViewRadar()
             }, function () {
-                return _this_stroke_class.linealpha
+                return _this_viewRadar.linealpha
             });
-            q.registerattribute("headingoffset", _this_stroke_class.headingoffset, function (a) {
-                _this_stroke_class.headingoffset = Number(a);
-                _this_stroke_class.update()
+            _radarOBJ.registerattribute("headingoffset", _this_viewRadar.headingoffset, function (a) {
+                _this_viewRadar.headingoffset = Number(a);
+                _this_viewRadar.update()
             }, function () {
-                return _this_stroke_class.headingoffset
+                return _this_viewRadar.headingoffset
             });
-            initStroke()
+            initViewRadar()
         })()
     }
     // 地图坐标点类
@@ -1074,14 +1074,14 @@ var krpanoplugin = function () {
     // 标记点类
     function spotClass(a) {
         function c() {
-            var a = _pluginobject.spotstyle.getItem(_this_G.spotstyle),
+            var a = _pluginobject.spotstyle.getItem(_this_Spot.spotstyle),
               b = null;
-            return null == a ? (a = "bingmaps plugin - spot[" + l.name + '] - spotstyle "' + _this_G.spotstyle + '" not found!', a != y && (y = a, _krpanointerface.trace(3, a)), null) : b = a.internalObject
+            return null == a ? (a = "bingmaps plugin - spot[" + l.name + '] - spotstyle "' + _this_Spot.spotstyle + '" not found!', a != y && (y = a, _krpanointerface.trace(3, a)), null) : b = a.internalObject
         }
 
         function b(a, b) {
             x = a;
-            b || (b = _this_G.zoomwithmap ? Math.pow(2, r) / Math.pow(2, _this_G.zoombaselevel) : 1);
+            b || (b = _this_Spot.zoomwithmap ? Math.pow(2, map_zoom) / Math.pow(2, _this_Spot.zoombaselevel) : 1);
             var d = x,
               e = d ? d.naturalWidth : 12,
               f = d ? d.naturalHeight : 12,
@@ -1099,7 +1099,7 @@ var krpanoplugin = function () {
                 },
                 width: e,
                 height: f,
-                zIndex: _this_G.active ? 2 : 1,
+                zIndex: _this_Spot.active ? 2 : 1,
                 typeName: "_krp_bingmaps_pin_cursor"
             };
             _pushpin && (_pushpin.setOptions(w), _pushpin._krpimg && (_pushpin._krpimg.style[_pluginpath_transform + "Origin"] = "0 0", _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + m + "," + m + ")"));
@@ -1117,28 +1117,28 @@ var krpanoplugin = function () {
         }
 
         function u(a) {
-            _this_G.active && 0 == K || (a = l.onclick, null != a && "" != a && _krpanointerface.call(a, l))
+            _this_Spot.active && 0 == _bool_activeSpotEnabled || (a = l.onclick, null != a && "" != a && _krpanointerface.call(a, l))
         }
 
         function e(a) {
-            _this_G.active && 0 == K || (null == t && (a = c()) && a.overurl_bitmapdata && b(a.overurl_bitmapdata), E = l, a = l.onover, null != a && "" != a && _krpanointerface.call(a, l))
+            _this_Spot.active && 0 == _bool_activeSpotEnabled || (null == t && (a = c()) && a.overurl_bitmapdata && b(a.overurl_bitmapdata), E = l, a = l.onover, null != a && "" != a && _krpanointerface.call(a, l))
         }
 
         function n(a) {
             E = null;
-            null != a && _this_G.active && 0 == K || (null == t && (a = c()) && (_this_G.active && a.activeurl_bitmapdata ? b(a.activeurl_bitmapdata) : a.url_bitmapdata && b(a.url_bitmapdata)), a = l.onout, null != a && "" != a && _krpanointerface.call(a, l))
+            null != a && _this_Spot.active && 0 == _bool_activeSpotEnabled || (null == t && (a = c()) && (_this_Spot.active && a.activeurl_bitmapdata ? b(a.activeurl_bitmapdata) : a.url_bitmapdata && b(a.url_bitmapdata)), a = l.onout, null != a && "" != a && _krpanointerface.call(a, l))
         }
-        var _this_G = this;
-        _this_G.spotstyle = "default";
-        _this_G.url = null;
-        _this_G.lat = Number.NaN;
-        _this_G.lng = Number.NaN;
-        _this_G.heading = 0;
-        _this_G.active = false;
-        _this_G.needdom = false;
-        _this_G.zoomwithmap = false;
-        _this_G.zoombaselevel = 10;
-        _this_G.needupdate = false;
+        var _this_Spot = this;
+        _this_Spot.spotstyle = "default";
+        _this_Spot.url = null;
+        _this_Spot.lat = Number.NaN;
+        _this_Spot.lng = Number.NaN;
+        _this_Spot.heading = 0;
+        _this_Spot.active = false;
+        _this_Spot.needdom = false;
+        _this_Spot.zoomwithmap = false;
+        _this_Spot.zoombaselevel = 10;
+        _this_Spot.needupdate = false;
         var l = null,
           m = 0,
           t = null,
@@ -1148,109 +1148,122 @@ var krpanoplugin = function () {
           _pushpin = null,      // 图钉
           w = null,
           l = a;
-        _this_G.xmlobject = l;
-        _this_G.update = function (a) {
+        _this_Spot.xmlobject = l;
+        _this_Spot.update = function (a) {
             void 0 === a && (a = 0);
-            _this_G.needupdate = true;
+            _this_Spot.needupdate = true;
             m |= a;
             N = true
         };
-        _this_G.processupdate = function () {
+        _this_Spot.processupdate = function () {
             if (null != l) {
                 if (2 == (m & 2)) {
                     var a = false;
                     if (_document_div_maps) {
-                        var d = !isNaN(_this_G.lat) && !isNaN(_this_G.lng),
-                          h = d ? new Microsoft.Maps.Location(_this_G.lat, _this_G.lng) : new Microsoft.Maps.Location(0, 0);
+                        var d = !isNaN(_this_Spot.lat) && !isNaN(_this_Spot.lng),
+                          h = d ? new Microsoft.Maps.Location(_this_Spot.lat, _this_Spot.lng) : new Microsoft.Maps.Location(0, 0);
                         null == _pushpin && d ? (d = c(), a =
-                            _this_G.active ? d.activeurl_bitmapdata : d.url_bitmapdata, _pushpin = null, w = b(a), _pushpin = new Microsoft.Maps.Pushpin(h, w), _document_div_maps.entities.push(_pushpin), f(_pushpin), h = d.scale, void 0 !== a.naturalScale && (h *= a.naturalScale), _this_G.zoomwithmap && (h *= Math.pow(2, r) / Math.pow(2, _this_G.zoombaselevel)), h *= _krpanointerface_device_pixelratio, _pushpin._krpimg ? (_pushpin._krpimg.style[_pluginpath_transform + "Origin"] = "0 0", _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + h + "," + h + ")") : N = _this_G.needdom = true, Microsoft.Maps.Events.addHandler(_pushpin, "click", u), Microsoft.Maps.Events.addHandler(_pushpin, "mouseover", e), Microsoft.Maps.Events.addHandler(_pushpin, "mouseout", n), a = true) : _pushpin && d &&
+                            _this_Spot.active ? d.activeurl_bitmapdata : d.url_bitmapdata,
+                            _pushpin = null,
+                            w = b(a),
+                            _pushpin = new Microsoft.Maps.Pushpin(h, w),
+                            _document_div_maps.entities.push(_pushpin),
+                            f(_pushpin),
+                            h = d.scale,
+                            void 0 !== a.naturalScale && (h *= a.naturalScale),
+                            _this_Spot.zoomwithmap && (h *= Math.pow(2, map_zoom) / Math.pow(2, _this_Spot.zoombaselevel)),
+                            h *= _krpanointerface_device_pixelratio, _pushpin._krpimg ? (_pushpin._krpimg.style[_pluginpath_transform + "Origin"] = "0 0", _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + h + "," + h + ")") : N = _this_Spot.needdom = true,
+                            Microsoft.Maps.Events.addHandler(_pushpin, "click", u),
+                            Microsoft.Maps.Events.addHandler(_pushpin, "mouseover", e),
+                            Microsoft.Maps.Events.addHandler(_pushpin, "mouseout", n),
+                            a = true) : _pushpin && d &&
                           (_pushpin.setLocation(h), a = true)
                     }
                     a && (m &= -3)
                 }
-                1 == (m & 1) && _this_G.updateimage() && (m &= -2);
-                0 == m && (_this_G.needupdate = false)
+                1 == (m & 1) && _this_Spot.updateimage() && (m &= -2);
+                0 == m && (_this_Spot.needupdate = false)
             }
         };
-        _this_G.updateimage = function () {
-            if ("" == _this_G.url || "null" == _this_G.url) _this_G.url = null;
-            if (_this_G.url) _this_G.url != t && (t = _this_G.url, createImgElement(_this_G.url, function (a) {
+        _this_Spot.updateimage = function () {
+            if ("" == _this_Spot.url || "null" == _this_Spot.url) _this_Spot.url = null;
+            if (_this_Spot.url) _this_Spot.url != t && (t = _this_Spot.url, createImgElement(_this_Spot.url, function (a) {
                 v = a;
                 b(a)
             }));
             else {
                 v = t = null;
                 var a = c();
-                a && (a = _this_G.active ? a.activeurl_bitmapdata : a.url_bitmapdata, x != a && b(a))
+                a && (a = _this_Spot.active ? a.activeurl_bitmapdata : a.url_bitmapdata, x != a && b(a))
             }
             return true
         };
-        _this_G.scalespot = function (a) {
+        _this_Spot.scalespot = function (a) {
             b(x, a)
         };
-        _this_G.try_dom_access = function () {
+        _this_Spot.try_dom_access = function () {
             if (_pushpin)
                 if (f(_pushpin), _pushpin._krpimg) {
                     var a = c();
-                    b(t ? v : _this_G.active ? a.activeurl_bitmapdata : a.url_bitmapdata);
-                    _this_G.needdom = false
-                } else N = _this_G.needdom = true
+                    b(t ? v : _this_Spot.active ? a.activeurl_bitmapdata : a.url_bitmapdata);
+                    _this_Spot.needdom = false
+                } else N = _this_Spot.needdom = true
         };
-        _this_G.destroy = function () {
+        _this_Spot.destroy = function () {
             _pushpin && _document_div_maps && _document_div_maps.entities.remove(_pushpin);
             x = l = w = _pushpin = null
         };
         l.event_out = n;
         (function () {
-            a.registerattribute("spotstyle", _this_G.spotstyle, function (a) {
+            a.registerattribute("spotstyle", _this_Spot.spotstyle, function (a) {
                 if (null == a || "" == a) a = "default";
-                _this_G.spotstyle = String(a).toLowerCase();
-                _this_G.update(1)
+                _this_Spot.spotstyle = String(a).toLowerCase();
+                _this_Spot.update(1)
             }, function () {
-                return _this_G.spotstyle
+                return _this_Spot.spotstyle
             });
-            a.registerattribute("url", _this_G.url, function (a) {
-                a != _this_G.url && (_this_G.url = String(a), _this_G.update(1))
+            a.registerattribute("url", _this_Spot.url, function (a) {
+                a != _this_Spot.url && (_this_Spot.url = String(a), _this_Spot.update(1))
             }, function () {
-                return _this_G.url
+                return _this_Spot.url
             });
-            a.registerattribute("lat", _this_G.lat, function (a) {
-                _this_G.lat = Number(a);
-                _this_G.update(2)
+            a.registerattribute("lat", _this_Spot.lat, function (a) {
+                _this_Spot.lat = Number(a);
+                _this_Spot.update(2)
             }, function () {
-                return _this_G.lat
+                return _this_Spot.lat
             });
-            a.registerattribute("lng", _this_G.lng,
+            a.registerattribute("lng", _this_Spot.lng,
               function (a) {
-                  _this_G.lng = Number(a);
-                  _this_G.update(2)
+                  _this_Spot.lng = Number(a);
+                  _this_Spot.update(2)
               },
               function () {
-                  return _this_G.lng
+                  return _this_Spot.lng
               });
-            a.registerattribute("heading", _this_G.heading, function (a) {
-                _this_G.heading = Number(a)
+            a.registerattribute("heading", _this_Spot.heading, function (a) {
+                _this_Spot.heading = Number(a)
             }, function () {
-                return _this_G.heading
+                return _this_Spot.heading
             });
-            a.registerattribute("active", _this_G.active, function (a) {
-                _this_G.active = activeSpotEnabled(a);
-                _this_G.update(1)
+            a.registerattribute("active", _this_Spot.active, function (a) {
+                _this_Spot.active = activeSpotEnabled(a);
+                _this_Spot.update(1)
             }, function () {
-                return _this_G.active
+                return _this_Spot.active
             });
-            a.registerattribute("zoomwithmap", _this_G.zoomwithmap, function (a) {
-                _this_G.zoomwithmap = activeSpotEnabled(a);
-                _this_G.update(2)
+            a.registerattribute("zoomwithmap", _this_Spot.zoomwithmap, function (a) {
+                _this_Spot.zoomwithmap = activeSpotEnabled(a);
+                _this_Spot.update(2)
             }, function () {
-                return _this_G.zoomwithmap
+                return _this_Spot.zoomwithmap
             });
-            a.registerattribute("zoombaselevel", _this_G.zoombaselevel, function (a) {
-                _this_G.zoombaselevel = Number(a);
-                _this_G.update(2)
+            a.registerattribute("zoombaselevel", _this_Spot.zoombaselevel, function (a) {
+                _this_Spot.zoombaselevel = Number(a);
+                _this_Spot.update(2)
             },
               function () {
-                  return _this_G.zoombaselevel
+                  return _this_Spot.zoombaselevel
               });
             a.registerattribute("onover", null);
             a.registerattribute("onhover", null);
@@ -1298,12 +1311,12 @@ var krpanoplugin = function () {
       S = false,
       N = false,
       H = true,
-      _strokeOBJECT = null,
+      _viewRadarOBJECT = null,
       E = null,
       aa = false,
       C = null,
       _maptypecontrol = null,
-      D, ua, y, w, r, K;
+      D, mapTypeString, map_lat, map_lng, map_zoom, _bool_activeSpotEnabled;
     // 安装插件 registerplugin
     // registerplugin - startup point for the plugin (required)
     // - krpanointerface = krpano interface object
@@ -1311,7 +1324,8 @@ var krpanoplugin = function () {
     // - pluginobject = the xml plugin object itself
     this.registerplugin = function (krpanointerface, pluginpath, pluginobject) {
         debugger;
-        function f() {
+        // 创建样式
+        function createPinCursorStyle() {
             var a = document.createElement("style");
             a.type = "text/css";
             a.innerHTML = "._krp_bingmaps_pin_cursor{cursor:pointer!important;}";
@@ -1337,7 +1351,7 @@ var krpanoplugin = function () {
             _pluginpath_prefix = void 0 === _pluginpath_prefix || null === _pluginpath_prefix ? "webkit" : String(_pluginpath_prefix).toLowerCase();
             if (void 0 === _pluginpath_transform || null === _pluginpath_transform) _pluginpath_transform = "webkitTransform";
             if (void 0 === _pluginpath_backgroundsize || null === _pluginpath_backgroundsize) _pluginpath_backgroundsize = "-webkit-background-size";
-            f();
+            createPinCursorStyle();
             _pluginobject.maskchildren = true;
             _pluginobject.registerattribute("key", null);
             _pluginobject.registerattribute("maptype", "satellite", function (a) {
@@ -1346,32 +1360,32 @@ var krpanoplugin = function () {
                 return D
             });
             _pluginobject.registerattribute("maptypes", "normal|satellite|hybrid", function (a) {
-                ua = String(a)
+                mapTypeString = String(a)
             }, function () {
-                return ua
+                return mapTypeString
             });
             _pluginobject.registerattribute("lat", 0, function (a) {
-                y = Number(a);
+                map_lat = Number(a);
                 updateMaps()
             }, function () {
-                return y
+                return map_lat
             });
             _pluginobject.registerattribute("lng", 0, function (a) {
-                w = Number(a);
+                map_lng = Number(a);
                 updateMaps()
             }, function () {
-                return w
+                return map_lng
             });
             _pluginobject.registerattribute("zoom", 1, function (a) {
-                r = Number(a);
+                map_zoom = Number(a);
                 updateMaps()
             }, function () {
-                return r
+                return map_zoom
             });
             _pluginobject.registerattribute("activespotenabled", false, function (a) {
-                K = activeSpotEnabled(a)
+                _bool_activeSpotEnabled = activeSpotEnabled(a)
             }, function () {
-                return K
+                return _bool_activeSpotEnabled
             });
             _pluginobject.registerattribute("bgcolor", 0);
             _pluginobject.registerattribute("bgalpha", 0);
@@ -1416,8 +1430,6 @@ var krpanoplugin = function () {
             _document_div.style.height = pluginpath + "px";
             _document_div.style.overflow = "hidden";
             _document_div.style.fontFamily = "Arial";
-            _document_div.style.fontSize =
-              9 * _krpanointerface.stagescale + "px";
             _document_div.style.fontSize = 9 * _krpanointerface.stagescale + "px";
             _document_div.style.webkitUserSelect = "none";
             _document_div.style.MozUserSelect = "none";

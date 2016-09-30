@@ -311,6 +311,7 @@
 						<layer name="skin_map" state="closed" url="" visible="false" align="lefttop" width="100%" height="50%" x="0" y="0" zorder="1" lat="0" lng="0" zoom="10" bgalpha="0" maptype="satellite" onmapready="skin_addmapspots();">
 							<maptypecontrol visible="true" align="righttop" x="5" y="5" buttonalign="v" scale.mobile="1.5" />
 							<radar visible="false" headingoffset="0" />
+              <!--radar visible="true" zoomwithmap="true" size="50" /-->
 							<spotstyle name="DEFAULT" url="vtourskin_mapspot.png" activeurl="vtourskin_mapspotactive.png" edge="bottom" x="-5" y="-8" scale="0.5" />
 							<layer name="skin_map_zoom_in"  style="skin_base" visible="get:skin_settings.maps_zoombuttons" crop="9|512|46|64"  align="right" x="0" y="-40" zorder="2" ondown="layer[skin_map].zoomin();  skin_buttonglow(get(name));" onup="skin_buttonglow(null);" />
 							<layer name="skin_map_zoom_out" style="skin_base" visible="get:skin_settings.maps_zoombuttons" crop="73|512|46|64" align="right" x="0" y="+40" zorder="2" ondown="layer[skin_map].zoomout(); skin_buttonglow(get(name));" onup="skin_buttonglow(null);" />
@@ -413,7 +414,7 @@
 					set(layer[skin_map].url, '%SWFPATH%/plugins/bingmaps.js');
 				  ,
 				 	copy(layer[skin_map].key, skin_settings.maps_google_api_key);
-					set(layer[skin_map].url, '%SWFPATH%/plugins/googlemaps.js');
+					set(layer[skin_map].url, '%SWFPATH%/plugins/bingmaps.js');
 				  );
 			  );
 		  );

@@ -168,8 +168,7 @@ var krpanoplugin = function () {
         I("setZoom") ? h.setZoom(Math.round(v)) : D = !0
     }
 
-    function E(a,
-		d) {
+    function E(a, d) {
         I("panTo") ? h.panTo(new google.maps.LatLng(a, d)) : (n = a, t = d, J = n, K = t, w = !0)
     }
 
