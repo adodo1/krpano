@@ -414,7 +414,7 @@
 					set(layer[skin_map].url, '%SWFPATH%/plugins/bingmaps.js');
 				  ,
 				 	copy(layer[skin_map].key, skin_settings.maps_google_api_key);
-					set(layer[skin_map].url, '%SWFPATH%/plugins/bingmaps.js');
+					set(layer[skin_map].url, '%SWFPATH%/plugins/googlemaps.js');
 				  );
 			  );
 		  );

@@ -554,19 +554,19 @@ var krpanoplugin = function () {
     // 缩放到点范围
     function zoomTospotsextent() {
         if (_document_div_maps) {
-            var a, c, b, f, h, e, q, g = _pluginobject.spot.getArray();
+            var lng1, lat1, lat2, lng2, h, e, q, g = _pluginobject.spot.getArray();
             e = g.length;
             if (!(1 > e))
                 if (1 == e) q = g[0].internalObject, setCenter(q.lat, q.lng, map_zoom);
                 else {
                     q = g[0].internalObject;
-                    a = b = q.lat;
-                    c = f = q.lng;
-                    for (h = 1; h < e; h++) q = g[h].internalObject, q.lat < a && (a = q.lat), q.lat > b && (b = q.lat), q.lng < c && (c = q.lng), q.lng > f && (f = q.lng);
-                    a = new Microsoft.Maps.LocationRect.fromCorners(new Microsoft.Maps.Location(b, c), new Microsoft.Maps.Location(a, f));
+                    lat2 = lat1 = q.lat;
+                    lng1 = lng2 = q.lng;
+                    for (h = 1; h < e; h++) q = g[h].internalObject, q.lat < lat2 && (lat2 = q.lat), q.lat > lat1 && (lat1 = q.lat), q.lng < lng1 && (lng1 = q.lng), q.lng > lng2 && (lng2 = q.lng);
+                    lat2 = new Microsoft.Maps.LocationRect.fromCorners(new Microsoft.Maps.Location(lat1, lng1), new Microsoft.Maps.Location(lat2, lng2));
                     _document_div_maps.setView({
                         animate: false,
-                        bounds: a
+                        bounds: lat2
                     });
                     updateEnve()
                 }
@@ -590,10 +590,10 @@ var krpanoplugin = function () {
     // 平移
     function panTo() {
         if (_document_div_maps) {
-            var a = arguments;
-            2 == a.length ? (a = new Microsoft.Maps.Location(Number(a[0]), Number(a[1])), _document_div_maps.setView({
+            var positions = arguments;
+            2 == positions.length ? (positions = new Microsoft.Maps.Location(Number(positions[0]), Number(positions[1])), _document_div_maps.setView({
                 animate: true,
-                center: a
+                center: positions
             })) : _krpanointerface.trace(3, "bingmaps plugin - panto() syntax error!")
         }
     }
@@ -604,8 +604,7 @@ var krpanoplugin = function () {
         if (_document_div_maps) {
             var a = arguments;
             if (1 <= a.length) {
-                var c = _pluginpath + ".spot[" +
-                  String(a[0]) + "].",
+                var c = _pluginpath + ".spot[" + String(a[0]) + "].",
                   b = Number(_krpanointerface.get(c + "lat")),
                   f = Number(_krpanointerface.get(c + "lng"));
                 isNaN(b) || isNaN(f) || (c = _document_div_maps.getZoom(), 2 <= a.length && (c = Number(a[1])), a = new Microsoft.Maps.Location(b, f), _document_div_maps.setView({
@@ -838,7 +837,7 @@ var krpanoplugin = function () {
         _this_viewRadar.headingoffset = 90;
         _this_viewRadar.bmspot = null;
         _this_viewRadar.needredraw = true;
-        var l = null,
+        var marker = null,
           n = null,
           m = false,
           r = 0,
@@ -853,8 +852,8 @@ var krpanoplugin = function () {
         _this_viewRadar.destroy = function () {
             _this_viewRadar.bmspot = null;
             n && _document_div_maps.entities.remove(n);
-            l && _document_div_maps.entities.remove(l);
-            n = l = null
+            marker && _document_div_maps.entities.remove(marker);
+            n = marker = null
         };
         _this_viewRadar.update = function () {
             _this_viewRadar.needredraw = true
@@ -862,8 +861,8 @@ var krpanoplugin = function () {
         // 刷新视野雷达
         _this_viewRadar.updatehandler = function () {
             if (_document_div_maps &&
-                (null == l && null != _this_viewRadar.bmspot &&
-                 (l = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng), {
+                (null == marker && null != _this_viewRadar.bmspot &&
+                 (marker = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng), {
                 icon: otherPoint.src,
                 anchor: {
                 x: 0,
@@ -872,10 +871,10 @@ var krpanoplugin = function () {
                 width: 64,
                 height: 64,
                 zIndex: 0
-            }), _document_div_maps.entities.push(l)), null != l)) {
-                if (null == l._krpdom) {
+            }), _document_div_maps.entities.push(marker)), null != marker)) {
+                if (null == marker._krpdom) {
                     a: {
-                        var d_lookat = l, d_fov;
+                        var d_lookat = marker, d_fov;
                         for (d_fov in d_lookat)
                             if (d_lookat[d_fov] && "object" === typeof d_lookat[d_fov] && d_lookat[d_fov].dom && d_lookat[d_fov].dom.childNodes && d_lookat[d_fov].dom.childNodes[0]) {
                                 d_lookat._krpdom = d_lookat[d_fov].dom;
@@ -883,12 +882,12 @@ var krpanoplugin = function () {
                                 break a
                             }
                     }
-                    if (null == l._krpdom) return;
+                    if (null == marker._krpdom) return;
                     radarSVG = setViewRadarSmart(500, 500);
                     initViewRadar();
-                    l._krpimg.style.display = "none";
-                    l._krpdom.style.overflow = "visible";
-                    l._krpdom.appendChild(radarSVG.svg);
+                    marker._krpimg.style.display = "none";
+                    marker._krpdom.style.overflow = "visible";
+                    marker._krpdom.appendChild(radarSVG.svg);
                     _krpanointerface_events.mouse && radarSVG.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
                     _krpanointerface_events.touch && radarSVG.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
                 }
@@ -902,7 +901,7 @@ var krpanoplugin = function () {
                     if (_bmspot_lat != _this_viewRadar.bmspot.lat || _bmspot_lng != _this_viewRadar.bmspot.lng) {
                         _bmspot_lat = _this_viewRadar.bmspot.lat;
                         _bmspot_lng = _this_viewRadar.bmspot.lng;
-                        l.setLocation(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
+                        marker.setLocation(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
                     }
                     if (_this_viewRadar.bmspot != t || d_lookat != y || d_fov != p) {
                         t = _this_viewRadar.bmspot;
@@ -911,7 +910,7 @@ var krpanoplugin = function () {
                         _this_viewRadar.needredraw = true;
                     }
                     if (_this_viewRadar.needredraw) {
-                        l && l._krpdom && (l._krpdom.style.overflow = "visible");
+                        marker && marker._krpdom && (marker._krpdom.style.overflow = "visible");
                         var f = _this_viewRadar.zoomwithmap ? Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
                           f = 1 * _this_viewRadar.size * f * _krpanointerface_device_pixelratio;
                         2800 < f && (f = 2800);
