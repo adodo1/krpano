@@ -14,7 +14,7 @@
 		        url.html5="%SWFPATH%/plugins/googlemaps.js"
 		        url.flash="%SWFPATH%/plugins/bingmaps.swf"
 		        align="lefttop" x="10" y="10" width="250" height="350"
-		        key="An4-9WoANqtASVorNezSjENest2VC0zoAzvMhEpdTjb3uY-k6u6bMkPxYpDsolsF"
+		        key="AIzaSyD8zAwIBmvpNHY7oKkGD06qIiZ6OssapuM"
 		        maptype="SATELLITE"
 		        lat="41.898761" lng="12.473094" zoom="18"
 		        >

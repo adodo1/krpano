@@ -14,7 +14,7 @@
 	<skin_settings maps="true"
 	               maps_type="google"
 	               maps_bing_api_key=""
-	               maps_google_api_key=""
+	               maps_google_api_key="AIzaSyD8zAwIBmvpNHY7oKkGD06qIiZ6OssapuM"
 	               maps_zoombuttons="false"
 	               gyro="true"
 	               webvr="true"

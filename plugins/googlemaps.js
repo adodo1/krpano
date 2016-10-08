@@ -13,7 +13,7 @@ var krpanoplugin = function () {
     }
 
     function Y() {
-        null != z && (window[z] = null, delete window[z], z = null);
+        null != _krpano_gmap_cb_var && (window[_krpano_gmap_cb_var] = null, delete window[_krpano_gmap_cb_var], _krpano_gmap_cb_var = null);
         _krpanointerface && google && google.maps && _krpanointerface.trace(0, "Google Maps API Version: " + google.maps.version);
         var a = window._krpano_gmap_loadedcallbacks_;
         if (a) {
@@ -29,8 +29,8 @@ var krpanoplugin = function () {
             mapTypeId: getMaptype(G),
             center: new google.maps.LatLng(_pluginobject.lat, _pluginobject.lng),
             zoom: map_zoom,
-            tilt: N,
-            heading: O,
+            tilt: map_tilt,
+            heading: map_heading,
             keyboardShortcuts: false,
             noClear: true
         }, _krpanointerface.control &&
@@ -198,18 +198,18 @@ var krpanoplugin = function () {
     }
     // 设置地图倾斜和朝向
     function setTiltHeading() {
-        h && (h.setTilt(N), h.setHeading(O))
+        h && (h.setTilt(map_tilt), h.setHeading(map_heading))
     }
 
     function Z(a) {
-        a.styles = ca ? [] : [{
+        a.styles = map_poi ? [] : [{
             featureType: "poi",
             elementType: "labels",
             stylers: [{
                 visibility: "off"
             }]
         }];
-        var d = ("|" + da + "|").toLowerCase();
+        var d = ("|" + map_controls + "|").toLowerCase();
         a.zoomControl = 0 <= d.indexOf("|zoom|");
         a.mapTypeControl = 0 <= d.indexOf("|maptype|");
         a.scaleControl = 0 <= d.indexOf("|scale|");
@@ -556,7 +556,7 @@ var krpanoplugin = function () {
 				p, c;
             c = d.length;
             for (p = 0; p < c; p++) b = d[p], g = b.internalObject, String(b.name).toLowerCase() == a ? (0 == g.active && (g.active = true, g.update(1)), h = g) : 0 != g.active && (g.active = false, g.update(1));
-            h && (0 == F && h.xmlobject == C && (C.event_out(null), C = null), u && (u.bmspot = h, u.update()))
+            h && (0 == map_mapsapi && h.xmlobject == C && (C.event_out(null), C = null), u && (u.bmspot = h, u.update()))
         } else _krpanointerface.trace(3,
 			"googlemaps plugin - activatespot() syntax error!")
     }
@@ -904,16 +904,16 @@ var krpanoplugin = function () {
         }
 
         function g(a) {
-            c.active && 0 == F || (a = m.onclick, null != a && "" != a && _krpanointerface.call(a, m))
+            c.active && 0 == map_mapsapi || (a = m.onclick, null != a && "" != a && _krpanointerface.call(a, m))
         }
 
         function k(a) {
-            c.active && 0 == F || (null == r && (a = d()) && a.overurl_bitmapdata && b(a.overurl_bitmapdata), C = m, a = m.onover, null != a && "" != a && _krpanointerface.call(a, m))
+            c.active && 0 == map_mapsapi || (null == r && (a = d()) && a.overurl_bitmapdata && b(a.overurl_bitmapdata), C = m, a = m.onover, null != a && "" != a && _krpanointerface.call(a, m))
         }
 
         function p(a) {
             C = null;
-            null != a && c.active && 0 == F || (null == r && (a = d()) && (c.active && a.activeurl_bitmapdata ? b(a.activeurl_bitmapdata) : a.url_bitmapdata && b(a.url_bitmapdata)), a = m.onout, null != a && "" != a && _krpanointerface.call(a, m))
+            null != a && c.active && 0 == map_mapsapi || (null == r && (a = d()) && (c.active && a.activeurl_bitmapdata ? b(a.activeurl_bitmapdata) : a.url_bitmapdata && b(a.url_bitmapdata)), a = m.onout, null != a && "" != a && _krpanointerface.call(a, m))
         }
         var c = this;
         c.spotstyle = "default";
@@ -1067,7 +1067,7 @@ var krpanoplugin = function () {
 		_krpanointerface_device = null,
 		H = null,
 		X = 1,
-		z = null,
+		_krpano_gmap_cb_var = null,
 		k = null,
 		h = null,
 		ha = false,
@@ -1080,7 +1080,7 @@ var krpanoplugin = function () {
 		K = 0,
 		u = null,
 		C = null,
-		G, va, map_lat, map_lng, map_zoom, N, O, da, ca, F;
+		G, va, map_lat, map_lng, map_zoom, map_tilt, map_heading, map_controls, map_poi, map_mapsapi;
     this.registerplugin = function (krpanointerface, pluginpath, pluginobject) {
         _krpanointerface = krpanointerface;
         _pluginobject = pluginobject;
@@ -1115,29 +1115,30 @@ var krpanoplugin = function () {
 				function () {
 					return map_zoom
         }), _pluginobject.registerattribute("tilt", 0, function (a) {
-				N = Number(a);
+				map_tilt = Number(a);
 				setTiltHeading()
         }, function () {
-				return N
+				return map_tilt
         }), _pluginobject.registerattribute("heading", 0, function (a) {
-				O = Number(a);
+				map_heading = Number(a);
 				setTiltHeading()
         }, function () {
-				return O
+				return map_heading
         }), _pluginobject.registerattribute("controls", "zoom|maptype", function (a) {
-				da = a;
+				map_controls = a;
 				h && h.setOptions(Z({}))
         }, function () {
-				return da
+				return map_controls
         }), _pluginobject.registerattribute("poi", false, function (a) {
-				ca = getBoolean(a);
+				map_poi = getBoolean(a);
 				h && h.setOptions(Z({}))
         }, function () {
-				return ca
-        }), _pluginobject.registerattribute("mapsapi", ""), _pluginobject.registerattribute("activespotenabled", false, function (a) {
-				F = getBoolean(a)
+				return map_poi
+        }), _pluginobject.registerattribute("mapsapi", ""),
+            _pluginobject.registerattribute("activespotenabled", false, function (a) {
+				map_mapsapi = getBoolean(a)
         }, function () {
-				return F
+				return map_mapsapi
         }),
 			_pluginobject.registerattribute("bgcolor", 0),
             _pluginobject.registerattribute("bgalpha", 0),
@@ -1176,9 +1177,9 @@ var krpanoplugin = function () {
         else if (window._krpano_gmap_loadedcallbacks_) window._krpano_gmap_loadedcallbacks_.push(Y);
         else {
             window._krpano_gmap_loadedcallbacks_ = [];
-            z = "_krpano_gmap_cb_";
-            for (krpanointerface = 0; 16 > krpanointerface; krpanointerface++) z += String.fromCharCode(65 + 32 * Math.round(Math.random()) + Math.floor(25 * Math.random()));
-            window[z] = Y;
+            _krpano_gmap_cb_var = "_krpano_gmap_cb_";
+            for (krpanointerface = 0; 16 > krpanointerface; krpanointerface++) _krpano_gmap_cb_var += String.fromCharCode(65 + 32 * Math.round(Math.random()) + Math.floor(25 * Math.random()));
+            window[_krpano_gmap_cb_var] = Y;
             (krpanointerface = _pluginobject.mapsapi) && "" != krpanointerface || (krpanointerface = 0 ==
 				("" + window.location.href).toLowerCase().indexOf("https:") ? "https://maps.google.cn" : "http://maps.google.cn");
             pluginpath = "";
@@ -1191,7 +1192,7 @@ var krpanoplugin = function () {
             var k = document.createElement("script");
             k.type = "text/javascript";
             k.async = true;
-            k.src = krpanointerface + "/maps/api/js?v=3.23" + pluginpath + pluginobject + g + "&callback=" + z;
+            k.src = krpanointerface + "/maps/api/js?v=3.23" + pluginpath + pluginobject + g + "&callback=" + _krpano_gmap_cb_var;
             document.body.appendChild(k)
         }
     };
