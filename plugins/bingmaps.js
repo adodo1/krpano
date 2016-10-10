@@ -816,7 +816,12 @@ var krpanoplugin = function () {
         // 初始化视野范围样式
         function initViewRadar() {
             _this_viewRadar.needredraw = true;
-            radarSVG && (radarSVG.path.setAttribute("stroke", setRGB(_this_viewRadar.linecolor)), radarSVG.path.setAttribute("stroke-width", _this_viewRadar.linewidth), radarSVG.path.setAttribute("stroke-opacity", _this_viewRadar.linealpha * _this_viewRadar.alpha), radarSVG.path.setAttribute("fill", setRGB(_this_viewRadar.fillcolor)), radarSVG.path.setAttribute("fill-opacity", _this_viewRadar.fillalpha * _this_viewRadar.alpha))
+            radarSVG && 
+            (radarSVG.path.setAttribute("stroke", setRGB(_this_viewRadar.linecolor)),
+            radarSVG.path.setAttribute("stroke-width", _this_viewRadar.linewidth),
+            radarSVG.path.setAttribute("stroke-opacity", _this_viewRadar.linealpha * _this_viewRadar.alpha),
+            radarSVG.path.setAttribute("fill", setRGB(_this_viewRadar.fillcolor)),
+            radarSVG.path.setAttribute("fill-opacity", _this_viewRadar.fillalpha * _this_viewRadar.alpha))
         }
         var _this_viewRadar = this,
           radarSVG = null;
