@@ -54,7 +54,7 @@ var krpanoplugin = function () {
             _map_div.addEventListener("DOMMouseScroll", domMouseScrollEvent, true),
             null == _timers &&
             (_timers = setInterval(redrawMAP, 1E3 / 60)),     // 周期执行刷新地图 单位毫秒 每秒60帧
-            viewRadarOBJ = new viewRadarClass,
+            _viewRadarOBJ = new viewRadarClass,
             updateSpots(),
             ha = true,
             _krpanointerface.call(_pluginobject.onmapready, _pluginobject),
@@ -181,12 +181,12 @@ var krpanoplugin = function () {
                 _krpanointerface.call(_pluginobject.onmapmoved, _pluginobject);
             a = _google_map.getZoom();
             map_zoom != a && (
-                viewRadarOBJ &&
-                (viewRadarOBJ.needredraw = true),
+                _viewRadarOBJ &&
+                (_viewRadarOBJ.needredraw = true),
                 map_zoom = a,
                 _krpanointerface.call(_pluginobject.onmapzoomed, _pluginobject),
-                viewRadarOBJ &&
-                viewRadarOBJ.updatehandler())
+                _viewRadarOBJ &&
+                _viewRadarOBJ.updatehandler())
         }
     }
     // 地图是否初始化 有没有指定的方法
@@ -199,23 +199,23 @@ var krpanoplugin = function () {
              aa = 0, methodName) : false
     }
     // 缩放到位置
-    function zoomToPoint(a, d) {
-        map_lat = a;
-        map_lng = d;
+    function zoomToPoint(lat, lng) {
+        map_lat = lat;
+        map_lng = lng;
         hasMethod("setCenter") ?
-        _google_map.setCenter(new google.maps.LatLng(a, d)) :
-        (w = true, J = map_lat, K = map_lng)
+        _google_map.setCenter(new google.maps.LatLng(lat, lng)) :
+        (_unknowbool1 = true, _current_lat = map_lat, _current_lng = map_lng)
     }
     // 缩放到级别
     function zoomToLevel(a) {
         map_zoom = a;
-        hasMethod("setZoom") ? _google_map.setZoom(Math.round(map_zoom)) : D = true
+        hasMethod("setZoom") ? _google_map.setZoom(Math.round(map_zoom)) : _can_zoom_map = true
     }
     // 平移到点
     function panToPoint(a, d) {
         hasMethod("panTo") ?
         _google_map.panTo(new google.maps.LatLng(a, d)) :
-        (map_lat = a, map_lng = d, J = map_lat, K = map_lng, w = true)
+        (map_lat = a, map_lng = d, _current_lat = map_lat, _current_lng = map_lng, _unknowbool1 = true)
     }
     // 更新地图1:平移到经纬度 2:缩放地图
     function updateMaps(a) {
@@ -284,76 +284,86 @@ var krpanoplugin = function () {
     // 设置地图中心SETCENTER
     function setCenter() {
         if (_google_map) {
-            var a = arguments;
-            if (3 == a.length) {
-                var d = Number(a[2]);
-                zoomToPoint(Number(a[0]), Number(a[1]));
-                zoomToLevel(d)
+            var latlngzooms = arguments;
+            if (3 == latlngzooms.length) {
+                var zooms = Number(latlngzooms[2]);
+                zoomToPoint(Number(latlngzooms[0]), Number(latlngzooms[1]));
+                zoomToLevel(zooms)
             } else _krpanointerface.trace(3, "googlemaps plugin - setcenter() syntax error!")
         }
     }
     // 放大
     function zoomIn() {
         if (_google_map) {
-            var a = arguments,
-                d = null;
-            if (2 <= a.length) {
-                var b = a[0],
-                    e = a[1];
-                null != b && void 0 != b && "" != b && "null" != b && null != e && void 0 != e && "" != e && "null" != e && (d = new google.maps.LatLng(Number(b), Number(e)))
+            var zooms = arguments, googleLatLng = null;
+            if (2 <= zooms.length) {
+                var lat = zooms[0],
+                    lng = zooms[1];
+                null != lat &&
+                void 0 != lat &&
+                "" != lat &&
+                "null" != lat &&
+                null != lng &&
+                void 0 != lng &&
+                "" != lng &&
+                "null" != lng &&
+                (googleLatLng = new google.maps.LatLng(Number(lat), Number(lng)))
             }
-            2 < a.length && getBoolean(a[2]);
-            3 < a.length && getBoolean(a[3]);
-            a = map_zoom;
-            32 > a && (a += 1);
-            map_zoom = a;
-            d && (map_lat = d.lat(), map_lng = d.lng());
-            d = map_lat;
-            b = map_lng;
-            zoomToLevel(a);
-            zoomToPoint(d, b)
+            2 < zooms.length && getBoolean(zooms[2]);
+            3 < zooms.length && getBoolean(zooms[3]);
+            zooms = map_zoom;
+            32 > zooms && (zooms += 1);
+            map_zoom = zooms;
+            googleLatLng && (map_lat = googleLatLng.lat(), map_lng = googleLatLng.lng());
+            zoomToLevel(zooms);
+            zoomToPoint(map_lat, map_lng)
         }
     }
     // 缩小
     function zoomOut() {
         if (_google_map) {
-            var a = arguments,
-                d = null;
-            if (2 <= a.length) {
-                var b = a[0],
-                    e = a[1];
-                null != b && void 0 != b && "" != b && "null" != b && null != e && void 0 != e && "" != e && "null" != e && (d = new google.maps.LatLng(Number(b), Number(e)))
+            var latlngs = arguments, googleLatLng = null;
+            if (2 <= latlngs.length) {
+                var lat = latlngs[0],
+                    lng = latlngs[1];
+                null != lat &&
+                void 0 != lat &&
+                "" != lat &&
+                "null" != lat &&
+                null != lng &&
+                void 0 != lng &&
+                "" != lng &&
+                "null" != lng &&
+                (googleLatLng = new google.maps.LatLng(Number(lat), Number(lng)))
             }
-            2 < a.length && getBoolean(a[2]);
-            a = map_zoom;
-            --a;
-            .5 > a && (a = .5);
-            map_zoom = a;
-            d && (map_lat = d.lat(), map_lng = d.lng());
-            d = map_lat;
-            b = map_lng;
-            zoomToLevel(a);
-            zoomToPoint(d, b)
+            2 < latlngs.length && getBoolean(latlngs[2]);
+            latlngs = map_zoom;
+            --latlngs;
+            .5 > latlngs && (latlngs = .5);
+            map_zoom = latlngs;
+            googleLatLng && (map_lat = googleLatLng.lat(), map_lng = googleLatLng.lng());
+            zoomToLevel(latlngs);
+            zoomToPoint(map_lat, map_lng)
         }
     }
     // 缩放到点范围
     function zoomTospotsextent() {
         if (_google_map)
-            if (0 == hasMethod("zoomtospotsextent")) w = D = false, L = true;
+            if (0 == hasMethod("zoomtospotsextent")) _unknowbool1 = _can_zoom_map = false, _unknowbool3 = true;
             else {
-                w = false;
+                _unknowbool1 = false;
                 var a, d, b, g = _pluginobject.spot.getArray();
                 d = g.length;
                 if (!(1 > d))
                     if (1 ==
                         d) b = g[0].internalObject, setCenter(b.lat, b.lng, map_zoom);
                     else {
-                        var f = new google.maps.LatLngBounds;
-                        for (a = 0; a < d; a++) b = g[a].internalObject, f.extend(new google.maps.LatLng(b.lat, b.lng));
-                        _google_map.fitBounds(f)
+                        var latlngBounds = new google.maps.LatLngBounds;
+                        for (a = 0; a < d; a++) b = g[a].internalObject, latlngBounds.extend(new google.maps.LatLng(b.lat, b.lng));
+                        _google_map.fitBounds(latlngBounds)
                     }
             }
-        else w = D = false, L = true
+        else _unknowbool1 = _can_zoom_map = false, _unknowbool3 = true
     }
     // 平移到点
     function panTospot() {
@@ -426,37 +436,40 @@ var krpanoplugin = function () {
         if (ha) {
             map_div_size = [0, 0];
             if (_google_map && _map_div) {
-                var d = _map_div.clientHeight;
                 map_div_size[0] = _map_div.clientWidth;
-                map_div_size[1] = d
+                map_div_size[1] = _map_div.clientHeight;
             }
-            d = false;
-            if (map_div_size[0] != S[0] || map_div_size[1] != S[1])
-                S[0] = map_div_size[0], S[1] = map_div_size[1], d = true;
-            (d || w || D || L) &&
+            var sizechanged = false;
+            if (map_div_size[0] != _map_div_size_old[0] ||
+                map_div_size[1] != _map_div_size_old[1])
+                _map_div_size_old[0] = map_div_size[0],
+                _map_div_size_old[1] = map_div_size[1],
+                sizechanged = true;
+            (sizechanged || _unknowbool1 || _can_zoom_map || _unknowbool3) &&
             hasMethod(null) &&
             (google.maps.event.trigger(_google_map, "resize"),
-            L &&
-            (L = false, zoomTospotsextent()),
-            D &&
-            (D = false, _google_map.setZoom(map_zoom)),
-            w &&
-            (map_lat = J,
-             map_lng = K,
-             w = false,
+            _unknowbool3 &&
+            (_unknowbool3 = false, zoomTospotsextent()),
+            _can_zoom_map &&
+            (_can_zoom_map = false, _google_map.setZoom(map_zoom)),
+            _unknowbool1 &&
+            (map_lat = _current_lat,
+             map_lng = _current_lng,
+             _unknowbool1 = false,
              _google_map.setCenter(new google.maps.LatLng(map_lat, map_lng))));
-            if (T) {
-                T = false;
+
+            if (_unknowbool2) {
+                _unknowbool2 = false;
                 map_div_size = _pluginobject.spot.getArray();
-                var b = null, g;
-                g = map_div_size.length;
-                for (d = 0; d < g; d++)
-                    (b = map_div_size[d]) &&
+                var b = null, slength;
+                slength = map_div_size.length;
+                for (var ii = 0; ii < slength; ii++)
+                    (b = map_div_size[ii]) &&
                     (b = b.internalObject) &&
                     b.needupdate &&
                     b.processupdate()
             }
-            viewRadarOBJ && viewRadarOBJ.updatehandler();
+            _viewRadarOBJ && _viewRadarOBJ.updatehandler();
             C && 0 == ((_krpanointerface.display.frame | 0) & 1) &&
             (map_div_size = C.onhover, null != map_div_size && "" != map_div_size && _krpanointerface.call(map_div_size, C))
         }
@@ -584,9 +597,9 @@ var krpanoplugin = function () {
                 b = null;
             (d = _pluginobject.spot.getItem(a)) ?
              (b = d.internalObject,
-             viewRadarOBJ &&
-             viewRadarOBJ.bmspot == b &&
-             (viewRadarOBJ.bmspot = null),
+             _viewRadarOBJ &&
+             _viewRadarOBJ.bmspot == b &&
+             (_viewRadarOBJ.bmspot = null),
              b &&
              b.destroy(),
              d.internalObject = null,
@@ -607,7 +620,7 @@ var krpanoplugin = function () {
             b.destroy(),
             d.internalObject = null;
         _pluginobject.spot.count = 0;
-        viewRadarOBJ && (viewRadarOBJ.bmspot = null)
+        _viewRadarOBJ && (_viewRadarOBJ.bmspot = null)
     }
     // 更新点
     function updateSpots() {
@@ -622,7 +635,7 @@ var krpanoplugin = function () {
             d.processupdate(),
             d.active &&
             (b = d);
-        b && viewRadarOBJ && (viewRadarOBJ.bmspot = b, viewRadarOBJ.update())
+        b && _viewRadarOBJ && (_viewRadarOBJ.bmspot = b, _viewRadarOBJ.update())
     }
     // 激活点
     function activateSpot() {
@@ -648,20 +661,20 @@ var krpanoplugin = function () {
             h && (0 == map_mapsapi &&
                   h.xmlobject == C &&
                   (C.event_out(null),
-                  C = null), viewRadarOBJ &&
-                (viewRadarOBJ.bmspot = h, viewRadarOBJ.update()))
+                  C = null), _viewRadarOBJ &&
+                (_viewRadarOBJ.bmspot = h, _viewRadarOBJ.update()))
         } else _krpanointerface.trace(3, "googlemaps plugin - activatespot() syntax error!")
     }
     // 视野范围类视野雷达
     function viewRadarClass() {
         // 
-        function a(a, c) {
-            function d(clatlng, maptypeitem) {
+        function radarUnknowClass(latlngs, google_map) {
+            function radarItemClass(clatlng, maptypeitem) {
                 this.latlng_ = clatlng;
                 this.setMap(maptypeitem)
             }
-            d.prototype = new google.maps.OverlayView;
-            d.prototype.draw = function () {
+            radarItemClass.prototype = new google.maps.OverlayView;     // 扩展了OverlayView类
+            radarItemClass.prototype.draw = function () {
                 var a = this.getPanes();
                 if (a && a.overlayImage) {
                     var c = this._krpdom,
@@ -694,17 +707,17 @@ var krpanoplugin = function () {
                         d.style.top = a.y + "px"
                 }
             };
-            d.prototype.remove = function () {
+            radarItemClass.prototype.remove = function () {
                 this.div_ && (this.div_.parentNode.removeChild(this.div_), this.div_ = null)
             };
-            d.prototype.getPosition = function () {
+            radarItemClass.prototype.getPosition = function () {
                 return this.latlng_
             };
-            d.prototype.setPosition = function (a) {
-                this.latlng_ = a;
+            radarItemClass.prototype.setPosition = function (latlngs) {
+                this.latlng_ = latlngs;
                 this.draw()
             };
-            return new d(a, c)
+            return new radarItemClass(latlngs, google_map)
         }
 
         function d(a) {
@@ -827,7 +840,7 @@ var krpanoplugin = function () {
             if (_google_map)
                 if (null == k &&
                     null != _this_viewRadar.bmspot &&
-                    (k = a(new google.maps.LatLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng),
+                    (k = radarUnknowClass(new google.maps.LatLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng),
                      _google_map)),
                     null == _this_viewRadar.bmspot ||
                     0 == _this_viewRadar.visible)
@@ -1153,7 +1166,7 @@ var krpanoplugin = function () {
             void 0 === a && (a = 0);
             _this_Spot.needupdate = true;
             l |= a;
-            T = true
+            _unknowbool2 = true
         };
         _this_Spot.processupdate = function () {
             if (null != m) {
@@ -1205,7 +1218,7 @@ var krpanoplugin = function () {
                     var a = initSpotStyle();
                     initSPOT(_this_Spot.active ? a.activeurl_bitmapdata : a.url_bitmapdata);
                     _this_Spot.needdom = false
-                } else T = _this_Spot.needdom = true
+                } else _unknowbool2 = _this_Spot.needdom = true
         };
         // 销毁
         _this_Spot.destroy = function () {
@@ -1286,13 +1299,13 @@ var krpanoplugin = function () {
         _google_map = null,             // 谷歌地图对象
         ha = false,
         aa = 0,
-        T = false,
-        L = false,
-        w = false,
-        D = false,
-        J = 0,
-        K = 0,
-        viewRadarOBJ = null,
+        _unknowbool2 = false,
+        _unknowbool3 = false,
+        _unknowbool1 = false,
+        _can_zoom_map = false,
+        _current_lat = 0,
+        _current_lng = 0,
+        _viewRadarOBJ = null,
         C = null,
         mapTYPE, mapTypeString, map_lat, map_lng, map_zoom, map_tilt, map_heading, map_controls, map_poi, map_mapsapi;
     this.registerplugin = function (krpanointerface, pluginpath, pluginobject) {
@@ -1402,11 +1415,11 @@ var krpanoplugin = function () {
             _pluginobject.language && (pluginobject = "&language=" + _pluginobject.language);
             var g = "";
             _pluginobject.region && (g = "&region=" + _pluginobject.region);
-            var kss = document.createElement("script");
-            kss.type = "text/javascript";
-            kss.async = true;
-            kss.src = krpanointerface + "/maps/api/js?v=3.23" + pluginpath + pluginobject + g + "&callback=" + _krpano_gmap_cb_var;
-            document.body.appendChild(kss)
+            var scriptobject = document.createElement("script");
+            scriptobject.type = "text/javascript";
+            scriptobject.async = true;
+            scriptobject.src = krpanointerface + "/maps/api/js?v=3.23" + pluginpath + pluginobject + g + "&callback=" + _krpano_gmap_cb_var;
+            document.body.appendChild(scriptobject)
         }
     };
     // 卸载插件
@@ -1419,9 +1432,8 @@ var krpanoplugin = function () {
         _google_map && (_pluginobject.sprite &&
             (_map_div.style.width = _pluginobject.sprite.style.width,
              _map_div.style.height = _pluginobject.sprite.style.height),
-             0 == w &&
-             (w = true, J = map_lat,
-              K = map_lng),
+             0 == _unknowbool1 &&
+             (_unknowbool1 = true, _current_lat = map_lat, _current_lng = map_lng),
              google.maps.event.trigger(_google_map, "resize"));
         return true
     };
@@ -1432,13 +1444,14 @@ var krpanoplugin = function () {
                               _pluginobject.sprite.appendChild(_map_div),
                               _map_div.style.left = "0",
                               _map_div.style.pointerEvents = "auto",
-                              0 == w && (w = true, J = map_lat, K = map_lng),
+                              0 == _unknowbool1 && (_unknowbool1 = true, _current_lat = map_lat, _current_lng = map_lng),
                               google.maps.event.trigger(_google_map, "resize")) :
+
                               (_pluginobject.sprite.style.display = "none",
                               _map_div.style.left = "-10000px", _map_div.style.pointerEvents = "none",
                               _krpanointerface.display.viewerlayer.appendChild(_map_div)), true) : false
     };
-    var S = [0, 0],
+    var _map_div_size_old = [0, 0],
         // 其他点
         otherPoint = {
             src: "data:image/png;base64,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",
