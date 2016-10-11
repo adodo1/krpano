@@ -8,8 +8,8 @@ var krpanoplugin = function () {
         return "boolean" == typeof a ? a : 0 <= "yesontrue1".indexOf(String(a).toLowerCase())
     }
     // 设置RGB颜色
-    function setRGB(a) {
-        return "rgb(" + (a >> 16 & 255) + "," + (a >> 8 & 255) + "," + (a & 255) + ")"
+    function setRGB(color) {
+        return "rgb(" + (color >> 16 & 255) + "," + (color >> 8 & 255) + "," + (color & 255) + ")"
     }
     // 设置视野范围标记SVG
     function setViewRadarSmart(dwidth, dheight) {
@@ -105,32 +105,37 @@ var krpanoplugin = function () {
         if (_pluginobject) {
             var a = Number(_pluginobject.bgcolor),
               c = Number(_pluginobject.bgalpha);
-            _document_div && _document_div.childNodes && _document_div.childNodes[0] && _document_div.childNodes[0].style && (_document_div.childNodes[0].style.backgroundColor = "rgba(" + (a >> 16 & 255) + "," + (a >> 8 & 255) + "," + (a & 255) + "," + c + ")")
+            _document_div &&
+            _document_div.childNodes &&
+            _document_div.childNodes[0] &&
+            _document_div.childNodes[0].style &&
+            (_document_div.childNodes[0].style.backgroundColor = 
+            "rgba(" + (a >> 16 & 255) + "," + (a >> 8 & 255) + "," + (a & 255) + "," + c + ")")
         }
     }
     // 初始化必应地图
     function initBingMap() {
-        var a = window._krpano_bmap_loadedcallbacks_;
-        if (a) {
+        var map_callbacks = window._krpano_bmap_loadedcallbacks_;
+        if (map_callbacks) {
             window._krpano_bmap_loadedcallbacks_ = null;
             delete window._krpano_bmap_loadedcallbacks_;
-            var c = a.length,
-              b;
-            if (0 < c && 99 > c)
-                for (b = 0; b < c; b++) setTimeout(a[b], 10 + 5 * b)
+            var bingmap_key;
+            if (0 < map_callbacks.length && 99 > map_callbacks.length)
+                for (bingmap_key = 0; bingmap_key < map_callbacks.length; bingmap_key++)
+                    setTimeout(map_callbacks[bingmap_key], 10 + 5 * bingmap_key)
         }
         if (_krpanointerface && _pluginobject) {
             _pluginobject._use_css_scale = false;
             _pluginobject.poschanged = true;
             _pluginobject.updatepos();
-            a = Math.floor(_pluginobject.pixelwidth * _krpanointerface.stagescale);
-            c = Math.floor(_pluginobject.pixelheight * _krpanointerface.stagescale);
-            b = _pluginobject.key;
+            var mapwidth = Math.floor(_pluginobject.pixelwidth * _krpanointerface.stagescale);
+            var mapheight = Math.floor(_pluginobject.pixelheight * _krpanointerface.stagescale);
+            bingmap_key = _pluginobject.key;
             var f = document.domain;
             0 == f.indexOf("www.") && (f = f.slice(4));
-            if (null != b && 0 < b.indexOf("|")) {
-                var u = b.split("|");
-                b = null;
+            if (null != bingmap_key && 0 < bingmap_key.indexOf("|")) {
+                var u = bingmap_key.split("|");
+                bingmap_key = null;
                 var e = u.length;
                 if (2 <= e) {
                     if (null == f || "" == f) f = "local";
@@ -138,20 +143,24 @@ var krpanoplugin = function () {
                         var g = String(u[q]).toLowerCase(),
                           l = u[q + 1];
                         if (g == f) {
-                            b = l;
+                            bingmap_key = l;
                             break
                         }
                     }
                 }
             }
-            "TEST" == b ? (aa = true, b = null) : "" != b &&
-              null != b || _krpanointerface.trace(2, "bingmaps plugin - no API key!");
-            a = {
-                credentials: b,
-                mapTypeId: roadaerial(D),
-                labelOverlay: showMAPS(D),
+            "TEST" == bingmap_key ?
+                (_redarwmap_bool = true,
+                bingmap_key = null) :
+                "" != bingmap_key && null != bingmap_key ||
+                _krpanointerface.trace(2, "bingmaps plugin - no API key!");
+
+            var parameters = {
+                credentials: bingmap_key,
+                mapTypeId: roadaerial(_mapTypeString),
+                labelOverlay: showMAPS(_mapTypeString),
                 center: new Microsoft.Maps.Location(_pluginobject.lat, _pluginobject.lng),
-                zoom: map_zoom,
+                zoom: _map_zoom,
                 enableSearchLogo: false,
                 enableClickableLogo: false,
                 showMapTypeSelector: false,
@@ -159,17 +168,26 @@ var krpanoplugin = function () {
                 showScalebar: false,
                 disableKeyboardInput: true,
                 fixedMapPosition: true,
-                width: a,
-                height: c
+                width: mapwidth,
+                height: mapheight
             };
-            _document_div_maps = new Microsoft.Maps.Map(_document_div, a);
+            _document_div_maps = new Microsoft.Maps.Map(_document_div, parameters);
             setBGColor();
-            _document_div && _document_div.childNodes && _document_div.childNodes[0] && _document_div.childNodes[0].childNodes && _document_div.childNodes[0].childNodes[0] && "BUTTON" == _document_div.childNodes[0].childNodes[0].nodeName && _document_div.childNodes[0].removeChild(_document_div.childNodes[0].childNodes[0]);
+
+            _document_div &&
+            _document_div.childNodes &&
+            _document_div.childNodes[0] &&
+            _document_div.childNodes[0].childNodes &&
+            _document_div.childNodes[0].childNodes[0] &&
+            "BUTTON" == _document_div.childNodes[0].childNodes[0].nodeName &&
+            _document_div.childNodes[0].removeChild(_document_div.childNodes[0].childNodes[0]);
+
             Microsoft.Maps.Events.addHandler(_document_div_maps, "mousewheel", mousewheelEvents);
             _document_div.addEventListener("gesturestart", ba, false);      // 当有两根或多根手指放到屏幕上的时候触发
             _document_div.addEventListener("gesturechange", ba, false);     // 当有两根或多根手指在屏幕上，并且有手指移动的时候触发
             _document_div.addEventListener("gestureend", ba, false);        // 当倒数第二根手指提起的时候触发，结束gesture
             null == _timers && (_timers = setInterval(redrawMAP, 1E3 / 60));    // 周期执行刷新地图 单位毫秒 每秒60帧
+            
             _viewRadarOBJECT = new viewRadarClass;
             updateSpots();
             scaleSpotArray();
@@ -186,7 +204,13 @@ var krpanoplugin = function () {
     }
     // 鼠标滚动
     function mousewheelEvents(a) {
-        a && (_krpanointerface && _krpanointerface.control && true === _krpanointerface.control.disablewheel ? a.handled = true : a.originalEvent && (a.originalEvent.preventDefault(), a.originalEvent.stopPropagation()))
+        a && (_krpanointerface &&
+        _krpanointerface.control &&
+        true === _krpanointerface.control.disablewheel ?
+            a.handled = true :
+            a.originalEvent &&
+            (a.originalEvent.preventDefault(),
+             a.originalEvent.stopPropagation()))
     }
     // 切换地图
     function changeMaps() {
@@ -194,10 +218,16 @@ var krpanoplugin = function () {
             var a = _document_div_maps.getOptions(),
               c = _document_div_maps.getImageryId(),
               b = "satellite";
-            "Road" == c ? b = "normal" : "Aerial" == c && (b = 1 == a.labelOverlay ? "satellite" : "hybrid");
-            if (b != D) {
-                D = b;
-                if (C) C.onMapTypeChanged(D);
+
+            "Road" == c ?
+            b = "normal" :
+            "Aerial" == c &&
+            (b = 1 == a.labelOverlay ?
+            "satellite" : "hybrid");
+
+            if (b != _mapTypeString) {
+                _mapTypeString = b;
+                if (_mapTypeChangeOBJ) _mapTypeChangeOBJ.onMapTypeChanged(_mapTypeString);
                 _krpanointerface.call(_pluginobject.onmaptypechanged, _pluginobject)
             }
         }
@@ -206,38 +236,59 @@ var krpanoplugin = function () {
     function updateEnve() {
         if (_document_div_maps) {
             var a = _document_div_maps.getCenter();
-            if (map_lat != a.latitude || map_lng != a.longitude) map_lat = a.latitude, map_lng = a.longitude, _krpanointerface.call(_pluginobject.onmapmoved, _pluginobject);
+            if (_map_lat != a.latitude || _map_lng != a.longitude)
+                _map_lat = a.latitude,
+                _map_lng = a.longitude,
+                _krpanointerface.call(_pluginobject.onmapmoved, _pluginobject);
+
             a = _document_div_maps.getZoom();
-            map_zoom != a && (_viewRadarOBJECT && (_viewRadarOBJECT.needredraw = true), map_zoom = a, _krpanointerface.call(_pluginobject.onmapzoomed,
-              _pluginobject), _viewRadarOBJECT && _viewRadarOBJECT.updatehandler(), scaleSpotArray())
+            _map_zoom != a &&
+            (_viewRadarOBJECT &&
+            (_viewRadarOBJECT.needredraw = true),
+            _map_zoom = a,
+            _krpanointerface.call(_pluginobject.onmapzoomed, _pluginobject),
+            _viewRadarOBJECT &&
+            _viewRadarOBJECT.updatehandler(),
+            scaleSpotArray())
         }
     }
     // 缩放到点集合范围
     function scaleSpotArray() {
         var a = _pluginobject.spot.getArray(),
-          c = null,
-          b, f;
-        f = a.length;
-        for (b = 0; b < f; b++) a[b] && (c = a[b].internalObject) && c.zoomwithmap && c.scalespot(Math.pow(2, map_zoom) / Math.pow(2, c.zoombaselevel))
+          c = null;
+        for (var ii = 0; ii < a.length; ii++)
+            a[ii] &&
+            (c = a[ii].internalObject)
+            && c.zoomwithmap &&
+            c.scalespot(Math.pow(2, _map_zoom) / Math.pow(2, c.zoombaselevel))
     }
     // 地图重绘
     function redrawMAP(a) {
-        aa && (a = _document_div) && (a = a.firstChild) && (a = a.lastChild) && (a = a.lastChild) && 0 < ("" + a.textContent).indexOf("invalid") && (a.style.display = "none", aa = false);
+        _redarwmap_bool &&
+        (a = _document_div) &&
+        (a = a.firstChild) &&
+        (a = a.lastChild) &&
+        (a = a.lastChild) &&
+        0 < ("" + a.textContent).indexOf("invalid") &&
+        (a.style.display = "none", _redarwmap_bool = false);
+
         if (_has_init) {
-            _redraw_mapcontrol && updateControls();
+            _redraw_mapcontrol &&
+            updateControls();
+
             if (_spot_need_redraw) {
                 _spot_need_redraw = false;
                 a = _pluginobject.spot.getArray();
-                var c = null, b, f;
-                f = a.length;
-                for (b = 0; b < f; b++)
-                    c = a[b].internalObject,
+                var c = null;
+                for (var ii = 0; ii < a.length; ii++)
+                    c = a[ii].internalObject,
                     c.needdom &&
                     c.try_dom_access(),
                     c.needupdate &&
                     c.processupdate()
             }
-            _viewRadarOBJECT && _viewRadarOBJECT.updatehandler();
+            _viewRadarOBJECT &&
+            _viewRadarOBJECT.updatehandler();
             _pushpinOBJ &&
             0 == ((_krpanointerface.display.frame | 0) & 1) &&
             (a = _pushpinOBJ.onhover,
@@ -253,6 +304,7 @@ var krpanoplugin = function () {
         _maptypecontrol = _pluginobject.createobject("maptypecontrol");
         _pluginobject.createobject("navigationcontrol");
         _pluginobject.createobject("overviewmapcontrol");
+
         _maptypecontrol.registerattribute("visible", false, function (a) {
             _maptypecontrol._visible = activeSpotEnabled(a);
             _redraw_mapcontrol = true
@@ -291,7 +343,13 @@ var krpanoplugin = function () {
     function updateControls() {
         if (_has_init) {
             var a = _document_div;
-            _maptypecontrol._visible ? (null == C && (C = new mapTypeChangeClass(_maptypecontrol), a.appendChild(C.dom)), C.setControlPosition(_maptypecontrol._align, Number(_maptypecontrol._x), Number(_maptypecontrol._y))) : null != C && (a.removeChild(C.dom), C = null);
+            _maptypecontrol._visible ?
+            (null == _mapTypeChangeOBJ &&
+            (_mapTypeChangeOBJ = new mapTypeChangeClass(_maptypecontrol),
+             a.appendChild(_mapTypeChangeOBJ.dom)),
+             _mapTypeChangeOBJ.setControlPosition(_maptypecontrol._align, Number(_maptypecontrol._x), Number(_maptypecontrol._y))) :
+             null != _mapTypeChangeOBJ &&
+             (a.removeChild(_mapTypeChangeOBJ.dom), _mapTypeChangeOBJ = null);
             _redraw_mapcontrol = false
         }
     }
@@ -300,19 +358,19 @@ var krpanoplugin = function () {
         _pluginobject.createarray("spotstyle");
         _pluginobject.spotstyle.createItem("default");
         var a = _pluginobject.spotstyle.getArray(),
-          c = null,
-          b, f;
-        f = a.length;
-        for (b = 0; b < f; b++) c = a[b], c.internalObject = new mapSpotClass(c)
+          c = null;
+        for (var ii = 0; ii < a.length; ii++)
+            c = a[ii],
+            c.internalObject = new mapSpotClass(c)
     }
     // 创建点集合
     function createSpots() {
         _pluginobject.createarray("spot");
         var a = _pluginobject.spot.getArray(),
-          c = null,
-          b, f;
-        f = a.length;
-        for (b = 0; b < f; b++) c = a[b], c.internalObject = new spotClass(c)
+          c = null;
+        for (var ii = 0; ii < a.length; ii++)
+            c = a[ii],
+            c.internalObject = new spotClass(c)
     }
     // 添加点样式
     function addSpotstyle() {
@@ -410,29 +468,48 @@ var krpanoplugin = function () {
             var a = String(a[0]).toLowerCase(),
               c = null,
               b = null;
-            (c = _pluginobject.spot.getItem(a)) ? (b = c.internalObject, _viewRadarOBJECT && _viewRadarOBJECT.bmspot == b && (_viewRadarOBJECT.bmspot = null), b && b.destroy(), c.internalObject = null, _pluginobject.spot.removeItem(a)) : _krpanointerface.trace(3, "bingmaps plugin - removespot() - spot[" + a + "] not found!")
+            (c = _pluginobject.spot.getItem(a)) ?
+             (b = c.internalObject, _viewRadarOBJECT &&
+             _viewRadarOBJECT.bmspot == b &&
+             (_viewRadarOBJECT.bmspot = null),
+             b && b.destroy(),
+             c.internalObject = null,
+             _pluginobject.spot.removeItem(a)) :
+             _krpanointerface.trace(3, "bingmaps plugin - removespot() - spot[" + a + "] not found!")
+
         } else _krpanointerface.trace(3, "bingmaps plugin - removespot() syntax error!")
     }
     // 移除所有点
     function removeAllspots() {
         var a = _pluginobject.spot.getArray(),
           c = null,
-          b = null,
-          f, h;
-        h = a.length;
-        for (f = 0; f < h; f++) c = a[f], (b = c.internalObject) && b.destroy(), c.internalObject = null;
+          b = null;
+        for (var ii = 0; ii < a.length; ii++)
+            c = a[ii],
+            (b = c.internalObject) &&
+            b.destroy(),
+            c.internalObject = null;
+
         _pluginobject.spot.count = 0;
-        _viewRadarOBJECT && (_viewRadarOBJECT.bmspot = null)
+        _viewRadarOBJECT &&
+        (_viewRadarOBJECT.bmspot = null)
     }
     // 更新点
     function updateSpots() {
         var a = _pluginobject.spot.getArray(),
           c = null,
-          b = c = null,
-          f, h;
-        h = a.length;
-        for (f = 0; f < h; f++) c = a[f], c = c.internalObject, c.processupdate(), c.active && (b = c);
-        b && _viewRadarOBJECT && (_viewRadarOBJECT.bmspot = b, _viewRadarOBJECT.update())
+          b = c = null;
+        for (var ii = 0; ii < a.length; ii++)
+            c = a[ii],
+            c = c.internalObject,
+            c.processupdate(),
+            c.active &&
+            (b = c);
+
+        b &&
+        _viewRadarOBJECT &&
+        (_viewRadarOBJECT.bmspot = b,
+         _viewRadarOBJECT.update())
     }
     // 激活点
     function activateSpot() {
@@ -442,14 +519,13 @@ var krpanoplugin = function () {
               c = _pluginobject.spot.getArray(),
               b = null,
               f = null,
-              u = null,
-              e, k;
-            k = c.length;
-            for (e = 0; e < k; e++)
-                b = c[e], f = b.internalObject,
+              u = null;
+            for (var ii = 0; ii < c.length; ii++)
+                b = c[ii], f = b.internalObject,
                 String(b.name).toLowerCase() == a ?
                  (0 == f.active && (f.active = true, f.update(1)), u = f) :
                  0 != f.active && (f.active = false, f.update(1));
+
             u &&
             (0 == _bool_activeSpotEnabled &&
              u.xmlobject == _pushpinOBJ &&
@@ -458,35 +534,55 @@ var krpanoplugin = function () {
              _viewRadarOBJECT &&
              (_viewRadarOBJECT.bmspot = u,
              _viewRadarOBJECT.update()))
+
         } else _krpanointerface.trace(3, "bingmaps plugin - activatespot() syntax error!")
     }
     // 地图并缩放到位置和等级
     function updateMaps() {
         if (_document_div_maps) {
-            var a = new Microsoft.Maps.Location(map_lat, map_lng);
+            var a = new Microsoft.Maps.Location(_map_lat, _map_lng);
             _document_div_maps.setView({
                 animate: false,
                 center: a,
-                zoom: map_zoom
+                zoom: _map_zoom
             })
         }
     }
     // 显示路网或空中
     function roadaerial(a) {
         a = a.toLowerCase();
-        return "satellite" != a && "normal" == a ? Microsoft.Maps.MapTypeId.road : Microsoft.Maps.MapTypeId.aerial
+        return "satellite" != a &&
+               "normal" == a ?
+               Microsoft.Maps.MapTypeId.road :
+               Microsoft.Maps.MapTypeId.aerial
     }
     // 显示或隐藏地图
-    function showMAPS(a) {
-        a = a.toLowerCase();
-        return "satellite" == a || "normal" != a && "hybrid" != a ? Microsoft.Maps.LabelOverlay.hidden : Microsoft.Maps.LabelOverlay.visible
+    function showMAPS(name) {
+        name = name.toLowerCase();
+        return "satellite" == name ||
+               "normal" != name &&
+               "hybrid" != name ?
+               Microsoft.Maps.LabelOverlay.hidden :
+               Microsoft.Maps.LabelOverlay.visible
     }
     // 设置地图种类SETMAPTYPE
     function setMaptype() {
         var a = arguments;
-        1 == a.length ? (a = String(a[0]).toLowerCase(), "satellite" != a && "normal" != a && "hybrid" != a && (a = "satellite"), _document_div_maps ? (_document_div_maps.setMapType(roadaerial(a)), _document_div_maps.setOptions({
-            labelOverlay: showMAPS(a)
-        }), setBGColor(), changeMaps()) : D = a) : _krpanointerface.trace(3, "bingmaps plugin - setmaptype() syntax error!")
+        1 == a.length ?
+            (a = String(a[0]).toLowerCase(),
+            "satellite" != a &&
+            "normal" != a &&
+            "hybrid" != a &&
+            (a = "satellite"),
+            _document_div_maps ?
+            (_document_div_maps.setMapType(roadaerial(a)),
+            _document_div_maps.setOptions({
+                labelOverlay: showMAPS(a)
+            }),
+            setBGColor(),
+            changeMaps()) :
+            _mapTypeString = a) :
+            _krpanointerface.trace(3, "bingmaps plugin - setmaptype() syntax error!")
     }
     // 设置地图等级SETZOOM
     function setZoom() {
@@ -495,13 +591,14 @@ var krpanoplugin = function () {
             if (1 <= a.length) {
                 var c = Number(a[0]),
                   b = false;
-                1 < a.length && (b = activeSpotEnabled(a[1]));
-                map_zoom = c;
-                a = new Microsoft.Maps.Location(map_lat, map_lng);
+                1 < a.length &&
+                (b = activeSpotEnabled(a[1]));
+                _map_zoom = c;
+                a = new Microsoft.Maps.Location(_map_lat, _map_lng);
                 _document_div_maps.setView({
                     animate: b,
                     center: a,
-                    zoom: map_zoom
+                    zoom: _map_zoom
                 })
             } else _krpanointerface.trace(3, "bingmaps plugin - setzoom() syntax error!")
         }
@@ -509,8 +606,7 @@ var krpanoplugin = function () {
     // 设置地图中心SETCENTER
     function setCenter() {
         if (_document_div_maps) {
-            var a =
-              arguments;
+            var a = arguments;
             if (3 == a.length) {
                 var c = Number(a[2]),
                   a = new Microsoft.Maps.Location(Number(a[0]), Number(a[1]));
@@ -528,21 +624,29 @@ var krpanoplugin = function () {
             var a = arguments,
               c = null;
             if (2 <= a.length) {
-                var b = a[0],
-                  f = a[1];
-                null != b && void 0 != b && "" != b && "null" != b && null != f && void 0 != f && "" != f && "null" != f && (c = new Microsoft.Maps.Location(Number(b), Number(f)))
+                var lat = a[0],
+                    lng = a[1];
+                null != lat &&
+                void 0 != lat &&
+                "" != lat &&
+                "null" != lat &&
+                null != lng &&
+                void 0 != lng &&
+                "" != lng &&
+                "null" != lng &&
+                (c = new Microsoft.Maps.Location(Number(lat), Number(lng)))
             }
             2 < a.length && activeSpotEnabled(a[2]);
             3 < a.length && activeSpotEnabled(a[3]);
-            a = map_zoom;
+            a = _map_zoom;
             32 > a && (a += 1);
-            map_zoom = a;
-            c && (map_lat = c.latitude, map_lng = c.longitude);
-            c = new Microsoft.Maps.Location(map_lat, map_lng);
+            _map_zoom = a;
+            c && (_map_lat = c.latitude, _map_lng = c.longitude);
+            c = new Microsoft.Maps.Location(_map_lat, _map_lng);
             _document_div_maps.setView({
                 animate: true,
                 center: c,
-                zoom: map_zoom
+                zoom: _map_zoom
             })
         }
     }
@@ -552,21 +656,29 @@ var krpanoplugin = function () {
             var a = arguments,
               c = null;
             if (2 <= a.length) {
-                var b = a[0],
-                  f = a[1];
-                null != b && void 0 != b && "" != b && "null" != b && null != f && void 0 != f && "" != f && "null" != f && (c = new Microsoft.Maps.Location(Number(b), Number(f)))
+                var lat = a[0],
+                    lng = a[1];
+                null != lat &&
+                void 0 != lat &&
+                "" != lat &&
+                "null" != lat &&
+                null != lng &&
+                void 0 != lng &&
+                "" != lng &&
+                "null" != lng &&
+                (c = new Microsoft.Maps.Location(Number(lat), Number(lng)))
             }
             2 < a.length && activeSpotEnabled(a[2]);
-            a = map_zoom;
+            a = _map_zoom;
             --a;
             .5 > a && (a = .5);
-            map_zoom = a;
-            c && (map_lat = c.latitude, map_lng = c.longitude);
-            c = new Microsoft.Maps.Location(map_lat, map_lng);
+            _map_zoom = a;
+            c && (_map_lat = c.latitude, _map_lng = c.longitude);
+            c = new Microsoft.Maps.Location(_map_lat, _map_lng);
             _document_div_maps.setView({
                 animate: true,
                 center: c,
-                zoom: map_zoom
+                zoom: _map_zoom
             })
         }
     }
@@ -576,16 +688,26 @@ var krpanoplugin = function () {
             var lng1, lat1, lat2, lng2, h, e, q, g = _pluginobject.spot.getArray();
             e = g.length;
             if (!(1 > e))
-                if (1 == e) q = g[0].internalObject, setCenter(q.lat, q.lng, map_zoom);
+                if (1 == e) q = g[0].internalObject, setCenter(q.lat, q.lng, _map_zoom);
                 else {
                     q = g[0].internalObject;
                     lat2 = lat1 = q.lat;
                     lng1 = lng2 = q.lng;
-                    for (h = 1; h < e; h++) q = g[h].internalObject, q.lat < lat2 && (lat2 = q.lat), q.lat > lat1 && (lat1 = q.lat), q.lng < lng1 && (lng1 = q.lng), q.lng > lng2 && (lng2 = q.lng);
-                    lat2 = new Microsoft.Maps.LocationRect.fromCorners(new Microsoft.Maps.Location(lat1, lng1), new Microsoft.Maps.Location(lat2, lng2));
+                    for (h = 1; h < e; h++)
+                        q = g[h].internalObject,
+                        q.lat < lat2 &&
+                        (lat2 = q.lat),
+                        q.lat > lat1 &&
+                        (lat1 = q.lat),
+                        q.lng < lng1 &&
+                        (lng1 = q.lng),
+                        q.lng > lng2 &&
+                        (lng2 = q.lng);
+
+                    var locationRect = new Microsoft.Maps.LocationRect.fromCorners(new Microsoft.Maps.Location(lat1, lng1), new Microsoft.Maps.Location(lat2, lng2));
                     _document_div_maps.setView({
                         animate: false,
-                        bounds: lat2
+                        bounds: locationRect
                     });
                     updateEnve()
                 }
@@ -597,12 +719,18 @@ var krpanoplugin = function () {
             var a = arguments;
             if (1 == a.length) {
                 var c = String(a[0]),
-                  a = _pluginpath + ".spot[" + c + "]";
-                _krpanointerface.get(a) ? (c = Number(_krpanointerface.get(a + ".lat")), a = Number(_krpanointerface.get(a +
-                  ".lng")), isNaN(c) || isNaN(a) || (a = new Microsoft.Maps.Location(c, a), _document_div_maps.setView({
-                      animate: true,
-                      center: a
-                  }))) : _krpanointerface.trace(3, "bingmaps plugin - pantospot() - spot[" + c + "] not found!")
+                    a = _pluginpath + ".spot[" + c + "]";
+                _krpanointerface.get(a) ?
+                    (c = Number(_krpanointerface.get(a + ".lat")),
+                     a = Number(_krpanointerface.get(a + ".lng")),
+                     isNaN(c) ||
+                     isNaN(a) ||
+                     (a = new Microsoft.Maps.Location(c, a),
+                      _document_div_maps.setView({
+                        animate: true,
+                        center: a
+                  }))) :
+                  _krpanointerface.trace(3, "bingmaps plugin - pantospot() - spot[" + c + "] not found!")
             } else _krpanointerface.trace(3, "bingmaps plugin - pantospot() syntax error!")
         }
     }
@@ -610,10 +738,13 @@ var krpanoplugin = function () {
     function panTo() {
         if (_document_div_maps) {
             var positions = arguments;
-            2 == positions.length ? (positions = new Microsoft.Maps.Location(Number(positions[0]), Number(positions[1])), _document_div_maps.setView({
-                animate: true,
-                center: positions
-            })) : _krpanointerface.trace(3, "bingmaps plugin - panto() syntax error!")
+            2 == positions.length ?
+                (positions = new Microsoft.Maps.Location(Number(positions[0]), Number(positions[1])),
+                _document_div_maps.setView({
+                    animate: true,
+                    center: positions
+                })) :
+                _krpanointerface.trace(3, "bingmaps plugin - panto() syntax error!")
         }
     }
     // 取消飞行到
@@ -624,9 +755,15 @@ var krpanoplugin = function () {
             var a = arguments;
             if (1 <= a.length) {
                 var c = _pluginpath + ".spot[" + String(a[0]) + "].",
-                  b = Number(_krpanointerface.get(c + "lat")),
-                  f = Number(_krpanointerface.get(c + "lng"));
-                isNaN(b) || isNaN(f) || (c = _document_div_maps.getZoom(), 2 <= a.length && (c = Number(a[1])), a = new Microsoft.Maps.Location(b, f), _document_div_maps.setView({
+                    lat = Number(_krpanointerface.get(c + "lat")),
+                    lng = Number(_krpanointerface.get(c + "lng"));
+                isNaN(lat) ||
+                isNaN(lng) ||
+                (c = _document_div_maps.getZoom(),
+                 2 <= a.length &&
+                 (c = Number(a[1])),
+                 a = new Microsoft.Maps.Location(lat, lng),
+                 _document_div_maps.setView({
                     animate: true,
                     center: a,
                     zoom: c
@@ -638,30 +775,40 @@ var krpanoplugin = function () {
     function flyTo() {
         if (_document_div_maps) {
             var a = arguments,
-              c = true;
+                c = true;
             if (2 <= a.length) {
-                var b = Number(a[0]),
-                  f = Number(a[1]);
-                if (2 == a.length) a = new Microsoft.Maps.Location(b, f), _document_div_maps.setView({
-                    animate: true,
-                    center: a
-                }), c = false;
+                var lat = Number(a[0]),
+                    lng = Number(a[1]);
+                if (2 == a.length)
+                    a = new Microsoft.Maps.Location(lat, lng),
+                    _document_div_maps.setView({
+                        animate: true,
+                        center: a
+                    }), c = false;
                 else {
                     var d = Number(a[2]);
-                    3 == a.length ? (a = new Microsoft.Maps.Location(b,
-                      f), _document_div_maps.setView({
-                          animate: true,
-                          center: a,
-                          zoom: d
-                      }), c = false) : 6 <= a.length && (6 == a.length ? (a = new Microsoft.Maps.Location(b, f), _document_div_maps.setView({
-                          animate: true,
-                          center: a,
-                          zoom: d
-                      }), c = false) : 7 == a.length && (a = new Microsoft.Maps.Location(b, f), _document_div_maps.setView({
-                          animate: true,
-                          center: a,
-                          zoom: d
-                      }), c = false))
+                    3 == a.length ?
+                        (a = new Microsoft.Maps.Location(lat, lng),
+                        _document_div_maps.setView({
+                            animate: true,
+                            center: a,
+                            zoom: d
+                        }), c = false) :
+                        6 <= a.length &&
+                        (6 == a.length ?
+                         (a = new Microsoft.Maps.Location(lat, lng),
+                         _document_div_maps.setView({
+                            animate: true,
+                            center: a,
+                            zoom: d
+                        }), c = false) :
+                        7 == a.length &&
+                        (a = new Microsoft.Maps.Location(lat, lng),
+                        _document_div_maps.setView({
+                            animate: true,
+                            center: a,
+                            zoom: d
+                        }), c = false))
                 }
             }
             c && _krpanointerface.trace(3, "bingmaps plugin - flyto() syntax error!")
@@ -673,14 +820,15 @@ var krpanoplugin = function () {
             var a = arguments;
             if (2 == a.length) {
                 var c = Number(a[0]),
-                  a = Number(a[1]),
-                  b = _document_div_maps.tryLocationToPixel(new Microsoft.Maps.Location(map_lat, map_lng));
-                b && (b.x += c, b.y += a, (c = _document_div_maps.tryPixelToLocation(b)) &&
-                  _document_div_maps.setView({
-                      animate: true,
-                      center: c,
-                      zoom: map_zoom
-                  }))
+                    a = Number(a[1]),
+                    b = _document_div_maps.tryLocationToPixel(new Microsoft.Maps.Location(_map_lat, _map_lng));
+                    b && (b.x += c, b.y += a,
+                    (c = _document_div_maps.tryPixelToLocation(b)) &&
+                    _document_div_maps.setView({
+                        animate: true,
+                        center: c,
+                        zoom: _map_zoom
+                    }))
             } else _krpanointerface.trace(3, "bingmaps plugin - panby() syntax error!")
         }
     }
@@ -699,7 +847,7 @@ var krpanoplugin = function () {
             b.innerHTML = "<div style='vertical-align:middle;padding-top:" + p[3] + "px;'><center>" + a + "</center></div>";
             return b
         }
-        // 企图切换按钮的边框
+        // 地图切换按钮的边框
         function mapTypeButtonStyle(a, b, c) {
             a.style.border =
               c ? "1px solid rgba(100,100,100,0.3)" : "1px solid #acafb8";
@@ -753,12 +901,17 @@ var krpanoplugin = function () {
           p = [80 * l, 26 * l, 12 * l, 6 * l],
           t = [0, 0];
         this.onMapTypeChanged = function (a) {
-            "normal" == a ? setMAP_normal() : "satellite" == a ? setMAP_satellite() : "hybrid" == a && setMAP_hybrid()
+            "normal" == a ?
+                setMAP_normal() :
+                "satellite" == a ?
+                    setMAP_satellite() :
+                    "hybrid" == a &&
+            setMAP_hybrid()
         };
+        // 
         this.setControlPosition = function (a, b, c) {
-            var f = Math.floor(_pluginobject.pixelwidth *
-                _krpanointerface.stagescale),
-              e = Math.floor(_pluginobject.pixelheight * _krpanointerface.stagescale),
+            var f = Math.floor(_pluginobject.pixelwidth * _krpanointerface.stagescale),
+                e = Math.floor(_pluginobject.pixelheight * _krpanointerface.stagescale),
               k = g ? p[0] : 3 * p[0],
               u = g ? 3 * p[1] : p[1],
               k = k + t[0],
@@ -792,8 +945,13 @@ var krpanoplugin = function () {
             _krpanointerface_events.touch && (x.addEventListener(_krpanointerface_events_touchstart, setMAP_satellite), x.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
             _krpanointerface_events.mouse && (r.addEventListener("mousedown", setMAP_hybrid), r.addEventListener("mouseup", mouseupEventsMAP));
             _krpanointerface_events.touch && (r.addEventListener(_krpanointerface_events_touchstart, setMAP_hybrid), r.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
-            a = D;
-            "normal" == a ? setMAP_normal() : "satellite" == a ? setMAP_satellite() : "hybrid" == a && setMAP_hybrid()
+            a = _mapTypeString;
+            "normal" == a ?
+            setMAP_normal() :
+            "satellite" == a ?
+            setMAP_satellite() :
+            "hybrid" == a &&
+            setMAP_hybrid()
         })()
     }
     // 视野范围类视野雷达
@@ -804,7 +962,17 @@ var krpanoplugin = function () {
         }
         // 鼠标按下
         function stroke_MouseDownEvent(c) {
-            _this_viewRadar.dragable && (m = true, stroke_MouseMoveEvent(c), _krpanointerface_events.mouse && (window.addEventListener("mousemove", stroke_MouseMoveEvent, true), window.addEventListener("mouseup", stroke_MouseUpEvent, true)), _krpanointerface_events.touch && (window.addEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true), window.addEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true), window.addEventListener(_krpanointerface_events_touchend, stroke_MouseUpEvent, true)), a(c))
+            _this_viewRadar.dragable &&
+            (m = true,
+            stroke_MouseMoveEvent(c),
+            _krpanointerface_events.mouse &&
+            (window.addEventListener("mousemove", stroke_MouseMoveEvent, true),
+             window.addEventListener("mouseup", stroke_MouseUpEvent, true)),
+             _krpanointerface_events.touch &&
+             (window.addEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true),
+             window.addEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true),
+             window.addEventListener(_krpanointerface_events_touchend, stroke_MouseUpEvent, true)),
+             a(c))
         }
         // 鼠标抬起
         function stroke_MouseUpEvent(c) {
@@ -820,10 +988,21 @@ var krpanoplugin = function () {
                 var f = 0, d = 0;
                 var c = { x: 0, y: 0 };
                 var I = radarSVG.svg.parentNode.getBoundingClientRect();
-                _krpanointerface_events && _krpanointerface_events.touch ? (a = a.changedTouches ? a.changedTouches : [a], 0 < a.length && (d = a[0], f = Math.round(d.clientX - I.left), d = Math.round(d.clientY - I.top))) : (f = Math.round(a.clientX - I.left), d = Math.round(a.clientY - I.top));
+                _krpanointerface_events &&
+                _krpanointerface_events.touch ?
+                (a = a.changedTouches ?
+                a.changedTouches :
+                [a], 0 < a.length &&
+                (d = a[0],
+                f = Math.round(d.clientX - I.left),
+                d = Math.round(d.clientY - I.top))) :
+                (f = Math.round(a.clientX - I.left),
+                d = Math.round(a.clientY - I.top));
                 c = 180 * Math.atan2(d - c.y, f - c.x) / Math.PI;
                 c -= _this_viewRadar.bmspot.heading;
-                if (1 == m) r = c - Number(_krpanointerface.view.hlookat), m = false;
+                if (1 == m)
+                    r = c - Number(_krpanointerface.view.hlookat),
+                    m = false;
                 else {
                     for (c -= r; 180 < c;) c -= 360;
                     for (; -180 > c;) c += 360;
@@ -872,7 +1051,9 @@ var krpanoplugin = function () {
           _bmspot_lng = -1E3,
           sa = -1,
           _radarOBJ = _pluginobject.radar;
-        _radarOBJ || (_krpanointerface.set(_pluginpath + ".radar.visible", false), _radarOBJ = _pluginobject.radar);
+        _radarOBJ ||
+        (_krpanointerface.set(_pluginpath + ".radar.visible", false),
+        _radarOBJ = _pluginobject.radar);
         _this_viewRadar.destroy = function () {
             _this_viewRadar.bmspot = null;
             n && _document_div_maps.entities.remove(n);
@@ -900,7 +1081,11 @@ var krpanoplugin = function () {
                     a: {
                         var d_lookat = marker, d_fov;
                         for (d_fov in d_lookat)
-                            if (d_lookat[d_fov] && "object" === typeof d_lookat[d_fov] && d_lookat[d_fov].dom && d_lookat[d_fov].dom.childNodes && d_lookat[d_fov].dom.childNodes[0]) {
+                            if (d_lookat[d_fov] &&
+                                "object" === typeof d_lookat[d_fov] &&
+                                d_lookat[d_fov].dom &&
+                                d_lookat[d_fov].dom.childNodes &&
+                                d_lookat[d_fov].dom.childNodes[0]) {
                                 d_lookat._krpdom = d_lookat[d_fov].dom;
                                 d_lookat._krpimg = d_lookat[d_fov].dom.childNodes[0];
                                 break a
@@ -912,8 +1097,10 @@ var krpanoplugin = function () {
                     marker._krpimg.style.display = "none";
                     marker._krpdom.style.overflow = "visible";
                     marker._krpdom.appendChild(radarSVG.svg);
-                    _krpanointerface_events.mouse && radarSVG.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
-                    _krpanointerface_events.touch && radarSVG.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
+                    _krpanointerface_events.mouse &&
+                    radarSVG.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
+                    _krpanointerface_events.touch &&
+                    radarSVG.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
                 }
                 if (null == _this_viewRadar.bmspot || 0 == _this_viewRadar.visible) radarSVG && radarSVG.hide();
                 else {
@@ -922,7 +1109,8 @@ var krpanoplugin = function () {
                     d_fov = Number(_krpanointerface.view.hfov);         // 视角大小
                     d_lookat += _this_viewRadar.bmspot.heading;
                     d_lookat += _this_viewRadar.headingoffset;
-                    if (_bmspot_lat != _this_viewRadar.bmspot.lat || _bmspot_lng != _this_viewRadar.bmspot.lng) {
+                    if (_bmspot_lat != _this_viewRadar.bmspot.lat ||
+                        _bmspot_lng != _this_viewRadar.bmspot.lng) {
                         _bmspot_lat = _this_viewRadar.bmspot.lat;
                         _bmspot_lng = _this_viewRadar.bmspot.lng;
                         marker.setLocation(new Microsoft.Maps.Location(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
@@ -935,14 +1123,16 @@ var krpanoplugin = function () {
                     }
                     if (_this_viewRadar.needredraw) {
                         marker && marker._krpdom && (marker._krpdom.style.overflow = "visible");
-                        var f = _this_viewRadar.zoomwithmap ? Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
-                          f = 1 * _this_viewRadar.size * f * _krpanointerface_device_pixelratio;
+                        var f = _this_viewRadar.zoomwithmap ?
+                            Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
+                            f = 1 * _this_viewRadar.size * f * _krpanointerface_device_pixelratio;
                         2800 < f && (f = 2800);
                         if (radarSVG) {
                             var d = 16 * (Math.floor(2 * f / 16) + 1) + 16;
                             d != sa && (sa = d, radarSVG.svg.setAttribute("width", d),
                                 radarSVG.svg.setAttribute("height", d),
-                                radarSVG.svg.style.left = -d / 2 + "px", radarSVG.svg.style.top = -d / 2 + "px",
+                                radarSVG.svg.style.left = -d / 2 + "px",
+                                radarSVG.svg.style.top = -d / 2 + "px",
                                 radarSVG.centerx = d / 2,
                                 radarSVG.centery = d / 2);
                             radarSVG.drawpie(d / 2, d / 2, f, d_lookat - .5 * d_fov, d_lookat + .5 * d_fov)
@@ -1026,14 +1216,17 @@ var krpanoplugin = function () {
     // 地图坐标点类
     function mapSpotClass(a) {
         function c(a) {
-            void 0 ===
-              a && (a = false);
+            void 0 === a && (a = false);
             var c = b.xmlobject.name,
               e = _pluginobject.spot.getArray(),
               h = null,
               g, k;
             k = e.length;
-            for (g = 0; g < k; g++) h = e[g].internalObject, h.spotstyle == c && (0 == a || h.active) && h.update(1)
+            for (g = 0; g < k; g++)
+                h = e[g].internalObject,
+                h.spotstyle == c &&
+                (0 == a || h.active) &&
+                h.update(1)
         }
         var b = this;
         b.url = null;
@@ -1053,30 +1246,39 @@ var krpanoplugin = function () {
         b.activeurl_bitmapdata = currentPoint;
         b.xmlobject = a;
         a.registerattribute("url", b.url, function (a) {
-            if ("" == a || "null" ==
-              a) a = null;
-            a != b.url && (b.url = a, null != b.url ? createImgElement(b.url, function (a) {
-                b.url_bitmapdata = a;
-                c()
-            }) : (b.url_bitmapdata = otherPoint, c()))
+            if ("" == a || "null" == a) a = null;
+            a != b.url &&
+            (b.url = a, null != b.url ?
+                createImgElement(b.url, function (a) {
+                    b.url_bitmapdata = a;
+                    c()
+                }) :
+                (b.url_bitmapdata = otherPoint, c()))
         }, function () {
             return b.url
         });
         a.registerattribute("overurl", b.overurl, function (a) {
             if ("" == a || "null" == a) a = null;
-            a != b.overurl && (b.overurl = a, null != b.overurl ? createImgElement(b.overurl, function (a) {
+            a != b.overurl &&
+            (b.overurl = a, null != b.overurl ?
+            createImgElement(b.overurl, function (a) {
                 b.overurl_bitmapdata = a
-            }) : b.overurl_bitmapdata = null)
+            }) :
+            b.overurl_bitmapdata = null)
         }, function () {
             return b.overurl
         });
         a.registerattribute("activeurl", b.activeurl, function (a) {
             if ("" == a || "null" == a) a = null;
-            a != b.activeurl && (b.activeurl = a, null != b.activeurl ? createImgElement(b.activeurl,
+            a != b.activeurl &&
+            (b.activeurl = a,
+            null != b.activeurl ?
+            createImgElement(b.activeurl,
               function (a) {
                   b.activeurl_bitmapdata = a;
                   c(true)
-              }) : (b.activeurl_bitmapdata = currentPoint, c(true)))
+              }) :
+              (b.activeurl_bitmapdata = currentPoint, c(true)))
         }, function () {
             return b.activeurl
         });
@@ -1101,8 +1303,7 @@ var krpanoplugin = function () {
             return b.shadow
         });
         a.registerattribute("scale", b.scale, function (a) {
-            b.scale =
-              Number(a)
+            b.scale = Number(a)
         }, function () {
             return b.scale
         })
@@ -1125,7 +1326,7 @@ var krpanoplugin = function () {
         function dealWithIMG(img, scale) {
             x = img;
             scale || (scale = _this_Spot.zoomwithmap ?
-                  Math.pow(2, map_zoom) / Math.pow(2, _this_Spot.zoombaselevel) :
+                  Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel) :
                   1);
             var d = x,
               e = d ? d.naturalWidth : 12,
@@ -1256,9 +1457,14 @@ var krpanoplugin = function () {
                     var a = false;
                     if (_document_div_maps) {
                         var d = !isNaN(_this_Spot.lat) && !isNaN(_this_Spot.lng),
-                          h = d ? new Microsoft.Maps.Location(_this_Spot.lat, _this_Spot.lng) : new Microsoft.Maps.Location(0, 0);
-                        null == _pushpin && d ? (d = initSpotStyle(), a =
-                            _this_Spot.active ? d.activeurl_bitmapdata : d.url_bitmapdata,
+                          h = d ?
+                            new Microsoft.Maps.Location(_this_Spot.lat, _this_Spot.lng) :
+                            new Microsoft.Maps.Location(0, 0);
+                        null == _pushpin && d ?
+                            (d = initSpotStyle(),
+                            a = _this_Spot.active ?
+                                d.activeurl_bitmapdata :
+                                d.url_bitmapdata,
                             _pushpin = null,
                             w = dealWithIMG(a),
                             _pushpin = new Microsoft.Maps.Pushpin(h, w),
@@ -1266,7 +1472,8 @@ var krpanoplugin = function () {
                             drawPushPinOnMAP(_pushpin),
                             h = d.scale,
                             void 0 !== a.naturalScale && (h *= a.naturalScale),
-                            _this_Spot.zoomwithmap && (h *= Math.pow(2, map_zoom) / Math.pow(2, _this_Spot.zoombaselevel)),
+                            _this_Spot.zoomwithmap &&
+                            (h *= Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel)),
                             h *= _krpanointerface_device_pixelratio, _pushpin._krpimg ?
                                 (_pushpin._krpimg.style[_pluginpath_transform + "Origin"] = "0 0",
                                  _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + h + "," + h + ")") :
@@ -1279,19 +1486,23 @@ var krpanoplugin = function () {
                     }
                     a && (m &= -3)
                 }
-                1 == (m & 1) && _this_Spot.updateimage() && (m &= -2);
-                0 == m && (_this_Spot.needupdate = false)
+                1 == (m & 1) &&
+                _this_Spot.updateimage() &&
+                (m &= -2);
+                0 == m &&
+                (_this_Spot.needupdate = false)
             }
         };
         _this_Spot.updateimage = function () {
-            if ("" == _this_Spot.url || "null" == _this_Spot.url) _this_Spot.url = null;
+            if ("" == _this_Spot.url || "null" == _this_Spot.url)
+                _this_Spot.url = null;
             if (_this_Spot.url)
                 _this_Spot.url != t &&
                 (t = _this_Spot.url,
                 createImgElement(_this_Spot.url, function (a) {
-                v = a;
-                dealWithIMG(a)
-            }));
+                    v = a;
+                    dealWithIMG(a)
+                }));
             else {
                 v = t = null;
                 var a = initSpotStyle();
@@ -1420,10 +1631,15 @@ var krpanoplugin = function () {
       _redraw_mapcontrol = true,
       _viewRadarOBJECT = null,
       _pushpinOBJ = null,
-      aa = false,
-      C = null,
+      _redarwmap_bool = false,
+      _mapTypeChangeOBJ = null,
       _maptypecontrol = null,
-      D, mapTypeString, map_lat, map_lng, map_zoom, _bool_activeSpotEnabled;
+      _mapTypeString,
+      _mapTypesString,
+      _map_lat,
+      _map_lng,
+      _map_zoom,
+      _bool_activeSpotEnabled;
     // 安装插件 registerplugin
     // registerplugin - startup point for the plugin (required)
     // - krpanointerface = krpano interface object
@@ -1443,7 +1659,8 @@ var krpanoplugin = function () {
         if ("1.18" > _krpanointerface.version || 0 == _krpanointerface.hasOwnProperty("haveLicense")) _krpanointerface.trace(3, "Bingmaps Plugin - too old krpano version (min. version 1.18)");
         else {
             _krpanointerface_device = _krpanointerface.device;
-            _krpanointerface_device.androidstock && (_krpanointerface_device_pixelratio = _krpanointerface_device.pixelratio);
+            _krpanointerface_device.androidstock &&
+            (_krpanointerface_device_pixelratio = _krpanointerface_device.pixelratio);
             krpanointerface = _krpanointerface.device.browser;
             pluginpath = krpanointerface.css;
             _krpanointerface_events = krpanointerface.events;
@@ -1454,39 +1671,44 @@ var krpanoplugin = function () {
             _pluginpath_prefix = pluginpath.prefix;
             _pluginpath_transform = pluginpath.transform;
             _pluginpath_backgroundsize = pluginpath.backgroundsize;
-            _pluginpath_prefix = void 0 === _pluginpath_prefix || null === _pluginpath_prefix ? "webkit" : String(_pluginpath_prefix).toLowerCase();
-            if (void 0 === _pluginpath_transform || null === _pluginpath_transform) _pluginpath_transform = "webkitTransform";
-            if (void 0 === _pluginpath_backgroundsize || null === _pluginpath_backgroundsize) _pluginpath_backgroundsize = "-webkit-background-size";
+            _pluginpath_prefix = void 0 === _pluginpath_prefix ||
+            null === _pluginpath_prefix ?
+                "webkit" :
+                String(_pluginpath_prefix).toLowerCase();
+            if (void 0 === _pluginpath_transform || null === _pluginpath_transform)
+                _pluginpath_transform = "webkitTransform";
+            if (void 0 === _pluginpath_backgroundsize || null === _pluginpath_backgroundsize)
+                _pluginpath_backgroundsize = "-webkit-background-size";
             createPinCursorStyle();
             _pluginobject.maskchildren = true;
             _pluginobject.registerattribute("key", null);
             _pluginobject.registerattribute("maptype", "satellite", function (a) {
                 setMaptype(a)
             }, function () {
-                return D
+                return _mapTypeString
             });
             _pluginobject.registerattribute("maptypes", "normal|satellite|hybrid", function (a) {
-                mapTypeString = String(a)
+                _mapTypesString = String(a)
             }, function () {
-                return mapTypeString
+                return _mapTypesString
             });
             _pluginobject.registerattribute("lat", 0, function (a) {
-                map_lat = Number(a);
+                _map_lat = Number(a);
                 updateMaps()
             }, function () {
-                return map_lat
+                return _map_lat
             });
             _pluginobject.registerattribute("lng", 0, function (a) {
-                map_lng = Number(a);
+                _map_lng = Number(a);
                 updateMaps()
             }, function () {
-                return map_lng
+                return _map_lng
             });
             _pluginobject.registerattribute("zoom", 1, function (a) {
-                map_zoom = Number(a);
+                _map_zoom = Number(a);
                 updateMaps()
             }, function () {
-                return map_zoom
+                return _map_zoom
             });
             _pluginobject.registerattribute("activespotenabled", false, function (a) {
                 _bool_activeSpotEnabled = activeSpotEnabled(a)
@@ -1541,12 +1763,14 @@ var krpanoplugin = function () {
             _document_div.style.MozUserSelect = "none";
             _pluginobject.sprite.appendChild(_document_div);
             if (window.Microsoft && window.Microsoft.Maps) setTimeout(initBingMap, 10);
-            else if (window._krpano_bmap_loadedcallbacks_) window._krpano_bmap_loadedcallbacks_.push(initBingMap);
+            else if (window._krpano_bmap_loadedcallbacks_)
+                window._krpano_bmap_loadedcallbacks_.push(initBingMap);
             else {
                 window._krpano_bmap_loadedcallbacks_ = [];
                 _krpano_bmap_cb_var = "_krpano_bmap_cb_";
                 // 生成随机的URL标识
-                for (krpanointerface = 0; 16 > krpanointerface; krpanointerface++) _krpano_bmap_cb_var += String.fromCharCode(65 + 32 * Math.round(Math.random()) + Math.floor(25 * Math.random()));
+                for (krpanointerface = 0; 16 > krpanointerface; krpanointerface++)
+                    _krpano_bmap_cb_var += String.fromCharCode(65 + 32 * Math.round(Math.random()) + Math.floor(25 * Math.random()));
                 window[_krpano_bmap_cb_var] = reinitBingMap;
                 krpanointerface = "";
                 _pluginobject.culturecode && (krpanointerface = "&mkt=" +

@@ -56,7 +56,7 @@ var krpanoplugin = function () {
             (_timers = setInterval(redrawMAP, 1E3 / 60)),     // 周期执行刷新地图 单位毫秒 每秒60帧
             _viewRadarOBJ = new viewRadarClass,
             updateSpots(),
-            ha = true,
+            _bool_redraw_map = true,
             _krpanointerface.call(_pluginobject.onmapready, _pluginobject),
             google.maps.event.addListener(_google_map, "maptypeid_changed", mapTypeidChanged),
             google.maps.event.addListener(_google_map, "center_changed", refreshGoogleMap),
@@ -194,9 +194,9 @@ var krpanoplugin = function () {
         return _google_map && _map_div ?
             (methodName = _map_div.clientHeight,
              (methodName = 0 < _map_div.clientWidth && 0 < methodName) ?
-              0 == aa &&
-              (aa = _krpanointerface.timertick) :
-             aa = 0, methodName) : false
+              0 == _unknow_aa &&
+              (_unknow_aa = _krpanointerface.timertick) :
+              _unknow_aa = 0, methodName) : false
     }
     // 缩放到位置
     function zoomToPoint(lat, lng) {
@@ -433,7 +433,7 @@ var krpanoplugin = function () {
     }
     // 地图重绘
     function redrawMAP(map_div_size) {
-        if (ha) {
+        if (_bool_redraw_map) {
             map_div_size = [0, 0];
             if (_google_map && _map_div) {
                 map_div_size[0] = _map_div.clientWidth;
@@ -1297,8 +1297,8 @@ var krpanoplugin = function () {
         _krpano_gmap_cb_var = null,
         _map_div = null,                // 放置地图的DIV容器
         _google_map = null,             // 谷歌地图对象
-        ha = false,
-        aa = 0,
+        _bool_redraw_map = false,
+        _unknow_aa = 0,
         _unknowbool2 = false,
         _unknowbool3 = false,
         _unknowbool1 = false,
