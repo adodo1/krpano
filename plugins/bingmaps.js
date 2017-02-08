@@ -519,6 +519,9 @@ var krpanoplugin = function () {
          _viewRadarOBJECT.update())
     }
     // 激活点
+    // activatespot(name)
+    // 按照指定的名字激活对应的点。
+    // 这就是说点会显示为激活的样式图像（如果没有设置路径）同时会在点的位置上显示雷达。
     function activateSpot() {
         var a = arguments;
         if (1 == a.length) {

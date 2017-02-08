@@ -9,10 +9,12 @@ var krpanoplugin = function () {
     }
     // 设置RGB颜色
     function setRGB(color) {
+        debugger;
         return "rgb(" + (color >> 16 & 255) + "," + (color >> 8 & 255) + "," + (color & 255) + ")"
     }
     // 设置视野范围标记SVG
     function setViewRadarSVG(dwidth, dheight) {
+        debugger;
         var b = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         b.setAttribute("width", dwidth);
         b.setAttribute("height", dheight);
@@ -59,6 +61,7 @@ var krpanoplugin = function () {
     }
     // 显示DEMO标记
     function showDemoText() {
+        debugger;
         var a = document.createElement("div");
         a.style.position = "absolute";
         a.style.left = "50%";
@@ -87,6 +90,7 @@ var krpanoplugin = function () {
     }
     // 创建图片要素
     function createImgElement(a, c) {
+        debugger;
         var b = document.createElement("img");
         b.addEventListener("error", function () {
             _krpanointerface && _pluginobject &&
@@ -99,6 +103,7 @@ var krpanoplugin = function () {
     }
     // 重新加载必应地图
     function reinitBingMap() {
+        debugger;
         null != _krpano_bmap_cb_var &&
         (window[_krpano_bmap_cb_var] = null,
         delete window[_krpano_bmap_cb_var],
@@ -109,6 +114,7 @@ var krpanoplugin = function () {
     }
     // 设置背景色
     function setBGColor() {
+        debugger;
         if (_pluginobject) {
             var a = Number(_pluginobject.bgcolor),
               c = Number(_pluginobject.bgalpha);
@@ -122,6 +128,7 @@ var krpanoplugin = function () {
     }
     // 初始化必应地图
     function initBingMap() {
+        debugger;
         var map_callbacks = window._krpano_bmap_loadedcallbacks_;
         if (map_callbacks) {
             window._krpano_bmap_loadedcallbacks_ = null;
@@ -178,7 +185,10 @@ var krpanoplugin = function () {
                 width: mapwidth,
                 height: mapheight
             };
-            _document_div_maps = new Microsoft.Maps.Map(_document_div, parameters);
+            // 地图添加到对应的DIV里 DoDo
+            //_document_div_maps = new Microsoft.Maps.Map(_document_div, parameters);
+            _document_div_maps = L.map(_document_div);
+
             setBGColor();
 
             _document_div &&
@@ -188,6 +198,7 @@ var krpanoplugin = function () {
             _document_div.childNodes[0].childNodes[0] &&
             "BUTTON" == _document_div.childNodes[0].childNodes[0].nodeName &&
             _document_div.childNodes[0].removeChild(_document_div.childNodes[0].childNodes[0]);
+            
             
             Microsoft.Maps.Events.addHandler(_document_div_maps, "mousewheel", mousewheelEvents);
             // _document_div.addEventListener("gesturestart", ba, false);      // 当有两根或多根手指放到屏幕上的时候触发
@@ -207,10 +218,12 @@ var krpanoplugin = function () {
     }
     // 停止
     function stopActions(a) {
+        debugger;
         a && (a.preventDefault(), a.stopPropagation())
     }
     // 鼠标滚动
     function mousewheelEvents(a) {
+        debugger;
         a && (_krpanointerface &&
         _krpanointerface.control &&
         true === _krpanointerface.control.disablewheel ?
@@ -221,6 +234,7 @@ var krpanoplugin = function () {
     }
     // 切换地图
     function changeMaps() {
+        debugger;
         if (_document_div_maps) {
             var a = _document_div_maps.getOptions(),
               c = _document_div_maps.getImageryId(),
@@ -241,6 +255,7 @@ var krpanoplugin = function () {
     }
     // 更新地图区域 同时更新视野雷达图
     function updateEnve() {
+        debugger;
         if (_document_div_maps) {
             var a = _document_div_maps.getCenter();
             if (_map_lat != a.latitude || _map_lng != a.longitude)
@@ -261,8 +276,8 @@ var krpanoplugin = function () {
     }
     // 缩放到点集合范围
     function scaleSpotArray() {
-        var a = _pluginobject.spot.getArray(),
-          c = null;
+        debugger;
+        var a = _pluginobject.spot.getArray(), c = null;
         for (var ii = 0; ii < a.length; ii++)
             a[ii] &&
             (c = a[ii].internalObject)
@@ -271,6 +286,7 @@ var krpanoplugin = function () {
     }
     // 地图重绘
     function redrawMAP(a) {
+        debugger;
         _redarwmap_bool &&
         (a = _document_div) &&
         (a = a.firstChild) &&
@@ -306,6 +322,7 @@ var krpanoplugin = function () {
     }
     // 初始化地图控件
     function initMapView() {
+        debugger;
         _pluginobject.createobject("positioncontrol");
         _pluginobject.createobject("zoomcontrol");
         _maptypecontrol = _pluginobject.createobject("maptypecontrol");
@@ -348,30 +365,31 @@ var krpanoplugin = function () {
     }
     // 刷新控件
     function updateControls() {
-        if (_has_init) {
-            var a = _document_div;
-            _maptypecontrol._visible ?
-            (null == _mapTypeChangeOBJ &&
-            (_mapTypeChangeOBJ = new mapTypeChangeClass(_maptypecontrol),
-             a.appendChild(_mapTypeChangeOBJ.dom)),
-             _mapTypeChangeOBJ.setControlPosition(_maptypecontrol._align, Number(_maptypecontrol._x), Number(_maptypecontrol._y))) :
-             null != _mapTypeChangeOBJ &&
-             (a.removeChild(_mapTypeChangeOBJ.dom), _mapTypeChangeOBJ = null);
-            _redraw_mapcontrol = false
-        }
+        // debugger;
+        // if (_has_init) {
+        //     var a = _document_div;
+        //     _maptypecontrol._visible ?
+        //     (null == _mapTypeChangeOBJ &&
+        //     (_mapTypeChangeOBJ = new mapTypeChangeClass(_maptypecontrol),
+        //      a.appendChild(_mapTypeChangeOBJ.dom)),
+        //      _mapTypeChangeOBJ.setControlPosition(_maptypecontrol._align, Number(_maptypecontrol._x), Number(_maptypecontrol._y))) :
+        //      null != _mapTypeChangeOBJ &&
+        //      (a.removeChild(_mapTypeChangeOBJ.dom), _mapTypeChangeOBJ = null);
+        //     _redraw_mapcontrol = false
+        // }
     }
     // 创建点样式集合
     function createSpotsStyle() {
         _pluginobject.createarray("spotstyle");
         _pluginobject.spotstyle.createItem("default");
-        var a = _pluginobject.spotstyle.getArray(),
-          c = null;
+        var a = _pluginobject.spotstyle.getArray(), c = null;
         for (var ii = 0; ii < a.length; ii++)
             c = a[ii],
             c.internalObject = new mapSpotClass(c)
     }
     // 创建点集合
     function createSpots() {
+        debugger;
         _pluginobject.createarray("spot");
         var a = _pluginobject.spot.getArray(),
           c = null;
@@ -381,6 +399,7 @@ var krpanoplugin = function () {
     }
     // 添加点样式
     function addSpotstyle() {
+        debugger;
         var a = arguments;
         if (1 <= a.length) {
             var c = String(a[0]).toLowerCase(),
@@ -397,6 +416,7 @@ var krpanoplugin = function () {
     }
     // 添加点
     function addSpot() {
+        debugger;
         var a = arguments;
         if (3 <= a.length) {
             var c = String(a[0]).toLowerCase(),
@@ -421,6 +441,7 @@ var krpanoplugin = function () {
     }
     // 添加样式点
     function addStylespot() {
+        debugger;
         var a = arguments;
         if (5 <= a.length) {
             var c = String(a[0]).toLowerCase(),
@@ -446,6 +467,7 @@ var krpanoplugin = function () {
     }
     // 添加图像点
     function addImagespot() {
+        debugger;
         var a = arguments;
         if (6 <= a.length) {
             var c = String(a[0]).toLowerCase(),
@@ -470,6 +492,7 @@ var krpanoplugin = function () {
     }
     // 移出点
     function removeSpot() {
+        debugger;
         var a = arguments;
         if (1 == a.length) {
             var a = String(a[0]).toLowerCase(),
@@ -488,6 +511,7 @@ var krpanoplugin = function () {
     }
     // 移除所有点
     function removeAllspots() {
+        debugger;
         var a = _pluginobject.spot.getArray(),
           c = null,
           b = null;
@@ -503,6 +527,7 @@ var krpanoplugin = function () {
     }
     // 更新点
     function updateSpots() {
+        debugger;
         var a = _pluginobject.spot.getArray(),
           c = null,
           b = c = null;
@@ -520,6 +545,7 @@ var krpanoplugin = function () {
     }
     // 激活点
     function activateSpot() {
+        debugger;
         var a = arguments;
         if (1 == a.length) {
             var a = String(a[0]).toLowerCase(),
@@ -547,16 +573,12 @@ var krpanoplugin = function () {
     // 地图并缩放到位置和等级
     function updateMaps() {
         if (_document_div_maps) {
-            var a = new Microsoft.Maps.Location(_map_lat, _map_lng);
-            _document_div_maps.setView({
-                animate: false,
-                center: a,
-                zoom: _map_zoom
-            })
+            _document_div_maps.setView([_map_lat, _map_lng], _map_zoom);
         }
     }
     // 显示路网或空中
     function roadaerial(a) {
+        debugger;
         a = a.toLowerCase();
         return "satellite" != a &&
                "normal" == a ?
@@ -565,6 +587,7 @@ var krpanoplugin = function () {
     }
     // 显示或隐藏地图
     function showMAPS(name) {
+        debugger;
         name = name.toLowerCase();
         return "satellite" == name ||
                "normal" != name &&
@@ -572,27 +595,9 @@ var krpanoplugin = function () {
                Microsoft.Maps.LabelOverlay.hidden :
                Microsoft.Maps.LabelOverlay.visible
     }
-    // 设置地图种类SETMAPTYPE
-    function setMaptype() {
-        var a = arguments;
-        1 == a.length ?
-            (a = String(a[0]).toLowerCase(),
-            "satellite" != a &&
-            "normal" != a &&
-            "hybrid" != a &&
-            (a = "satellite"),
-            _document_div_maps ?
-            (_document_div_maps.setMapType(roadaerial(a)),
-            _document_div_maps.setOptions({
-                labelOverlay: showMAPS(a)
-            }),
-            setBGColor(),
-            changeMaps()) :
-            _mapTypeString = a) :
-            _krpanointerface.trace(3, "bingmaps plugin - setmaptype() syntax error!")
-    }
     // 设置地图等级SETZOOM
     function setZoom() {
+        debugger;
         if (_document_div_maps) {
             var a = arguments;
             if (1 <= a.length) {
@@ -612,6 +617,7 @@ var krpanoplugin = function () {
     }
     // 设置地图中心SETCENTER
     function setCenter() {
+        debugger;
         if (_document_div_maps) {
             var a = arguments;
             if (3 == a.length) {
@@ -627,6 +633,7 @@ var krpanoplugin = function () {
     }
     // 放大
     function zoomIn() {
+        debugger;
         if (_document_div_maps) {
             var a = arguments, c = null;
             if (2 <= a.length) {
@@ -658,6 +665,7 @@ var krpanoplugin = function () {
     }
     // 缩小
     function zoomOut() {
+        debugger;
         if (_document_div_maps) {
             var a = arguments,
               c = null;
@@ -691,6 +699,7 @@ var krpanoplugin = function () {
     }
     // 缩放到点范围
     function zoomTospotsextent() {
+        debugger;
         if (_document_div_maps) {
             var lng1, lat1, lat2, lng2, h, e, q, g = _pluginobject.spot.getArray();
             e = g.length;
@@ -722,6 +731,7 @@ var krpanoplugin = function () {
     }
     // 平移到点
     function panTospot() {
+        debugger;
         if (_document_div_maps) {
             var a = arguments;
             if (1 == a.length) {
@@ -743,6 +753,7 @@ var krpanoplugin = function () {
     }
     // 平移
     function panTo() {
+        debugger;
         if (_document_div_maps) {
             var positions = arguments;
             2 == positions.length ?
@@ -758,6 +769,7 @@ var krpanoplugin = function () {
     function cancelFlyto() { }
     // 飞到点
     function flyTospot() {
+        debugger;
         if (_document_div_maps) {
             var a = arguments;
             if (1 <= a.length) {
@@ -780,6 +792,7 @@ var krpanoplugin = function () {
     }
     // 飞到
     function flyTo() {
+        debugger;
         if (_document_div_maps) {
             var a = arguments,
                 c = true;
@@ -823,6 +836,7 @@ var krpanoplugin = function () {
     }
     // 平移方式
     function panBy() {
+        debugger;
         if (_document_div_maps) {
             var a = arguments;
             if (2 == a.length) {
@@ -839,136 +853,18 @@ var krpanoplugin = function () {
             } else _krpanointerface.trace(3, "bingmaps plugin - panby() syntax error!")
         }
     }
-    // 地图类型切换
-    function mapTypeChangeClass(a) {
-        // 地图切换的3个按钮
-        function mapTypeButton(a) {
-            var b = document.createElement("div");
-            b.style.position = "absolute";
-            b.style.width = p[0] + "px";
-            b.style.height = p[1] + "px";
-            b.style.fontFamily = "Arial";
-            b.style.fontSize = p[2] + "px";
-            b.style.fontWeight = "bold";
-            g && (b.style[_pluginpath_backgroundsize] = p[0] + "px " + 3 * p[1] + "px");
-            b.innerHTML = "<div style='vertical-align:middle;padding-top:" + p[3] + "px;'><center>" + a + "</center></div>";
-            return b
-        }
-        // 地图切换按钮的边框
-        function mapTypeButtonStyle(a, b, c) {
-            a.style.border =
-              c ? "1px solid rgba(100,100,100,0.3)" : "1px solid #acafb8";
-            a.style.color = c ? "#ffffff" : "#4f5459";
-            a.style.textShadow = c ? "#4f5459 0px -1px 1px" : "#f2f3f5 0px 1px 1px";
-            var f = _pluginpath_prefix;
-            if ("Microsoft Internet Explorer" == navigator.appName || 0 <= navigator.userAgent.indexOf("MSIE ") || 0 <= navigator.userAgent.indexOf("Trident")) f = "ms";
-            "" != f && (f = "-" + f + "-");
-            a.style.backgroundImage = "webkit" == _pluginpath_prefix ? c ? "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#b0b4ba), to(#6d7580))" : "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#f3f4f5), to(#bdc0ca))" :
-              "-ms-" == f ? c ? f + "linear-gradient(top, #b0b4ba, #6d7580)" : f + "linear-gradient(top, #f3f4f5, #bdc0ca)" : c ? f + "linear-gradient(to bottom, #b0b4ba, #6d7580)" : f + "linear-gradient(to bottom, #f3f4f5, #bdc0ca)";
-            g && (a.style.backgroundPosition = "0px " + -(b - 1) * p[1] + "px")
-        }
-        // 鼠标抬起事件处理
-        function mouseupEventsMAP(a) {
-            a && (a.stopPropagation(), a.preventDefault(), a.stopImmediatePropagation())
-        }
-        // 切换普通地图
-        function setMAP_normal(a) {
-            a && (mouseupEventsMAP(a), setMaptype("normal"));
-            mapTypeButtonStyle(m, 1, true);
-            mapTypeButtonStyle(x, 2, false);
-            mapTypeButtonStyle(r, 3, false)
-        }
-        // 切换街景图
-        function setMAP_satellite(a) {
-            a && (mouseupEventsMAP(a), setMaptype("satellite"));
-            mapTypeButtonStyle(m, 1, false);
-            mapTypeButtonStyle(x, 2, true);
-            mapTypeButtonStyle(r, 3, false)
-        }
-        // 切换混合地图
-        function setMAP_hybrid(a) {
-            a && (mouseupEventsMAP(a), setMaptype("hybrid"));
-            mapTypeButtonStyle(m, 1, false);
-            mapTypeButtonStyle(x, 2, false);
-            mapTypeButtonStyle(r, 3, true)
-        }
-        var g = "v" == String(a.buttonalign).toLowerCase(),
-          l = Number(a.scale),
-          n = String(a.buttontexts).split("|");
-        3 != n.length && (n = ["Map", "Satellite", "Hybrid"]);
-        isNaN(l) && (l = 1);
-        _krpanointerface.ismobile && (l *= .5);
-        var l = l * _krpanointerface_device_pixelratio,
-          z = document.createElement("div");
-        z.style.position = "absolute";
-        this.dom = z;
-        var m = null,
-          x = null,
-          r = null,
-          p = [80 * l, 26 * l, 12 * l, 6 * l],
-          t = [0, 0];
-        this.onMapTypeChanged = function (a) {
-            "normal" == a ?
-                setMAP_normal() :
-                "satellite" == a ?
-                    setMAP_satellite() :
-                    "hybrid" == a &&
-            setMAP_hybrid()
-        };
-        // 
-        this.setControlPosition = function (a, b, c) {
-            var f = Math.floor(_pluginobject.pixelwidth * _krpanointerface.stagescale),
-                e = Math.floor(_pluginobject.pixelheight * _krpanointerface.stagescale),
-              k = g ? p[0] : 3 * p[0],
-              u = g ? 3 * p[1] : p[1],
-              k = k + t[0],
-              u = u + t[1],
-              l = 0 <= a.indexOf("left") && 0 > a.indexOf("right");
-            a = 0 <= a.indexOf("top") && 0 > a.indexOf("bottom");
-            b = b * _krpanointerface.stagescale * _krpanointerface_device_pixelratio;
-            c = c * _krpanointerface.stagescale * _krpanointerface_device_pixelratio;
-            l || (b = f - k - b);
-            a || (c = e - u - c);
-            z.style.left = b + "px";
-            z.style.top = c + "px"
-        };
-        (function () {
-            z.style.borderRadius = 7 * l + "px";
-            z.style.borderBottom = "2px solid rgba(100,100,100,0.5)";
-            z.style.boxShadow = z.style.MozBoxShadow = z.style.webkitBoxShadow = "2px 2px 4px rgba(0,0,0,0.5)";
-            g ? (z.style.width =
-              p[0] + "px", z.style.height = 3 * p[1] + 1 + "px") : (z.style.width = 3 * p[0] + "px", z.style.height = p[1] + 1 + "px");
-            m = mapTypeButton(n[0]);
-            x = mapTypeButton(n[1]);
-            r = mapTypeButton(n[2]);
-            var a = 5 * l + "px";
-            g ? (m.style.borderRadius = a + " " + a + " 0px 0px", r.style.borderRadius = "0px 0px " + a + " " + a, t = [4, 4], m.style.top = "0px", x.style.top = p[1] + "px", r.style.top = 2 * p[1] + "px") : (m.style.borderRadius = a + " 0px 0px " + a, r.style.borderRadius = "0px " + a + " " + a + " 0px", t = [4, 4], m.style.left = "0px", x.style.left = p[0] + "px", r.style.left = 2 * p[0] + "px");
-            z.appendChild(m);
-            z.appendChild(x);
-            z.appendChild(r);
-            _krpanointerface_events.mouse && (m.addEventListener("mousedown", setMAP_normal), m.addEventListener("mouseup", mouseupEventsMAP));
-            _krpanointerface_events.touch && (m.addEventListener(_krpanointerface_events_touchstart, setMAP_normal), m.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
-            _krpanointerface_events.mouse && (x.addEventListener("mousedown", setMAP_satellite), x.addEventListener("mouseup", mouseupEventsMAP));
-            _krpanointerface_events.touch && (x.addEventListener(_krpanointerface_events_touchstart, setMAP_satellite), x.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
-            _krpanointerface_events.mouse && (r.addEventListener("mousedown", setMAP_hybrid), r.addEventListener("mouseup", mouseupEventsMAP));
-            _krpanointerface_events.touch && (r.addEventListener(_krpanointerface_events_touchstart, setMAP_hybrid), r.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
-            a = _mapTypeString;
-            "normal" == a ?
-            setMAP_normal() :
-            "satellite" == a ?
-            setMAP_satellite() :
-            "hybrid" == a &&
-            setMAP_hybrid()
-        })()
-    }
+
     // 视野范围类视野雷达
     function viewRadarClass() {
+        debugger;
         function a(a) {
+            debugger;
             a && (a.preventDefault(),
               a.stopImmediatePropagation(), a.stopPropagation())
         }
         // 鼠标按下
         function stroke_MouseDownEvent(c) {
+            debugger;
             _this_viewRadar.dragable &&
             (m = true,
             stroke_MouseMoveEvent(c),
@@ -983,6 +879,7 @@ var krpanoplugin = function () {
         }
         // 鼠标抬起
         function stroke_MouseUpEvent(c) {
+            debugger;
             _krpanointerface_events.mouse && (window.removeEventListener("mousemove", stroke_MouseMoveEvent, true), window.removeEventListener("mouseup", stroke_MouseUpEvent, true));
             _krpanointerface_events.touch && (window.removeEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true), window.removeEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true), window.removeEventListener(_krpanointerface_events_touchend,
               stroke_MouseUpEvent, true));
@@ -990,6 +887,7 @@ var krpanoplugin = function () {
         }
         // 鼠标移动
         function stroke_MouseMoveEvent(a) {
+            debugger;
             if (null == _krpanointerface) stroke_MouseUpEvent(a);
             else if (null != radarSVG && null != _this_viewRadar.bmspot) {
                 var f = 0, d = 0;
@@ -1020,6 +918,7 @@ var krpanoplugin = function () {
         }
         // 初始化视野范围样式
         function initViewRadar() {
+            debugger;
             _this_viewRadar.needredraw = true;
             radarSVG && 
             (radarSVG.path.setAttribute("stroke", setRGB(_this_viewRadar.linecolor)),
@@ -1072,6 +971,7 @@ var krpanoplugin = function () {
         };
         // 刷新视野雷达
         _this_viewRadar.updatehandler = function () {
+            debugger;
             if (_document_div_maps &&
                 (null == marker &&
                  null != _this_viewRadar.bmspot &&
@@ -1158,6 +1058,7 @@ var krpanoplugin = function () {
         };
         // 读取属性
         (function () {
+            debugger;
             _radarOBJ.registerattribute("visible", _this_viewRadar.visible, function (a) {
                 _this_viewRadar.visible = activeSpotEnabled(a);
                 _this_viewRadar.update()
@@ -1228,7 +1129,9 @@ var krpanoplugin = function () {
     }
     // 地图坐标点类
     function mapSpotClass(a) {
+        debugger;
         function c(a) {
+            debugger;
             void 0 === a && (a = false);
             var c = b.xmlobject.name,
               e = _pluginobject.spot.getArray(),
@@ -1323,8 +1226,10 @@ var krpanoplugin = function () {
     }
     // 标记点类
     function spotClass(inpushPin) {
+        debugger;
         // 初始化样式
         function initSpotStyle() {
+            debugger;
             var a = _pluginobject.spotstyle.getItem(_this_Spot.spotstyle),
                 b = null;
             return null == a ?
@@ -1337,6 +1242,7 @@ var krpanoplugin = function () {
         }
         // 对图片处理 比如按比例缩放
         function dealWithIMG(img, scale) {
+            debugger;
             x = img;
             scale || (scale = _this_Spot.zoomwithmap ?
                   Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel) :
@@ -1388,6 +1294,7 @@ var krpanoplugin = function () {
         }
         // 这个函数不明白暂定这个名称 作用是补全图钉图标如果注释掉只出现1/4个图标
         function drawPushPinOnMAP(a) {
+            debugger;
             for (var b in a)
                 if (a[b] && "object" === typeof a[b] &&
                     a[b].dom && a[b].dom.childNodes &&
@@ -1399,6 +1306,7 @@ var krpanoplugin = function () {
         }
         // 图钉被点击
         function pushpinClick(a) {
+            debugger;
             _this_Spot.active &&
             0 == _bool_activeSpotEnabled ||
             (a = _pushpin_last.onclick,
@@ -1408,6 +1316,7 @@ var krpanoplugin = function () {
         }
         // 鼠标悬停在图钉上
         function pushpinMouseOver(a) {
+            debugger;
             _this_Spot.active &&
             0 == _bool_activeSpotEnabled ||
             (null == t &&
@@ -1422,6 +1331,7 @@ var krpanoplugin = function () {
         }
         // 鼠标从图钉移开
         function pushpinMouseOut(a) {
+            debugger;
             _pushpinOBJ = null;
             null != a &&
             _this_Spot.active &&
@@ -1507,6 +1417,7 @@ var krpanoplugin = function () {
             }
         };
         _this_Spot.updateimage = function () {
+            debugger;
             if ("" == _this_Spot.url || "null" == _this_Spot.url)
                 _this_Spot.url = null;
             if (_this_Spot.url)
@@ -1530,6 +1441,7 @@ var krpanoplugin = function () {
             dealWithIMG(x, a)
         };
         _this_Spot.try_dom_access = function () {
+            debugger;
             if (_pushpin)
                 if (drawPushPinOnMAP(_pushpin), _pushpin._krpimg) {
                     var a = initSpotStyle();
@@ -1546,6 +1458,7 @@ var krpanoplugin = function () {
         };
         _pushpin_last.event_out = pushpinMouseOut;
         (function () {
+            debugger;
             inpushPin.registerattribute("spotstyle", _this_Spot.spotstyle, function (a) {
                 if (null == a || "" == a) a = "default";
                 _this_Spot.spotstyle = String(a).toLowerCase();
@@ -1659,6 +1572,7 @@ var krpanoplugin = function () {
     // - pluginpath = the fully qualified plugin name (e.g. "plugin[name]")
     // - pluginobject = the xml plugin object itself
     this.registerplugin = function (krpanointerface, pluginpath, pluginobject) {
+        debugger;
         // 创建样式
         function createPinCursorStyle() {
             var a = document.createElement("style");
@@ -1697,7 +1611,6 @@ var krpanoplugin = function () {
             _pluginobject.maskchildren = true;
             _pluginobject.registerattribute("key", null);
             _pluginobject.registerattribute("maptype", "satellite", function (a) {
-                setMaptype(a)
             }, function () {
                 return _mapTypeString
             });
@@ -1738,7 +1651,6 @@ var krpanoplugin = function () {
             _pluginobject.registerattribute("onmaptypechanged", null);
             _pluginobject.setzoom = setZoom;
             _pluginobject.setcenter = setCenter;
-            _pluginobject.setmaptype = setMaptype;
             _pluginobject.addspot = addSpot;
             _pluginobject.addstylespot = addStylespot;
             _pluginobject.addimagespot = addImagespot;
@@ -1794,15 +1706,24 @@ var krpanoplugin = function () {
                 (pluginpath = 0 == ("" + window.location.href).toLowerCase().indexOf("https:") ?
                 "https://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&s=1" :
                 "http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0");
+
+                debugger;
+                // 插入leaflet类库 DoDo
                 var scriptobject = document.createElement("script");
                 scriptobject.type = "text/javascript";
-                scriptobject.src = pluginpath + krpanointerface + "&onscriptload=" + _krpano_bmap_cb_var;
-                document.body.appendChild(scriptobject)
+                scriptobject.src = "http://unpkg.com/leaflet@1.0.1/dist/leaflet.js";
+                document.body.appendChild(scriptobject);
+
+                // scriptobject = document.createElement("script");
+                // scriptobject.type = "text/javascript";
+                // scriptobject.src = pluginpath + krpanointerface + "&onscriptload=" + _krpano_bmap_cb_var;
+                // document.body.appendChild(scriptobject)
             }
         }
     };
     // 卸载插件
     this.unloadplugin = function () {
+        debugger;
         _has_init = false;
         null != _timers && (clearInterval(_timers), _timers = null);
         _krpanointerface = _pluginobject = _document_div_maps = _document_div = null
