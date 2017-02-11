@@ -3,7 +3,7 @@
     http://krpano.com/plugins/bingmaps/
 */
 var krpanoplugin = function () {
-    // 激活点
+    // 激活点 激活的点是否可接收鼠标事件 也就是说是否能有鼠标点击或悬停？
     function activeSpotEnabled(a) {
         return "boolean" == typeof a ? a : 0 <= "yesontrue1".indexOf(String(a).toLowerCase())
     }
@@ -86,16 +86,18 @@ var krpanoplugin = function () {
         _pluginobject.sprite.appendChild(a)
     }
     // 创建图片要素
-    function createImgElement(a, c) {
+    // url: 图片地址
+    // func: 图片加载回调函数    
+    function createImgElement(url, func) {
         var b = document.createElement("img");
         b.addEventListener("error", function () {
             _krpanointerface && _pluginobject &&
-            _krpanointerface.trace(3, _pluginobject._type + "[" + _pluginobject.name + "] loading error: " + a)
+            _krpanointerface.trace(3, _pluginobject._type + "[" + _pluginobject.name + "] loading error: " + url)
         }, true);
         b.addEventListener("load", function () {
-            _krpanointerface && _pluginobject && c(b)
+            _krpanointerface && _pluginobject && func(b)
         }, false);
-        b.src = _krpanointerface.parsePath(a)
+        b.src = _krpanointerface.parsePath(url)
     }
     // 重新加载必应地图
     function reinitBingMap() {
@@ -103,6 +105,7 @@ var krpanoplugin = function () {
         (window[_krpano_bmap_cb_var] = null,
         delete window[_krpano_bmap_cb_var],
         _krpano_bmap_cb_var = null);
+
         _krpanointerface &&
         _pluginobject &&
         setTimeout(initBingMap, 10)
@@ -122,6 +125,7 @@ var krpanoplugin = function () {
     }
     // 初始化必应地图
     function initBingMap() {
+        // 不知道
         var map_callbacks = window._krpano_bmap_loadedcallbacks_;
         if (map_callbacks) {
             window._krpano_bmap_loadedcallbacks_ = null;
@@ -131,43 +135,47 @@ var krpanoplugin = function () {
                 for (bingmap_key = 0; bingmap_key < map_callbacks.length; bingmap_key++)
                     setTimeout(map_callbacks[bingmap_key], 10 + 5 * bingmap_key)
         }
+        // 
         if (_krpanointerface && _pluginobject) {
             _pluginobject._use_css_scale = false;
             _pluginobject.poschanged = true;
             _pluginobject.updatepos();
+            // 地图的宽度和高度
             var mapwidth = Math.floor(_pluginobject.pixelwidth * _krpanointerface.stagescale);
             var mapheight = Math.floor(_pluginobject.pixelheight * _krpanointerface.stagescale);
             bingmap_key = _pluginobject.key;
-            var f = document.domain;
-            0 == f.indexOf("www.") && (f = f.slice(4));
+            // 域名
+            var doc_domain = document.domain;
+            0 == doc_domain.indexOf("www.") && (doc_domain = doc_domain.slice(4));
+            // KEY含有"|"
             if (null != bingmap_key && 0 < bingmap_key.indexOf("|")) {
                 var u = bingmap_key.split("|");
                 bingmap_key = null;
                 var e = u.length;
                 if (2 <= e) {
-                    if (null == f || "" == f) f = "local";
+                    if (null == doc_domain || "" == doc_domain) doc_domain = "local";
                     for (var q = 0; q < e; q += 2) {
                         var g = String(u[q]).toLowerCase(),
                           l = u[q + 1];
-                        if (g == f) {
+                        if (g == doc_domain) {
                             bingmap_key = l;
                             break
                         }
                     }
                 }
             }
+            // KEY为TEST
             "TEST" == bingmap_key ?
-                (_redarwmap_bool = true,
-                bingmap_key = null) :
+                (_redarwmap_bool = true, bingmap_key = null) :
                 "" != bingmap_key && null != bingmap_key ||
                 _krpanointerface.trace(2, "bingmaps plugin - no API key!");
-
+            // 地图参数
             var parameters = {
-                credentials: bingmap_key,
-                mapTypeId: roadaerial(_mapTypeString),
-                labelOverlay: showMAPS(_mapTypeString),
-                center: new Microsoft.Maps.Location(_pluginobject.lat, _pluginobject.lng),
-                zoom: _map_zoom,
+                credentials: bingmap_key,               // 地图KEY
+                mapTypeId: roadaerial(_mapTypeString),  // 地图类型
+                labelOverlay: showMAPS(_mapTypeString), // 显示或隐藏地图
+                center: new Microsoft.Maps.Location(_pluginobject.lat, _pluginobject.lng),  // 地图中心点
+                zoom: _map_zoom,                // 缩放等级
                 enableSearchLogo: false,
                 enableClickableLogo: false,
                 showMapTypeSelector: false,
@@ -178,9 +186,11 @@ var krpanoplugin = function () {
                 width: mapwidth,
                 height: mapheight
             };
+            // 创建地图
             _document_div_maps = new Microsoft.Maps.Map(_document_div, parameters);
             setBGColor();
-
+            
+            // 删除地图控件里的按钮
             _document_div &&
             _document_div.childNodes &&
             _document_div.childNodes[0] &&
@@ -189,6 +199,7 @@ var krpanoplugin = function () {
             "BUTTON" == _document_div.childNodes[0].childNodes[0].nodeName &&
             _document_div.childNodes[0].removeChild(_document_div.childNodes[0].childNodes[0]);
             
+            // 添加鼠标滚轮事件
             Microsoft.Maps.Events.addHandler(_document_div_maps, "mousewheel", mousewheelEvents);
             // _document_div.addEventListener("gesturestart", ba, false);      // 当有两根或多根手指放到屏幕上的时候触发
             // _document_div.addEventListener("gesturechange", ba, false);     // 当有两根或多根手指在屏幕上，并且有手指移动的时候触发
@@ -269,8 +280,9 @@ var krpanoplugin = function () {
             && c.zoomwithmap &&
             c.scalespot(Math.pow(2, _map_zoom) / Math.pow(2, c.zoombaselevel))
     }
-    // 地图重绘
+    // 地图重绘 不停的被调用
     function redrawMAP(a) {
+
         _redarwmap_bool &&
         (a = _document_div) &&
         (a = a.firstChild) &&
@@ -365,21 +377,30 @@ var krpanoplugin = function () {
         _pluginobject.createarray("spotstyle");
         _pluginobject.spotstyle.createItem("default");
         var a = _pluginobject.spotstyle.getArray(),
-          c = null;
-        for (var ii = 0; ii < a.length; ii++)
-            c = a[ii],
-            c.internalObject = new mapSpotClass(c)
+            c = null;
+        for (var ii = 0; ii < a.length; ii++) {
+            c = a[ii];
+            c.internalObject = new mapSpotClass(c);
+        }
     }
     // 创建点集合
     function createSpots() {
         _pluginobject.createarray("spot");
         var a = _pluginobject.spot.getArray(),
-          c = null;
-        for (var ii = 0; ii < a.length; ii++)
-            c = a[ii],
-            c.internalObject = new spotClass(c)
+            c = null;
+        for (var ii = 0; ii < a.length; ii++) {
+            c = a[ii];
+            c.internalObject = new spotClass(c);
+        }
     }
-    // 添加点样式
+    // addspotstyle(name, url, overurl, activeurl, edge, x, y)
+    // 增加一个新的spotstyle。
+    // name = 新的样式的名字。
+    // url = 默认图像的路径。 (可选)
+    // overurl = 鼠标悬停时图像的路径。 (可选)
+    // activeurl = 激活图像的路径。 (可选)
+    // edge =点图像的对齐点。 (可选)
+    // x / y = 从对齐点的偏移值。 (可选)
     function addSpotstyle() {
         var a = arguments;
         if (1 <= a.length) {
@@ -395,7 +416,13 @@ var krpanoplugin = function () {
             c.internalObject = new mapSpotClass(c)
         } else _krpanointerface.trace(3, "bingmaps plugin - addspotstyle() syntax error!")
     }
-    // 添加点
+    // addspot(name, lat, lng, heading, active, onclick, onhover, onover, onout)
+    // 增加一个新的点 (按照默认的样式).
+    // name = 新的点的名字。
+    // lat / lng = 点的地理坐标。
+    // heading = 对应点的全景方向。
+    // active = 是否激活点？ (可选)
+    // onclick, onhover, onover, onout = 对应点的鼠标事件。 (可选)
     function addSpot() {
         var a = arguments;
         if (3 <= a.length) {
@@ -419,7 +446,14 @@ var krpanoplugin = function () {
             f.active && activateSpot(c)
         } else _krpanointerface.trace(3, "bingmaps plugin - addspot() syntax error!")
     }
-    // 添加样式点
+    // addstylespot(name, lat, lng, heading, style, active, onclick, onhover, onover, onout)
+    // 以自定义的样式增加一个新的点。.
+    // name = 新的点的名字。
+    // lat / lng = 点的地理坐标。
+    // heading = 对应点的全景方向。
+    // style = 对应点的spotstyle。
+    // active = 是否激活点？ (可选)
+    // onclick, onhover, onover, onout = 对应点的鼠标事件。 (可选)
     function addStylespot() {
         var a = arguments;
         if (5 <= a.length) {
@@ -444,7 +478,14 @@ var krpanoplugin = function () {
             f.active && activateSpot(c)
         } else _krpanointerface.trace(3, "bingmaps plugin - addstylespot() syntax error!")
     }
-    // 添加图像点
+    // 以自定义的图像增加一个新的点。
+    // addimagespot(name, lat, lng, heading, style, url, onclick, onhover, onover, onout)
+    // name = 新的点的名字。
+    // lat / lng = 点的地理坐标。
+    // heading = 对应点的全景方向。
+    // style = 对应点的spotstyle。
+    // url = 对应点的图像路径。
+    // onclick, onhover, onover, onout = 对应点的鼠标事件。 (可选)
     function addImagespot() {
         var a = arguments;
         if (6 <= a.length) {
@@ -468,7 +509,9 @@ var krpanoplugin = function () {
             b.internalObject = f
         } else _krpanointerface.trace(3, "bingmaps plugin - addimagespot() syntax error!")
     }
-    // 移出点
+    // removespot(name)
+    // 移除指定的点。
+    // name = 需要移除的点的名字。
     function removeSpot() {
         var a = arguments;
         if (1 == a.length) {
@@ -486,7 +529,8 @@ var krpanoplugin = function () {
 
         } else _krpanointerface.trace(3, "bingmaps plugin - removespot() syntax error!")
     }
-    // 移除所有点
+    // removeallspots()
+    // 从地图上移除所有点。
     function removeAllspots() {
         var a = _pluginobject.spot.getArray(),
           c = null,
@@ -518,9 +562,8 @@ var krpanoplugin = function () {
         (_viewRadarOBJECT.bmspot = b,
          _viewRadarOBJECT.update())
     }
-    // 激活点
     // activatespot(name)
-    // 按照指定的名字激活对应的点。
+    // 按照指定的名字激活对应的点，激活当前点。
     // 这就是说点会显示为激活的样式图像（如果没有设置路径）同时会在点的位置上显示雷达。
     function activateSpot() {
         var a = arguments;
@@ -575,6 +618,7 @@ var krpanoplugin = function () {
                Microsoft.Maps.LabelOverlay.hidden :
                Microsoft.Maps.LabelOverlay.visible
     }
+    // setmaptype(maptype)
     // 设置地图种类SETMAPTYPE
     function setMaptype() {
         var a = arguments;
@@ -594,7 +638,8 @@ var krpanoplugin = function () {
             _mapTypeString = a) :
             _krpanointerface.trace(3, "bingmaps plugin - setmaptype() syntax error!")
     }
-    // 设置地图等级SETZOOM
+    // setzoom(zoom)
+    // 对地图设置一个新的缩放级别。
     function setZoom() {
         if (_document_div_maps) {
             var a = arguments;
@@ -613,7 +658,9 @@ var krpanoplugin = function () {
             } else _krpanointerface.trace(3, "bingmaps plugin - setzoom() syntax error!")
         }
     }
-    // 设置地图中心SETCENTER
+    // setcenter(lat,lng)
+    // 对地图设置一个新的中心。
+    // lat / lng = 地图中心坐标。
     function setCenter() {
         if (_document_div_maps) {
             var a = arguments;
@@ -628,7 +675,11 @@ var krpanoplugin = function () {
             } else _krpanointerface.trace(3, "bingmaps plugin - setcenter() syntax error!")
         }
     }
-    // 放大
+    // zoomin(lat, lng, center)
+    // 以一个缩放级别进行地图放大。
+    // 可用于自定义的控制。
+    // lat / lng = 缩放到指定的坐标。 (可选)
+    // zoom = 设置为true，将地图以对应的经纬度进行置中。(可选)
     function zoomIn() {
         if (_document_div_maps) {
             var a = arguments, c = null;
@@ -659,7 +710,10 @@ var krpanoplugin = function () {
             })
         }
     }
-    // 缩小
+    // zoomout(lat, lng)
+    // 以一个缩放级别进行地图缩小。
+    // 可用于自定义的控制。
+    // lat / lng = 缩放到指定的坐标。 (可选)
     function zoomOut() {
         if (_document_div_maps) {
             var a = arguments,
@@ -692,7 +746,8 @@ var krpanoplugin = function () {
             })
         }
     }
-    // 缩放到点范围
+    // zoomtospotsextent()
+    // 自动横移和缩放地图以展示全部点。
     function zoomTospotsextent() {
         if (_document_div_maps) {
             var lng1, lat1, lat2, lng2, h, e, q, g = _pluginobject.spot.getArray();
@@ -723,7 +778,9 @@ var krpanoplugin = function () {
                 }
         }
     }
-    // 平移到点
+    // pantospot(name)
+    // 平移到指定点的坐标。
+    // name = 点的名字。
     function panTospot() {
         if (_document_div_maps) {
             var a = arguments;
@@ -744,7 +801,9 @@ var krpanoplugin = function () {
             } else _krpanointerface.trace(3, "bingmaps plugin - pantospot() syntax error!")
         }
     }
-    // 平移
+    // panto(lat,lng)
+    // 平移到指定
+    // lat / lng = 地图坐标。
     function panTo() {
         if (_document_div_maps) {
             var positions = arguments;
@@ -824,7 +883,9 @@ var krpanoplugin = function () {
             c && _krpanointerface.trace(3, "bingmaps plugin - flyto() syntax error!")
         }
     }
-    // 平移方式
+    // panby(dx,dy)
+    // 平移地图。
+    // dx / dy = 以像素为单位，平移的距离。
     function panBy() {
         if (_document_div_maps) {
             var a = arguments;
@@ -1161,6 +1222,25 @@ var krpanoplugin = function () {
         };
         // 读取属性
         (function () {
+            // visible
+            // 显示或隐藏雷达。
+            // dragable
+            // 雷达扇形部分是否能被鼠标拖拽？
+            // size
+            // 雷达扇形的尺寸。
+            // zoomwithmap
+            // 雷达扇形是否跟随地图缩放一同缩放。
+            // headingoffset
+            // 针对点的 heading 数值的偏移值。
+            // headingoffset的默认值为90，也就是默认下heading=0对着东方。如果headingoffset=0则heading=0对着北。
+            // alpha
+            // 整个雷达元素的透明度。
+            // fillcolor / fillalpha
+            // 雷达扇形的颜色和透明度。
+            // linewidth / linecolor / linealpha
+            // 雷达扇形线条的宽度、颜色和透明度。
+            // glow / glowcolor / glowwidth / glowstrength (仅支持Flash)
+            // 为雷达扇形添加和定义发光效果。
             _radarOBJ.registerattribute("visible", _this_viewRadar.visible, function (a) {
                 _this_viewRadar.visible = activeSpotEnabled(a);
                 _this_viewRadar.update()
@@ -1244,6 +1324,27 @@ var krpanoplugin = function () {
                 (0 == a || h.active) &&
                 h.update(1)
         }
+        // <spotstyle> 属性
+        // name
+        // 地图点样式的名字。
+        // 在spot的style属性中使用该名字。
+        // url
+        // 应用在地图点上的图像的路径。
+        // 没有定义时，则使用默认图像（一个蓝色的点）。
+        // overurl
+        // 当鼠标悬停在地图点时地图点的图像路径。
+        // 没有定义时，则使用默认图像（一个蓝色的点）。
+        // activeurl
+        // 当点被激活时地图点的图像路径。
+        // 没有定义时，则使用默认图像（一个绿色的点）。
+        // edge
+        // 点图像的对齐点。
+        // 可设置的值： lefttop, left, leftbottom, top, center, bottom, righttop, right, rightbottom。
+        // x / y
+        // 以像素为单位，图像从对齐点开始的偏移值。
+        // scale
+        // 地图点样式的图像的缩放。
+        // 在ipad 3 retina屏幕中可使用更多像素的图像。使用大图像，然后scale=”0.5″在ipad3上获取1比1比例的图像。
         var b = this;
         b.url = null;
         b.overurl = null;
@@ -1326,6 +1427,10 @@ var krpanoplugin = function () {
     }
     // 标记点类
     function spotClass(inpushPin) {
+        // 使用<spotstyle>子元素，可定义地图点的样式。
+        // 地图点的样式可使用style属性。
+        // 预定义的样式的名字为 “DEFAULT”。
+
         // 初始化样式
         function initSpotStyle() {
             var a = _pluginobject.spotstyle.getItem(_this_Spot.spotstyle),
@@ -1549,6 +1654,27 @@ var krpanoplugin = function () {
         };
         _pushpin_last.event_out = pushpinMouseOut;
         (function () {
+            // <spot> 属性
+            // name
+            // 当前点的名字t (查看 xml name 注意事项)。
+            // style
+            // 该点要应用的 spotstyle 的名字。
+            // url
+            // 该点要应用的图像路径。
+            // 如无定义，则使用spotstyle的设置。
+            // lat / lng
+            // 从Google Maps 或 Bing Maps 页面获取
+            // 或者: Google Maps Get Lat Lon 或 Bing Maps Lat/Long Finder.
+            // 这两个页面能够非常方便和容易地得到坐标。注意谷歌地图和必应地图的坐标是兼容的。
+            // 经纬度。
+            // 点的地理坐标。
+            // 如何获取？
+            // heading
+            // 以角度为单位，全景的方向，需要与地图的雷达方位对齐。
+            // 查看radar headingoffset获取详细信息。
+            // active
+            // 点的状态。当设置为true时，点会被激活。这就是说点会显示为激活的样式图像（如果没有设置路径）同时会在点的位置上显示雷达。
+            // 使用activatespot()动作动态激活雷达。
             inpushPin.registerattribute("spotstyle", _this_Spot.spotstyle, function (a) {
                 if (null == a || "" == a) a = "default";
                 _this_Spot.spotstyle = String(a).toLowerCase();
@@ -1596,13 +1722,29 @@ var krpanoplugin = function () {
                 _this_Spot.zoombaselevel = Number(a);
                 _this_Spot.update(2)
             },
-              function () {
-                  return _this_Spot.zoombaselevel
-              });
+            function () {
+                return _this_Spot.zoombaselevel
+            });
+            // <spot> 事件
+            // onover
+            // 当鼠标悬停在点元素上时调用的动作。
+            // onhover
+            // 当鼠标悬停在点元素上时持续调用的动作（一秒多次）。
+            // onout
+            // 当鼠标移动离开点元素时调用的动作。
+            // onclick
+            // 当鼠标点击点元素时调用的动作。
             inpushPin.registerattribute("onover", null);
             inpushPin.registerattribute("onhover", null);
             inpushPin.registerattribute("onout", null);
             inpushPin.registerattribute("onclick", null);
+            // <spot> 动作
+            // activatespot()
+            // 激活当前点。
+            // pantospot()
+            // 横移地图中心至当前点。
+            // getstagepos(xvar,yvar) (仅Flash)
+            // 将Flash stage的点的当前位置保存到指定的krpano变量。
             inpushPin.activatespot = function () {
                 activateSpot(_pushpin_last.name)
             };
@@ -1662,7 +1804,67 @@ var krpanoplugin = function () {
     // - pluginpath = the fully qualified plugin name (e.g. "plugin[name]")
     // - pluginobject = the xml plugin object itself
     this.registerplugin = function (krpanointerface, pluginpath, pluginobject) {
-        // 创建样式
+        // 插件属性
+        // key
+        // 可以使用多个域名密钥配对作为key的属性来对应不同的域名使用不同的密钥。
+        // 使用 | 分隔符来隔开不同的域名和密钥。
+        // 如果要本地测试使用某个密钥，可使用特殊的域名名字 “local”。
+        // 语法示例：
+        // key=”yourdomain1.com|key1|yourdomain2.com|key2|local|key1″
+        // 必应地图API的密钥。
+        // 需要必应地图的API密钥才能够使用必应地图服务！
+        // 注意 – 必应地图API密钥不限制域名！
+        // 登陆获取必应地图API密钥…
+        // 多域名密钥配对
+        // maptype
+        // satellite (默认)
+        // normal
+        // hybrid
+        // 选择地图类型：
+        // culturecode
+        // HTML5: http://msdn.microsoft.com/en-us/library/gg427600.aspx
+        // Flash: http://msdn.microsoft.com/en-us/library/hh441729.aspx
+        // 选择地图标签的语言
+        // 查看支持的culture codes：
+        // 注意 – culturecode设置必须在启动插件时进行，在之后进行更改是不可能的！
+        // lat / lng
+        // 从Google Maps 或 Bing Maps 页面获取
+        // 或者: Google Maps Get Lat Lon 或 Bing Maps Lat/Long Finder.
+        // 这两个页面能够非常方便和容易地得到坐标。注意谷歌地图和必应地图的坐标是兼容的。
+        // 经纬度
+        // 当前地图中心点的地理坐标。
+        // 如何获取？
+        // zoom
+        // 设置地图的缩放级别。
+        // 可从1到25。
+        // activespotenabled
+        // 激活的点是否可接收鼠标事件
+        // 也就是说是否能有鼠标点击或悬停？
+        // maphandcursor (仅支持Flash)
+        // 是否在鼠标悬停在地图上时显示手型。
+        // dragging (仅支持Flash)
+        // 是否可以鼠标拖拽地图？
+        // scrollwheel (仅支持Flash)
+        // 是否能用鼠标滚轮缩放地图？
+        // dbclicking (仅支持Flash)
+        // 是否支持双击放大？
+        // bgcolor / bgalpha
+        // 地图背景的颜色和透明度。
+        // mapsapi (仅支持HTML5)
+        // 为必应地图API手动设置其它路径。
+        // 为完全路径，需要设置protocol以及API版本。
+        // 如果不设置，则使用默认路径：
+        // http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0
+        // 使用 https，使用下面的地址：
+        // https://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&amp;s=1
+
+        // 插件子元素：
+        // Spotstyle
+        // Spot
+        // Radar
+        // Controls
+
+        // 创建样式 在head里添加样式
         function createPinCursorStyle() {
             var a = document.createElement("style");
             a.type = "text/css";
@@ -1732,6 +1934,17 @@ var krpanoplugin = function () {
             }, function () {
                 return _bool_activeSpotEnabled
             });
+
+            // 插件属性 – 事件
+            // onmapready
+            // 当必应地图插件载入结束可供使用时响应。
+            // onmaptypechanged
+            // 当地图类型改变时响应。
+            // onmapmoved
+            // 当地图被移除时响应。
+            // onmapzoomed
+            // 当地图缩放时响应。
+
             _pluginobject.registerattribute("bgcolor", 0);
             _pluginobject.registerattribute("bgalpha", 0);
             _pluginobject.registerattribute("mapsapi", "");
@@ -1779,28 +1992,35 @@ var krpanoplugin = function () {
             _document_div.style.webkitUserSelect = "none";
             _document_div.style.MozUserSelect = "none";
             _pluginobject.sprite.appendChild(_document_div);
-            if (window.Microsoft && window.Microsoft.Maps) setTimeout(initBingMap, 10);
-            else if (window._krpano_bmap_loadedcallbacks_)
-                window._krpano_bmap_loadedcallbacks_.push(initBingMap);
+            // 初始化地图
+            if (window.Microsoft && window.Microsoft.Maps) {
+                // 网页里已经有地图控件
+                setTimeout(initBingMap, 10); }
+            else if (window._krpano_bmap_loadedcallbacks_) {
+                // 利用回调函数初始化
+                window._krpano_bmap_loadedcallbacks_.push(initBingMap); }
             else {
+                // 啥都没有的情况下
                 window._krpano_bmap_loadedcallbacks_ = [];
                 _krpano_bmap_cb_var = "_krpano_bmap_cb_";
-                // 生成随机的URL标识
+                // 生成随机的URL标识 并将地图刷新函数放到 window[_krpano_bmap_cb_var]
                 for (krpanointerface = 0; 16 > krpanointerface; krpanointerface++)
                     _krpano_bmap_cb_var += String.fromCharCode(65 + 32 * Math.round(Math.random()) + Math.floor(25 * Math.random()));
                 window[_krpano_bmap_cb_var] = reinitBingMap;
                 krpanointerface = "";
                 _pluginobject.culturecode &&
                 (krpanointerface = "&mkt=" + _pluginobject.culturecode);
+                // 必应API地址
                 (pluginpath = _pluginobject.mapsapi) &&
                 "" != pluginpath ||
                 (pluginpath = 0 == ("" + window.location.href).toLowerCase().indexOf("https:") ?
                 "https://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&s=1" :
                 "http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0");
+
                 var scriptobject = document.createElement("script");
                 scriptobject.type = "text/javascript";
                 scriptobject.src = pluginpath + krpanointerface + "&onscriptload=" + _krpano_bmap_cb_var;
-                document.body.appendChild(scriptobject)
+                document.body.appendChild(scriptobject);
             }
         }
     };
@@ -1823,6 +2043,6 @@ var krpanoplugin = function () {
             width: b
         }), setBGColor());
         updateControls();
-        return false
+        return false;
     }
 };
