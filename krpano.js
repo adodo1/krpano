@@ -536,14 +536,14 @@ function embedhtml5(Wd, Lc) {
         }
 
         function la(a) {
-            return _[53] === typeof a ? a : 0 <= _[407].indexOf(String(a).toLowerCase())
+            return "boolean" === typeof a ? a : 0 <= "yesontrue1".indexOf(String(a).toLowerCase())
         }
 
         function ka(a, b) {
             if (typeof a != b) {
-                if (_[594] == b) return Number(a);
-                if (_[53] == b) return la(a);
-                if (_[1] == b) return null == a ? null : String(a)
+                if ("number" == b) return Number(a);
+                if ("boolean" == b) return la(a);
+                if ("string" == b) return null == a ? null : String(a)
             }
             return a
         }
@@ -591,11 +591,11 @@ function embedhtml5(Wd, Lc) {
         }
 
         function xb(a, b, x, d, e) {
-            b[a + _[326]](x, d, e)
+            b[a + "EventListener"](x, d, e)
         }
 
         function Fa(a) {
-            var b = ca.createElement(1 == a ? "img" : 2 == a ? _[582] : "div");
+            var b = ca.createElement(1 == a ? "img" : 2 == a ? "canvas" : "div");
             b && 1 == a && "off" != hd && (b.crossOrigin = hd);
             return b
         }
@@ -646,7 +646,7 @@ function embedhtml5(Wd, Lc) {
 
         function ud(a, b) {
             var x = String(a).charCodeAt(0);
-            return 48 <= x && 57 >= x ? (va(3, b + _[167]), !1) : !0
+            return 48 <= x && 57 >= x ? (va(3, b + " - invalid name! Names need to begin with an alphabetic character!"), !1) : !0
         }
 
         function sd(a, b) {
@@ -665,11 +665,11 @@ function embedhtml5(Wd, Lc) {
         function bb(a) {
             var b = Db ? Db.interruptionevents : "";
             if (a)
-                if (0 <= a.indexOf(_[63])) {
-                    if (0 > b.indexOf(_[581])) return
+                if (0 <= a.indexOf("layer")) {
+                    if (0 > b.indexOf("layers")) return
                 } else if (0 <= a.indexOf("key")) {
-                if (0 > b.indexOf(_[467])) return
-            } else if (0 <= a.indexOf("pano.") && 0 > b.indexOf(_[296])) return;
+                if (0 > b.indexOf("keyboard")) return
+            } else if (0 <= a.indexOf("pano.") && 0 > b.indexOf("userviewchange")) return;
             kc = Ja()
         }
 
@@ -712,7 +712,7 @@ function embedhtml5(Wd, Lc) {
         }
 
         function Y(a, b, d, f, e) {
-            if (b && _[1] == typeof b) {
+            if (b && "string" == typeof b) {
                 var k = b.slice(0, 4);
                 "get:" == k ? b = S(b.slice(4)) : "calc" == k && 58 == b.charCodeAt(4) && (b = Z.calc(null, b.slice(5)))
             }
@@ -720,7 +720,7 @@ function embedhtml5(Wd, Lc) {
                 m, g = vd(a);
             m = g.length;
             if (1 == m && f && (k = g[0], void 0 !== f[k])) {
-                f[k] = _[53] == typeof f[k] ? la(b) : b;
+                f[k] = "boolean" == typeof f[k] ? la(b) : b;
                 return
             }
             var w = l,
@@ -754,7 +754,7 @@ function embedhtml5(Wd, Lc) {
 
         function Xd(a) {
             if (a && "null" != a) {
-                if (_[1] == typeof a) {
+                if ("string" == typeof a) {
                     var b = a.split("&"),
                         d = b.length,
                         f;
@@ -772,7 +772,7 @@ function embedhtml5(Wd, Lc) {
             if (a && "calc(" == ("" + a).slice(0, 5)) return Z.calc(null, a.slice(5, a.lastIndexOf(")")));
             var f, e, k = vd(a);
             f = k.length;
-            if (1 == f && _[359] == k[0]) return b ? b._type + "[" + b.name + "]" : "";
+            if (1 == f && "actioncaller" == k[0]) return b ? b._type + "[" + b.name + "]" : "";
             if (1 == f && b && (e = k[0], b.hasOwnProperty(e))) return b[e];
             var m = l;
             for (a = 0; a < f; a++) {
@@ -804,7 +804,7 @@ function embedhtml5(Wd, Lc) {
         }
 
         function va(a, b) {
-            !Jd && (0 < a || l.debugmode) && (b = ["DEBUG", "INFO", _[518], "ERROR", _[395]][a] + ": " + b, V.log(b), 2 < a && l.showerrors && setTimeout(function() {
+            !Jd && (0 < a || l.debugmode) && (b = ["DEBUG", "INFO", "WARNING", "ERROR", "FATALERROR"][a] + ": " + b, V.log(b), 2 < a && l.showerrors && setTimeout(function() {
                 try {
                     V.showlog(!0)
                 } catch (a) {}
@@ -816,44 +816,44 @@ function embedhtml5(Wd, Lc) {
                 a = "" + a;
                 var x = 0 < G(a).indexOf("load");
                 a = td(a).split("[br]").join("<br/>");
-                var f = Ga.createItem(_[473]),
-                    e = Ga.createItem(_[505]);
+                var f = Ga.createItem("__fte1__"),
+                    e = Ga.createItem("__fte2__");
                 f.sprite || (f.create(), V.controllayer.appendChild(f.sprite));
                 e.sprite || (e.create(), V.controllayer.appendChild(e.sprite));
                 f.imagewidth = 1;
                 f.imageheight = 1;
                 f.loaded = !0;
                 f.handcursor = !1;
-                f.align = _[84];
+                f.align = "lefttop";
                 f.width = "100%";
                 f.height = "100%";
                 f.alpha = .5;
                 f.keep = !0;
                 f = f.sprite.style;
-                f.backgroundColor = _[38];
+                f.backgroundColor = "#000000";
                 f.zIndex = 99999998;
                 x && (e.visible = !1);
                 e.imagewidth = 1;
                 e.imageheight = 1;
                 e.loaded = !0;
                 e.handcursor = !1;
-                e.align = _[85];
+                e.align = "center";
                 e.y = 0;
                 e.width = "105%";
                 var k = d.ie || d.android ? -2 : 2;
                 e.height = k + 46 / ba;
                 e.keep = !0;
                 f = e.sprite.style;
-                f.backgroundColor = _[38];
-                f.color = _[54];
-                f.fontFamily = d.realDesktop && !d.ie ? _[30] : _[20];
+                f.backgroundColor = "#000000";
+                f.color = "#FFFFFF";
+                f.fontFamily = d.realDesktop && !d.ie ? "Courier New" : "sans-serif";
                 f.fontSize = "12px";
                 f.margin = "-2px";
-                f.border = _[289];
-                b || (b = _[309]);
-                e.sprite.innerHTML = _[177] + b + "<br/>" + a + _[336];
+                f.border = "1px solid white";
+                b || (b = " FATAL ERROR:");
+                e.sprite.innerHTML = "<div style='padding:8px; text-align:center;'>" + b + "<br/>" + a + "&nbsp;</div>";
                 f.zIndex = 99999999;
-                f[Sb] = _[227];
+                f[Sb] = "0px 0px 8px #FFFFFF";
                 e.jsplugin = {
                     onresize: function(a, b) {
                         var d = e.sprite.childNodes[0].clientHeight;
@@ -931,7 +931,7 @@ function embedhtml5(Wd, Lc) {
         }
 
         function Ka() {
-            var a = _[132] !== typeof Float32Array ? new Float32Array(16) : Array(16);
+            var a = "undefined" !== typeof Float32Array ? new Float32Array(16) : Array(16);
             a[0] = a[5] = a[10] = a[15] = 1;
             a[1] = a[2] = a[3] = a[4] = a[6] = a[7] = a[8] = a[9] = a[11] = a[12] = a[13] = a[14] = 0;
             return a
@@ -1237,7 +1237,7 @@ function embedhtml5(Wd, Lc) {
 
         function ae(a) {
             var b = a && a._poly;
-            b && (b.setAttribute("fill", !0 === a.polyline ? "none" : ua(a.fillcolor, a.fillalpha)), b.setAttribute(_[600], ua(a.bordercolor, a.borderalpha)), b.setAttribute(_[347], a.borderwidth * ba))
+            b && (b.setAttribute("fill", !0 === a.polyline ? "none" : ua(a.fillcolor, a.fillalpha)), b.setAttribute("stroke", ua(a.bordercolor, a.borderalpha)), b.setAttribute("stroke-width", a.borderwidth * ba))
         }
 
         function We(a) {
@@ -1250,8 +1250,8 @@ function embedhtml5(Wd, Lc) {
                 g = a._poly;
             if (!g) {
                 var w = V.svglayer;
-                w || (w = document.createElementNS(_[99], "svg"), w.setAttribute(_[64], "100%"), w.setAttribute(_[17], "100%"), w.style.position = _[0], w.style.left = 0, w.style.top = 0, w.style.display = ja.stereo ? "none" : "", V.svglayer = w, V.hotspotlayer.appendChild(w));
-                g = document.createElementNS(_[99], la(a.polyline) ? _[142] : _[528]);
+                w || (w = document.createElementNS("http://www.w3.org/2000/svg", "svg"), w.setAttribute("width", "100%"), w.setAttribute("height", "100%"), w.style.position = "absolute", w.style.left = 0, w.style.top = 0, w.style.display = ja.stereo ? "none" : "", V.svglayer = w, V.hotspotlayer.appendChild(w));
+                g = document.createElementNS("http://www.w3.org/2000/svg", la(a.polyline) ? "polyline" : "polygon");
                 w.appendChild(g);
                 g.kobject = a;
                 a._poly = g;
@@ -1280,11 +1280,11 @@ function embedhtml5(Wd, Lc) {
                 Md(b, u);
                 for (A = 0; A < l; A++) p = w[A], v = (180 - Number(p.ath)) * W, p = Number(p.atv) * W, n.x = 1E3 * Math.cos(p) * Math.cos(v), n.z = 1E3 * Math.cos(p) * Math.sin(v), n.y = 1E3 * Math.sin(p), Md(b, n), n.z >= m ? (u.z >= m || (y = (m - u.z) / (n.z - u.z), p = d / (m + f), v = (u.x + (n.x - u.x) * y) * p + e, p = (u.y + (n.y - u.y) * y) * p + k, r.push(v.toFixed(2) + "," + p.toFixed(2))), p = d / (n.z + f), v = n.x * p + e, p = n.y * p + k, r.push(v.toFixed(2) + "," + p.toFixed(2))) : u.z >= m && (y = (m - n.z) / (u.z - n.z), p = d / (m + f), v = (n.x + (u.x - n.x) * y) * p + e, p = (n.y + (u.y - n.y) * y) * p + k, r.push(v.toFixed(2) + "," + p.toFixed(2))), u.x = n.x, u.y = n.y, u.z = n.z;
                 0 == a.polyline && 2 < r.length && r.push(r[0]);
-                g.style.pointerEvents = a.DATA.enabled ? _[300] : "none";
-                g.style.cursor = a.DATA.handcursor ? _[10] : _[6];
-                g.style.visibility = a.DATA.visible ? _[16] : _[7]
+                g.style.pointerEvents = a.DATA.enabled ? "visiblePainted" : "none";
+                g.style.cursor = a.DATA.handcursor ? "pointer" : "default";
+                g.style.visibility = a.DATA.visible ? "visible" : "hidden"
             }
-            g.setAttribute(_[569], r.join(" "))
+            g.setAttribute("points", r.join(" "))
         }
 
         function Xe(a, b) {
@@ -1401,7 +1401,7 @@ function embedhtml5(Wd, Lc) {
                                 K._hszscale = qa;
                                 1 == K.scaleflying && (qa = qa * (1 - G) + qa / (A / (g / 2)) * B * G);
                                 K.DATA.scale = 1;
-                                K.updatepluginpos(_[206]);
+                                K.updatepluginpos("hotspot css3d distorted");
                                 K.DATA.scale = Q;
                                 var L = K.pixelwidth,
                                     M = K.pixelheight,
@@ -1431,10 +1431,10 @@ function embedhtml5(Wd, Lc) {
                                 cc = cc * L * wa;
                                 if (0 < y || d.firefox) P = H;
                                 H = L * wa * c / 2;
-                                H = _[331] + H * K.tx + "px," + H * K.ty + "px," + -H * K.tz + "px) ";
+                                H = " translate3D(" + H * K.tx + "px," + H * K.ty + "px," + -H * K.tz + "px) ";
                                 E[3] = oa(r + n * (1 - G));
                                 E[7] = oa(-(u * (1 - G) + v * G));
-                                E[11] = H + _[140] + oa(-z);
+                                E[11] = H + "rotateY(" + oa(-z);
                                 E[13] = oa(h);
                                 E[17] = ea;
                                 E[19] = oa(1 * K.DATA.rotate + G * I);
@@ -1445,11 +1445,11 @@ function embedhtml5(Wd, Lc) {
                                 E[33] = qa * Za;
                                 E[35] = q;
                                 E[37] = ra;
-                                R[X + _[92]] = "0 0";
+                                R[X + "Origin"] = "0 0";
                                 R[X] = E.join("")
                             } else if (qa >= C && (qa = 1, H)) {
                                 if (K.zoom || K.distorted) qa *= Number(2 * (1 - G) * D + G * ba) / ba;
-                                K.updatepluginpos(_[213]);
+                                K.updatepluginpos("hotspot css3d normal");
                                 L = K.pixelwidth;
                                 M = K.pixelheight;
                                 Za = Q = 1;
@@ -1465,7 +1465,7 @@ function embedhtml5(Wd, Lc) {
                                 q -= (ea.ex - .5) * wa;
                                 ra -= (ea.ey - .5) * H;
                                 ea = 2 * qa * (Math.max(L, M) * K.DATA.scale + Math.max(nb, cc));
-                                if (0 < z + ea || 0 < h + ea || z - ea < k || h - ea < g) K._use_css_scale ? qa *= w : (q *= w, ra *= w), P = -wa / 2, ea = -H / 2, K._use_css_scale || (P *= w, ea *= w), K._istextfield && 0 == K.accuracy && (z |= 0, h |= 0, P |= 0, ea |= 0, nb |= 0, cc |= 0, q |= 0, ra |= 0), N[1] = oa(z), N[3] = oa(h), N[5] = oa(P), N[7] = oa(ea), N[9] = oa(1 * K.DATA.rotate - I * (1 - G)), N[11] = nb, N[13] = cc, N[15] = qa * Q, N[17] = qa * Za, N[19] = oa(q), N[21] = oa(ra), G = N.join(""), G = yc && 2 > xc && .5 < Number(K.zorder2) ? _[373] + (999999999E3 + K._zdeep) + "px) " + G : _[297] + G, R[X + _[92]] = _[553], R[X] = G, P = !0
+                                if (0 < z + ea || 0 < h + ea || z - ea < k || h - ea < g) K._use_css_scale ? qa *= w : (q *= w, ra *= w), P = -wa / 2, ea = -H / 2, K._use_css_scale || (P *= w, ea *= w), K._istextfield && 0 == K.accuracy && (z |= 0, h |= 0, P |= 0, ea |= 0, nb |= 0, cc |= 0, q |= 0, ra |= 0), N[1] = oa(z), N[3] = oa(h), N[5] = oa(P), N[7] = oa(ea), N[9] = oa(1 * K.DATA.rotate - I * (1 - G)), N[11] = nb, N[13] = cc, N[15] = qa * Q, N[17] = qa * Za, N[19] = oa(q), N[21] = oa(ra), G = N.join(""), G = yc && 2 > xc && .5 < Number(K.zorder2) ? "translateZ(" + (999999999E3 + K._zdeep) + "px) " + G : "translateZ(0) " + G, R[X + "Origin"] = "50% 50%", R[X] = G, P = !0
                             }
                             0 == K.forceupdate && (G = P ? "" : "none", G != R.display && (R.display = G));
                             K.forceupdate = !1
@@ -1481,7 +1481,7 @@ function embedhtml5(Wd, Lc) {
                 a.marginTop = a.marginBottom = v[17] * I + "px";
                 a.height = "1px";
                 a.backgroundColor = ua(v[18]);
-                "none" != v[19] && (a.borderBottom = _[408] + ua(v[19]));
+                "none" != v[19] && (a.borderBottom = "1px solid " + ua(v[19]));
                 B.appendChild(c)
             }
 
@@ -1494,11 +1494,11 @@ function embedhtml5(Wd, Lc) {
                 var e = Fa(),
                     h = e.style;
                 h.padding = v[20] * I + "px";
-                h.border = v[21] + _[34] + ua(v[22]);
+                h.border = v[21] + "px solid " + ua(v[22]);
                 h.borderRadius = v[23] * I + "px";
                 h.marginTop = v[24] * I + "px";
                 h.marginBottom = v[24] * I + "px";
-                d.androidstock && (h[_[42]] = _[13]);
+                d.androidstock && (h["-webkit-tap-highlight-color"] = "transparent");
                 eb.touch && aa(e, d.browser.events.touchstart, function(a) {
                     function L(L) {
                         L = k(L) - Za;
@@ -1528,26 +1528,26 @@ function embedhtml5(Wd, Lc) {
                         aa(T, r, M, !0)
                     }
                 }, !0);
-                b && c ? (h.cursor = _[10], e.onmousedown = function(a) {
+                b && c ? (h.cursor = "pointer", e.onmousedown = function(a) {
                     a.stopPropagation()
                 }, e.onmouseover = function() {
                     h = this.style;
                     h.background = ua(v[25]);
-                    h.border = v[21] + _[34] + ua(v[26]);
+                    h.border = v[21] + "px solid " + ua(v[26]);
                     h.color = ua(v[27])
                 }, e.onmouseout = function() {
                     h = this.style;
                     h.background = "none";
-                    h.border = v[21] + _[34] + ua(v[22]);
+                    h.border = v[21] + "px solid " + ua(v[22]);
                     h.color = ua(v[4])
                 }, e.oncontextmenu = function(a) {
                     ta(a);
                     a.stopPropagation();
                     e.onclick()
                 }, e.onclick = function(a) {
-                    f ? (h = y.style, h.opacity = 1, h.transition = _[119], h.opacity = 0, setTimeout(x, 300)) : x();
+                    f ? (h = y.style, h.opacity = 1, h.transition = "opacity 0.25s", h.opacity = 0, setTimeout(x, 300)) : x();
                     Z.callaction(b)
-                }) : (0 == c && (h.color = ua(v[5])), h.cursor = _[6]);
+                }) : (0 == c && (h.color = ua(v[5])), h.cursor = "default");
                 var q = Fa();
                 q.style.marginLeft = v[28] * I + "px";
                 q.style.marginRight = v[29] * I + "px";
@@ -1559,15 +1559,15 @@ function embedhtml5(Wd, Lc) {
 
             function g() {
                 function a() {
-                    return .4 > Math.random() ? " " : _[161]
+                    return .4 > Math.random() ? " " : "&nbsp;"
                 }
-                var c = m("About" + a() + "the" + a() + _[57] + a() + _[483] + a() + _[440], !0, function() {
-                    Z.openurl(_[239])
+                var c = m("About" + a() + "the" + a() + "krpano" + a() + "Panorama" + a() + "Viewer...", !0, function() {
+                    Z.openurl("http://krpano.com")
                 });
                 try {
                     (new MutationObserver(function(a) {
                         a = T.getComputedStyle(c);
-                        9 > Math.min(parseInt(a.width) | 0, parseInt(a.height) | 0) && (l = {}, cb(_[120]))
+                        9 > Math.min(parseInt(a.width) | 0, parseInt(a.height) | 0) && (l = {}, cb("LICENSE ERROR"))
                     })).observe(c, {
                         attributes: !1,
                         childList: !0,
@@ -1586,8 +1586,8 @@ function embedhtml5(Wd, Lc) {
             function t() {
                 var a = d.android,
                     c = d.infoString,
-                    c = c.split(_[478]).join("");
-                m((X ? "" : _[149] + l.version + _[270] + l.build + _[302]) + (a ? _[539] : "") + c + fb.infoString + (a ? _[475] : ""), !0, null)
+                    c = c.split("SAMSUNG ").join("");
+                m((X ? "" : "krpano " + l.version + " <small>(build " + l.build + ")</small><br/>") + (a ? "<small>" : "") + c + fb.infoString + (a ? "</small>" : ""), !0, null)
             }
 
             function r() {
@@ -1611,38 +1611,38 @@ function embedhtml5(Wd, Lc) {
                     u = y.style;
                     u.left = (a | 0) + "px";
                     u.top = (b | 0) + "px";
-                    f && (u.transition = _[119], u.opacity = 1)
+                    f && (u.transition = "opacity 0.25s", u.opacity = 1)
                 } else 10 > ++ea && setTimeout(A, 32)
             }
             var p = l.contextmenu;
             if (f && 0 == p.touch) return null;
             var v = null;
-            p.customstyle && (_[128] == d.browser.domain || 0 == d.realDesktop || d.realDesktop && 0 != (La & 16)) && (v = G(p.customstyle).split("|"), 30 != v.length && (v = null));
+            p.customstyle && ("krpano.com" == d.browser.domain || 0 == d.realDesktop || d.realDesktop && 0 != (La & 16)) && (v = G(p.customstyle).split("|"), 30 != v.length && (v = null));
             null == v && (v = (d.mac ? "default|14|default|0xFFFFFF|0x000000|0xBBBBBB|0|0|5|2|2|8|0x66000000|0|0|1|4|5|0xEEEEEE|none|1|0|0|0|3|0xEEEEEE|0|0|20|12" : "default|default|150%|0xFFFFFF|0x000000|0xBBBBBB|1|0xBBBBBB|0|2|2|8|0x66000000|0|0|2|2|5|0xE0E0E0|none|4|0|0|0|3|0xEEEEEE|0|0|18|12").split("|"));
             var u = null,
                 n = 0,
                 y = Fa();
-            y.onselectstart = _[321];
+            y.onselectstart = "return false;";
             d.desktop && d.chrome && (y.style.opacity = .999);
             if (d.linux || d.android) v[1] = 12;
             u = y.style;
-            u.position = _[0];
+            u.position = "absolute";
             u.zIndex = 99999999999;
             var I = 1;
-            d.androidstock ? I = d.pixelratio : d.chrome && 40 > d.chromeversion && (u[qb] = _[27]);
-            _[6] != v[0] ? u.fontFamily = v[0] : d.ios ? (u.fontFamily = _[20], u.fontWeight = _[534], _[6] == v[1] && (v[1] = 14)) : (u.font = "menu", d.firefox || 1 == d.pixelratio || (u.fontSize = "12px"));
-            _[6] != v[1] && (u.fontSize = v[1] * I * (d.android ? 1.2 : 1) + "px");
-            _[6] != v[2] && (u.lineHeight = v[2]);
+            d.androidstock ? I = d.pixelratio : d.chrome && 40 > d.chromeversion && (u[qb] = "translateZ(+2000000000000px)");
+            "default" != v[0] ? u.fontFamily = v[0] : d.ios ? (u.fontFamily = "sans-serif", u.fontWeight = "lighter", "default" == v[1] && (v[1] = 14)) : (u.font = "menu", d.firefox || 1 == d.pixelratio || (u.fontSize = "12px"));
+            "default" != v[1] && (u.fontSize = v[1] * I * (d.android ? 1.2 : 1) + "px");
+            "default" != v[2] && (u.lineHeight = v[2]);
             u.background = ua(v[3]);
             u.color = ua(v[4]);
-            u.border = v[6] + _[34] + ua(v[7]);
+            u.border = v[6] + "px solid " + ua(v[7]);
             u.borderRadius = v[8] * I + "px";
             u.minWidth = "150px";
             u.textAlign = "left";
             u[Sb] = v[9] + "px " + v[10] + "px " + v[11] + "px " + ua(v[12]);
             var B = Fa(),
                 u = B.style;
-            u.border = v[13] + _[34] + ua(v[14]);
+            u.border = v[13] + "px solid " + ua(v[14]);
             u.paddingTop = v[15] * I + "px";
             u.paddingBottom = v[16] * I + "px";
             eb.touch && aa(B, d.browser.events.touchstart, function(a) {
@@ -1660,14 +1660,14 @@ function embedhtml5(Wd, Lc) {
                 H = !1;
             for (N = 0; N < E; N++)
                 if (z = C[N])
-                    if (h = z.caption) h = ue(unescape(h)), z.separator && 0 < c && e(), F = G(h), _[57] == F ? 0 == O && (O = !0, g(), c++) : Va && _[497] == F ? 0 == R && (R = !0, r(), c++) : _[131] == F ? (K = !0, d.fullscreensupport && (w(), c++)) : _[366] == F ? (H = !0, t(), c++) : (F = z.visible && (!z.showif || Z.calc(null, z.showif))) ? (m(h, z.enabled, z.onclick), c++) : 0 == F && z.separator && 0 < c && B.removeChild(B.lastChild);
+                    if (h = z.caption) h = ue(unescape(h)), z.separator && 0 < c && e(), F = G(h), "krpano" == F ? 0 == O && (O = !0, g(), c++) : Va && "panotour" == F ? 0 == R && (R = !0, r(), c++) : "fullscreen" == F ? (K = !0, d.fullscreensupport && (w(), c++)) : "versioninfo" == F ? (H = !0, t(), c++) : (F = z.visible && (!z.showif || Z.calc(null, z.showif))) ? (m(h, z.enabled, z.onclick), c++) : 0 == F && z.separator && 0 < c && B.removeChild(B.lastChild);
             Va && 0 == R && (0 < c && (e(), c = 0), r());
             0 == O && (0 < c && e(), g(), c++);
             0 == K && 1 == p.fullscreen && d.fullscreensupport && (w(), c++);
             0 == H && 1 == p.versioninfo && (0 < c && e(), t(), c++);
             if (0 == c) return null;
             u = y.style;
-            u.left = _[143];
+            u.left = "-10000px";
             u.top = "10px";
             var ea = 0;
             f && (u.opacity = 0);
@@ -1684,19 +1684,19 @@ function embedhtml5(Wd, Lc) {
             l.get = S;
             l.call = uc;
             l.trace = va;
-            Object.defineProperty(l, _[509], {
+            Object.defineProperty(l, "actions", {
                 value: Z
             });
             l.Kloader = na;
             l["true"] = !0;
-            l[_[26]] = !1;
+            l["false"] = !1;
             l.strict = !1;
-            l.version = _[492];
-            l.build = _[402];
+            l.version = "1.19-pr7";
+            l.build = "2016-09-09";
             l.buildversion = l.version;
             l.debugmode = !1;
             l.tweentypes = zc;
-            l.basedir = _[391];
+            l.basedir = "%FIRSTXML%";
             l.lasterror = "";
             l.showtext = function() {};
             l.bgcolor = 0;
@@ -1718,13 +1718,13 @@ function embedhtml5(Wd, Lc) {
             l.isdesktop = d.desktop;
             l.istouchdevice = d.touchdevice;
             l.isgesturedevice = d.gesturedevice;
-            a(l, _[390], function() {
+            a(l, "stagewidth", function() {
                 return Tb / ba
             });
-            a(l, _[372], function() {
+            a(l, "stageheight", function() {
                 return lb / ba
             });
-            Ca(l, _[405], function() {
+            Ca(l, "stagescale", function() {
                 return ba
             }, function(a) {
                 a = Number(a);
@@ -1737,14 +1737,14 @@ function embedhtml5(Wd, Lc) {
             l.wheeldelta_touchscale = 0;
             l.keycode = 0;
             l.idletime = .5;
-            l.__defineGetter__(_[429], Ja);
-            l.__defineGetter__(_[597], Math.random);
-            Ca(l, _[131], function() {
+            l.__defineGetter__("timertick", Ja);
+            l.__defineGetter__("random", Math.random);
+            Ca(l, "fullscreen", function() {
                 return V.fullscreen
             }, function(a) {
                 V.setFullscreen(la(a))
             });
-            Ca(l, _[432], function() {
+            Ca(l, "__swfpath", function() {
                 return na.swfpath
             }, function(a) {
                 na.swfpath = a
@@ -1767,10 +1767,10 @@ function embedhtml5(Wd, Lc) {
                 x: 0,
                 y: 0
             };
-            a(H, _[592], function() {
+            a(H, "stagex", function() {
                 return H.x + Bb.pixelx
             });
-            a(H, _[583], function() {
+            a(H, "stagey", function() {
                 return H.y + Bb.pixely
             });
             a(H, "dd", function() {
@@ -1819,13 +1819,13 @@ function embedhtml5(Wd, Lc) {
                 stereooverlap: 0,
                 hardwarelimit: d.realDesktop && d.safari && "6" > d.safariversion ? 2E3 : d.realDesktop && !d.webgl ? 2560 : d.iphone && d.retina && !d.iphone5 ? 800 : d.iphone && !d.retina ? 600 : d.ipod && d.retina ? 640 : d.mobile || d.tablet ? 1024 : 4096
             };
-            Ca(ja, _[150], function() {
+            Ca(ja, "stereo", function() {
                 return ja._stereo
             }, function(a) {
                 a = la(a);
                 ja._stereo != a && (a = a && d.webgl, ja._stereo = a, V.svglayer && (V.svglayer.style.display = a ? "none" : ""), t.haschanged = !0)
             });
-            Ca(ja, _[454], function() {
+            Ca(ja, "framerate", function() {
                 var a = ja.FRM | 0;
                 return 0 == a ? "auto" : "" + a
             }, function(a) {
@@ -1833,7 +1833,7 @@ function embedhtml5(Wd, Lc) {
                 0 > a && (a = 0);
                 ja.FRM = a
             });
-            Ca(ja, _[250], function() {
+            Ca(ja, "framebufferscale", function() {
                 return ja._framebufferscale
             }, function(a) {
                 a = Number(a);
@@ -1852,11 +1852,11 @@ function embedhtml5(Wd, Lc) {
             gb = new Qb;
             gb.name = "STAGE";
             ob = new Qb;
-            ob.name = _[524];
+            ob.name = "BGLAYER";
             Ga.alpha = 1;
             Ua.alpha = 1;
             Ua.visible = !0;
-            Ca(Ga, _[16], function() {
+            Ca(Ga, "visible", function() {
                 return "none" != V.pluginlayer.style.display
             }, function(a) {
                 V.pluginlayer.style.display = la(a) ? "" : "none"
@@ -1886,7 +1886,7 @@ function embedhtml5(Wd, Lc) {
                     }
                 }
                 var d = {},
-                    k = _[168].split(" "),
+                    k = "abs acos asin atan ceil cos exp floor log round sin sqrt tan".split(" "),
                     m;
                 for (m in k) {
                     var g = k[m];
@@ -1919,7 +1919,7 @@ function embedhtml5(Wd, Lc) {
             l.scene = new ub;
             l.data = new ub;
             l.addlayer = l.addplugin = function(a) {
-                if (!ud(a, _[228] + a + ")")) return null;
+                if (!ud(a, "addlayer/addplugin(" + a + ")")) return null;
                 a = Ga.createItem(a);
                 if (!a) return null;
                 null == a.sprite && (a._dyn = !0, a.create(), null == a._parent && V.pluginlayer.appendChild(a.sprite));
@@ -1941,7 +1941,7 @@ function embedhtml5(Wd, Lc) {
                 }
             };
             l.addhotspot = function(a) {
-                if (!ud(a, _[375] + a + ")")) return null;
+                if (!ud(a, "addhotspot(" + a + ")")) return null;
                 a = Ua.createItem(a);
                 if (!a) return null;
                 0 == a._ready && (a._dyn = !0, a.create(), a.sprite && V.hotspotlayer.appendChild(a.sprite));
@@ -2001,7 +2001,7 @@ function embedhtml5(Wd, Lc) {
                 get: function() {
                     return !0
                 }
-            }).x && (Object.defineProperty(Object.prototype, _[249], {
+            }).x && (Object.defineProperty(Object.prototype, "__defineGetter__", {
                 enumerable: !1,
                 configurable: !0,
                 value: function(a, b) {
@@ -2011,7 +2011,7 @@ function embedhtml5(Wd, Lc) {
                         configurable: !0
                     })
                 }
-            }), Object.defineProperty(Object.prototype, _[261], {
+            }), Object.defineProperty(Object.prototype, "__defineSetter__", {
                 enumerable: !1,
                 configurable: !0,
                 value: function(a, b) {
@@ -2067,7 +2067,7 @@ function embedhtml5(Wd, Lc) {
             Od = 60,
             La = 14,
             Pd = null,
-            Pb = [_[397], _[576]],
+            Pb = ["showerrors", "logkey"],
             Va = null,
             hd = "",
             Sc = null,
@@ -2103,7 +2103,7 @@ function embedhtml5(Wd, Lc) {
                     }
 
                     function x(a, c) {
-                        for (var b = ["ms", "Moz", _[575], "O"], d = 0; 5 > d; d++) {
+                        for (var b = ["ms", "Moz", "Webkit", "O"], d = 0; 5 > d; d++) {
                             var e = 0 < d ? b[d - 1] + a.slice(0, 1).toUpperCase() + a.slice(1) : a;
                             if (void 0 !== qa.style[e]) return e
                         }
@@ -2137,17 +2137,17 @@ function embedhtml5(Wd, Lc) {
                         I = 2 <= y;
                     e = 1;
                     var B = 0 <= f.indexOf("ipod"),
-                        C = 0 <= f.indexOf(_[61]),
+                        C = 0 <= f.indexOf("iphone"),
                         z = 0 <= f.indexOf("ipad"),
                         h = C || B || z,
                         c = u.indexOf("silk/"),
-                        F = 0 <= u.indexOf(_[537]) || 0 <= u.indexOf(_[153]),
-                        E = 0 > c && !F && 0 <= u.indexOf(_[538]),
+                        F = 0 <= u.indexOf("trident") || 0 <= u.indexOf(" edge/"),
+                        E = 0 > c && !F && 0 <= u.indexOf("android"),
                         N = m = !1,
                         t = !1,
-                        O = v.indexOf(_[155]),
+                        O = v.indexOf("Chrome"),
                         R = T.chrome && !F,
-                        K = v.indexOf(_[540]),
+                        K = v.indexOf("Firefox"),
                         H = !1,
                         ea = (h || E || 0 <= c) && (d.windows || d.mac);
                     F && (O = K = -1);
@@ -2155,45 +2155,45 @@ function embedhtml5(Wd, Lc) {
                         P = 0;
                     ee = b();
                     if (h) {
-                        if (d.ios = !0, k = p, g = v.indexOf("OS "), 0 < g && (g += 3, P = v.slice(g, v.indexOf(" ", g)).split("_").join("."), k += _[541] + P, d.iosversion = parseFloat(P), "6.0" <= P && (C && !I || B && I) && (d._iOS6_canvas_bug = !0)), m = C || B, N = z, g = Math.max(screen.width, screen.height), d.iphone = C || B, d.iphone5 = C && 500 < g, d.ip6p = C && 735 < g, d.ipod = B, d.ipad = z, d.retina = I, C || B) e *= l
+                        if (d.ios = !0, k = p, g = v.indexOf("OS "), 0 < g && (g += 3, P = v.slice(g, v.indexOf(" ", g)).split("_").join("."), k += " - iOS:" + P, d.iosversion = parseFloat(P), "6.0" <= P && (C && !I || B && I) && (d._iOS6_canvas_bug = !0)), m = C || B, N = z, g = Math.max(screen.width, screen.height), d.iphone = C || B, d.iphone5 = C && 500 < g, d.ip6p = C && 735 < g, d.ipod = B, d.ipad = z, d.retina = I, C || B) e *= l
                     } else if (E)
-                        if (g = v.indexOf(_[542]), P = parseFloat(v.slice(g + 8)), d.android = !0, d.linux = !1, d.androidversion = P, k = v.slice(g, v.indexOf(";", g)), m = 0 < u.indexOf(_[56]), R && 0 < u.indexOf(_[313]) && (m = 480 > Math.min(screen.width, screen.height)), N = !m, g = v.indexOf(")"), 5 < g && (P = v.slice(0, g).lastIndexOf(";"), 5 < P && (I = v.indexOf(_[570], P), 0 < I && (g = I), k += " (" + v.slice(P + 2, g) + ")")), 0 < K && isNaN(y) && (y = ee), N && 1 < y) {
+                        if (g = v.indexOf("Android"), P = parseFloat(v.slice(g + 8)), d.android = !0, d.linux = !1, d.androidversion = P, k = v.slice(g, v.indexOf(";", g)), m = 0 < u.indexOf("mobile"), R && 0 < u.indexOf("mobile safari") && (m = 480 > Math.min(screen.width, screen.height)), N = !m, g = v.indexOf(")"), 5 < g && (P = v.slice(0, g).lastIndexOf(";"), 5 < P && (I = v.indexOf(" Build", P), 0 < I && (g = I), k += " (" + v.slice(P + 2, g) + ")")), 0 < K && isNaN(y) && (y = ee), N && 1 < y) {
                             if (d.hidpi = !0, e = y, 0 <= O || 0 < K) d.hidpi = !1, e = 1
                         } else m && (d.hidpi = 1 < y, e = y * l, .5 > e && (e = .5), 0 <= O || 0 < K || ea) && (d.hidpi = !1, e = l);
                     else {
-                        if (0 <= u.indexOf(_[387]) || 0 <= u.indexOf(_[389]) || 0 <= u.indexOf("bb10")) H = !0, d.blackberry = !0, k = _[381], f = !0;
-                        0 <= c ? (H = !0, d.silk = !0, k = _[338] + parseFloat(u.slice(c + 5)).toFixed(2), t = !1, m = 0 <= u.indexOf(_[56]), N = !m, f = !0) : 0 <= u.indexOf("ipad") || 0 <= u.indexOf(_[61]) ? t = H = !0 : 0 <= u.indexOf(_[157]) ? (N = !0, k += _[566]) : 0 <= u.indexOf(_[56]) ? (m = !0, k += _[563], e = l) : t = !0
+                        if (0 <= u.indexOf("blackberry") || 0 <= u.indexOf("rim tablet") || 0 <= u.indexOf("bb10")) H = !0, d.blackberry = !0, k = "BlackBerry ", f = !0;
+                        0 <= c ? (H = !0, d.silk = !0, k = "Amazon Silk " + parseFloat(u.slice(c + 5)).toFixed(2), t = !1, m = 0 <= u.indexOf("mobile"), N = !m, f = !0) : 0 <= u.indexOf("ipad") || 0 <= u.indexOf("iphone") ? t = H = !0 : 0 <= u.indexOf("tablet") ? (N = !0, k += "Tablet") : 0 <= u.indexOf("mobile") ? (m = !0, k += "Mobile", e = l) : t = !0
                     }
                     B = Ha.vendor && 0 <= Ha.vendor.indexOf("Apple");
                     C = T.opera;
                     I = !1;
-                    t && (k = _[329]);
-                    g = v.indexOf(_[550]);
-                    0 < g && (B || C || E) && (g += 8, P = v.slice(g, v.indexOf(" ", g)), B ? (d.safari = !0, d.safariversion = P, n = _[558]) : (E && (n = _[287], f = !0), C && (d.opera = !0, d.operaversion = P, n = "Opera")), n += " " + P);
-                    h && (g = v.indexOf(_[599]), 0 < g && (d.safari = !0, g += 6, P = parseFloat(v.slice(g, v.indexOf(" ", g))), d.crios = P, n = _[549] + P.toFixed(1)));
+                    t && (k = "HTML5/Desktop");
+                    g = v.indexOf("Version");
+                    0 < g && (B || C || E) && (g += 8, P = v.slice(g, v.indexOf(" ", g)), B ? (d.safari = !0, d.safariversion = P, n = "Safari") : (E && (n = "Android Browser", f = !0), C && (d.opera = !0, d.operaversion = P, n = "Opera")), n += " " + P);
+                    h && (g = v.indexOf("CriOS/"), 0 < g && (d.safari = !0, g += 6, P = parseFloat(v.slice(g, v.indexOf(" ", g))), d.crios = P, n = "Chrome " + P.toFixed(1)));
                     g = O;
-                    if (0 <= g || R) P = parseFloat(v.slice(g + 7)), d.chrome = !0, d.chromeversion = P, d.chromemobile = E || 0 <= c, n = _[155] + (isNaN(P) ? "" : " " + P.toFixed(1)), g = u.indexOf("opr/"), 0 < g && (n = _[560] + parseFloat(v.slice(g + 4)).toFixed(1) + _[463]), E && 28 > P && (f = !0), E && 1 < y && 20 > P && !ea && (d.hidpi = !0, e = y, m && (e *= l));
-                    else if (g = K, 0 > g && (g = v.indexOf(_[571])), 0 <= g && (P = parseFloat(v.slice(1 + v.indexOf("/", g))), d.firefox = !0, d.firefoxversion = P, n = _[491] + (isNaN(P) ? "" : P.toFixed(1)), E && 35 > P && (f = !0)), g = v.indexOf("MSIE "), I = 0 <= g || F) t = d.ie = !0, N = !1, n = _[237], 0 < u.indexOf(_[493]) || 0 < u.indexOf(_[319]) ? (m = !0, t = !1, n = _[531] + n, e = l) : 0 < u.indexOf("arm;") && 1 < Ha.msMaxTouchPoints && (N = !0, t = !1, n = _[526] + n, f = !0, e = 1), 0 <= g ? (P = v.slice(g + 4, v.indexOf(";", g)), d.ieversion = parseFloat(P), n += P) : (g = v.indexOf("rv:"), 0 <= g ? (P = parseFloat(v.slice(g + 3)), !isNaN(P) && 10 <= P && 100 > P && (d.ieversion = P, n += " " + P.toFixed(1))) : (g = u.indexOf(_[153]), 0 <= g && (n = _[306], d.edge = !0, yc = !1, P = parseFloat(v.slice(g + 6)), isNaN(P) || (d.ieversion = P, n += " " + P.toFixed(5))))), k = n, n = "";
+                    if (0 <= g || R) P = parseFloat(v.slice(g + 7)), d.chrome = !0, d.chromeversion = P, d.chromemobile = E || 0 <= c, n = "Chrome" + (isNaN(P) ? "" : " " + P.toFixed(1)), g = u.indexOf("opr/"), 0 < g && (n = "Opera " + parseFloat(v.slice(g + 4)).toFixed(1) + " (Chrome)"), E && 28 > P && (f = !0), E && 1 < y && 20 > P && !ea && (d.hidpi = !0, e = y, m && (e *= l));
+                    else if (g = K, 0 > g && (g = v.indexOf("Gecko/")), 0 <= g && (P = parseFloat(v.slice(1 + v.indexOf("/", g))), d.firefox = !0, d.firefoxversion = P, n = "Firefox " + (isNaN(P) ? "" : P.toFixed(1)), E && 35 > P && (f = !0)), g = v.indexOf("MSIE "), I = 0 <= g || F) t = d.ie = !0, N = !1, n = "Internet Explorer", 0 < u.indexOf("iemobile") || 0 < u.indexOf("windows phone") ? (m = !0, t = !1, n = "Mobile " + n, e = l) : 0 < u.indexOf("arm;") && 1 < Ha.msMaxTouchPoints && (N = !0, t = !1, n = "Tablet " + n, f = !0, e = 1), 0 <= g ? (P = v.slice(g + 4, v.indexOf(";", g)), d.ieversion = parseFloat(P), n += P) : (g = v.indexOf("rv:"), 0 <= g ? (P = parseFloat(v.slice(g + 3)), !isNaN(P) && 10 <= P && 100 > P && (d.ieversion = P, n += " " + P.toFixed(1))) : (g = u.indexOf(" edge/"), 0 <= g && (n = "Microsoft Edge", d.edge = !0, yc = !1, P = parseFloat(v.slice(g + 6)), isNaN(P) || (d.ieversion = P, n += " " + P.toFixed(5))))), k = n, n = "";
                     d.android && (d.androidstock = !(d.chrome || d.firefox || d.opera));
-                    0 == d.ie && 0 < (g = u.indexOf(_[525])) && (P = parseFloat(u.slice(g + 7)), !isNaN(P) && 0 < P && (d.webkit = !0, d.webkitversion = P));
+                    0 == d.ie && 0 < (g = u.indexOf("webkit/")) && (P = parseFloat(u.slice(g + 7)), !isNaN(P) && 0 < P && (d.webkit = !0, d.webkitversion = P));
                     d.pixelratio = isNaN(y) ? 1 : y;
                     d.fractionalscaling = 0 != d.pixelratio % 1;
                     var y = {},
                         qa = Fa();
                     y.find = x;
-                    y.prefix = I ? "ms" : d.firefox ? "moz" : d.safari || d.chrome || d.androidstock ? _[89] : "";
-                    y.perspective = x(_[364]);
-                    y.transform = x(_[449]);
-                    y.backgroundsize = x(_[298]);
-                    y.boxshadow = x(_[450]);
-                    y.boxshadow_style = _[290] == y.boxshadow ? _[230] : _[339] == y.boxshadow ? _[280] : _[388];
+                    y.prefix = I ? "ms" : d.firefox ? "moz" : d.safari || d.chrome || d.androidstock ? "webkit" : "";
+                    y.perspective = x("perspective");
+                    y.transform = x("transform");
+                    y.backgroundsize = x("backgroundSize");
+                    y.boxshadow = x("boxShadow");
+                    y.boxshadow_style = "WebkitBoxShadow" == y.boxshadow ? "-webkit-box-shadow" : "MozBoxShadow" == y.boxshadow ? "-moz-box-shadow" : "box-shadow";
                     E && "4.0" > d.androidversion && (y.perspective = null);
-                    y.perspective && (d.css3d = !0, _[244] == y.perspective && T.matchMedia && (u = T.matchMedia(_[207]))) && (d.css3d = 1 == u.matches);
+                    y.perspective && (d.css3d = !0, "WebkitPerspective" == y.perspective && T.matchMedia && (u = T.matchMedia("(-webkit-transform-3d)"))) && (d.css3d = 1 == u.matches);
                     qa = null;
                     d.webgl = function() {
                         var a = null;
                         try {
-                            for (var c = Fa(2), b = 0; 4 > b && !(a = c.getContext([_[65], _[104], _[134], _[135]][b])); b++);
+                            for (var c = Fa(2), b = 0; 4 > b && !(a = c.getContext(["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"][b])); b++);
                         } catch (d) {}
                         return null != a
                     }();
@@ -2207,27 +2207,27 @@ function embedhtml5(Wd, Lc) {
                     if (h || E || void 0 !== w.ontouchstart || H) d.touchdevice = !0, d.gesturedevice = !0;
                     h = 0;
                     (Ha.msPointerEnabled || Ha.pointerEnabled) && d.ie && (E = Ha.msMaxTouchPoints || Ha.maxTouchPoints, Ha.msPointerEnabled && (h = 2), Ha.pointerEnabled && (h = 1), d.touchdevice = 0 < E, d.gesturedevice = 1 < E);
-                    p.touchstart = [_[47], _[368], _[315]][h];
-                    p.touchmove = [_[48], _[379], _[317]][h];
-                    p.touchend = [_[50], _[459], _[369]][h];
-                    p.touchcancel = [_[362], _[308], _[293]][h];
-                    p.gesturestart = [_[352], _[114], _[114]][h];
-                    p.gesturechange = [_[320], _[110], _[110]][h];
-                    p.gestureend = [_[392], _[122], _[122]][h];
-                    p.pointerover = [_[12], _[12], _[44]][h];
-                    p.pointerout = [_[14], _[14], _[45]][h];
+                    p.touchstart = ["touchstart", "pointerdown", "MSPointerDown"][h];
+                    p.touchmove = ["touchmove", "pointermove", "MSPointerMove"][h];
+                    p.touchend = ["touchend", "pointerup", "MSPointerUp"][h];
+                    p.touchcancel = ["touchcancel", "pointercancel", "MSPointerCancel"][h];
+                    p.gesturestart = ["gesturestart", "MSGestureStart", "MSGestureStart"][h];
+                    p.gesturechange = ["gesturechange", "MSGestureChange", "MSGestureChange"][h];
+                    p.gestureend = ["gestureend", "MSGestureEnd", "MSGestureEnd"][h];
+                    p.pointerover = ["pointerover", "pointerover", "MSPointerOver"][h];
+                    p.pointerout = ["pointerout", "pointerout", "MSPointerOut"][h];
                     d.pointerEvents = d.opera || d.ie && 11 > d.ieversion ? !1 : !0;
                     n && (k += " - " + n);
                     d.realDesktop = t;
                     n = a.vars ? G(a.vars.simulatedevice) : null;
-                    _[462] == n && (0 <= v.indexOf(_[156]) || 0 <= v.indexOf("iPod") ? n = _[61] : 0 <= v.indexOf("iPad") && (n = "ipad"));
+                    "useragent" == n && (0 <= v.indexOf("iPhone") || 0 <= v.indexOf("iPod") ? n = "iphone" : 0 <= v.indexOf("iPad") && (n = "ipad"));
                     d.touchdeviceNS = d.touchdevice;
-                    v = _[61] == n ? 1 : "ipad" == n ? 2 : 0;
-                    0 < v && (d.simulator = !0, d.crios = 0, k += " - " + (1 == v ? _[156] : "iPad") + _[416], e = v * l, m = 1 == v, N = 2 == v, t = !1, d.ios = !0, d.iphone = m, d.ipad = N, d.touchdevice = !0, d.gesturedevice = !0);
+                    v = "iphone" == n ? 1 : "ipad" == n ? 2 : 0;
+                    0 < v && (d.simulator = !0, d.crios = 0, k += " - " + (1 == v ? "iPhone" : "iPad") + " Simulator", e = v * l, m = 1 == v, N = 2 == v, t = !1, d.ios = !0, d.iphone = m, d.ipad = N, d.touchdevice = !0, d.gesturedevice = !0);
                     d.browser = u;
                     d.infoString = k;
                     a = G(a.fakedevice);
-                    _[56] == a ? (m = !0, N = t = !1) : _[157] == a ? (N = !0, m = t = !1) : _[554] == a && (t = !0, m = N = !1);
+                    "mobile" == a ? (m = !0, N = t = !1) : "tablet" == a ? (N = !0, m = t = !1) : "desktop" == a && (t = !0, m = N = !1);
                     d.mobile = m;
                     d.tablet = N;
                     d.desktop = t;
@@ -2237,7 +2237,7 @@ function embedhtml5(Wd, Lc) {
                     d.mouse = t;
                     d.getViewportScale = b;
                     ba = e;
-                    0 == d.simulator && (ca.fullscreenEnabled || ca.mozFullScreenEnabled || ca.webkitFullScreenEnabled || ca.webkitFullscreenEnabled || ca.msFullscreenEnabled || t && d.safari && 6 > parseInt(d.safariversion)) && (a = [_[246], _[215], _[203], _[205], _[229]], l = -1, e = null, k = _[258], w[a[0]] ? (e = "", l = 0) : w[a[1]] ? (e = "moz", l = 1) : w[a[2]] ? (e = _[89], l = 2) : w[a[3]] ? (e = _[89], l = 3) : w[a[4]] && (e = "MS", k = _[252], l = 4), 0 <= l && 0 == f && (d.fullscreensupport = !0, p.fullscreenchange = e + k, p.requestfullscreen = a[l]));
+                    0 == d.simulator && (ca.fullscreenEnabled || ca.mozFullScreenEnabled || ca.webkitFullScreenEnabled || ca.webkitFullscreenEnabled || ca.msFullscreenEnabled || t && d.safari && 6 > parseInt(d.safariversion)) && (a = ["requestFullscreen", "mozRequestFullScreen", "webkitRequestFullscreen", "webkitRequestFullScreen", "msRequestFullscreen"], l = -1, e = null, k = "fullscreenchange", w[a[0]] ? (e = "", l = 0) : w[a[1]] ? (e = "moz", l = 1) : w[a[2]] ? (e = "webkit", l = 2) : w[a[3]] ? (e = "webkit", l = 3) : w[a[4]] && (e = "MS", k = "FullscreenChange", l = 4), 0 <= l && 0 == f && (d.fullscreensupport = !0, p.fullscreenchange = e + k, p.requestfullscreen = a[l]));
                     d.buildList();
                     delete d.runDetection
                 },
@@ -2321,9 +2321,9 @@ function embedhtml5(Wd, Lc) {
                 };
                 a.getattributes = function() {
                     var b = [],
-                        d = ["index", _[503], "DATA"],
+                        d = ["index", "jsplugin", "DATA"],
                         f;
-                    for (f in a) _[15] != typeof a[f] && -1 == d.indexOf(f) && "_" != f.charAt(0) && b.push(f);
+                    for (f in a) "function" != typeof a[f] && -1 == d.indexOf(f) && "_" != f.charAt(0) && b.push(f);
                     return b
                 }
             },
@@ -2388,7 +2388,7 @@ function embedhtml5(Wd, Lc) {
                         var l = 1,
                             t = !1,
                             r = !1;
-                        _[1] === typeof b && (b = b.toLowerCase(), 0 <= b.indexOf(_[425]) && (l = -1), 0 <= b.indexOf(_[511]) && (t = !0), 0 <= b.indexOf(_[284]) && (r = !0));
+                        "string" === typeof b && (b = b.toLowerCase(), 0 <= b.indexOf("descending") && (l = -1), 0 <= b.indexOf("numeric") && (t = !0), 0 <= b.indexOf("caseinsensitive") && (r = !0));
                         d.sort(function(b, d) {
                             var f = b[a],
                                 g = d[a];
@@ -2412,7 +2412,7 @@ function embedhtml5(Wd, Lc) {
 
             function b(a, b) {
                 var d, e, f = 15,
-                    h = _[251],
+                    h = "actions overflow",
                     c = new r(256);
                 if (82 == b)
                     if (Pd) f = 127, h = Pd;
@@ -2426,7 +2426,7 @@ function embedhtml5(Wd, Lc) {
             function x(a, b, d) {
                 if (null == a) return null;
                 a = "" + a;
-                1 == b && l.basedir && 0 > a.indexOf("://") && 0 != a.indexOf("/") && _[95] != a.slice(0, 5) && (a = l.basedir + a);
+                1 == b && l.basedir && 0 > a.indexOf("://") && 0 != a.indexOf("/") && "data:" != a.slice(0, 5) && (a = l.basedir + a);
                 a = a.split("\\").join("/");
                 null == g.firstxmlpath && (g.firstxmlpath = "");
                 null == g.currentxmlpath && (g.currentxmlpath = "");
@@ -2445,19 +2445,19 @@ function embedhtml5(Wd, Lc) {
                                 continue
                             }
                         } else switch (f) {
-                            case _[502]:
+                            case "FIRSTXML":
                                 h = 1 == d ? "" : g.firstxmlpath;
                                 break;
-                            case _[411]:
+                            case "CURRENTXML":
                                 h = g.currentxmlpath;
                                 break;
-                            case _[513]:
+                            case "SWFPATH":
                                 h = 1 == d ? "" : g.swfpath;
                                 break;
-                            case _[501]:
+                            case "HTMLPATH":
                                 h = 1 == d ? "" : g.htmlpath;
                                 break;
-                            case _[514]:
+                            case "BASEDIR":
                                 h = 1 == d ? "" : l.basedir
                         }
                         null != h ? (e++, "/" == a.charAt(e) && e++, a = h + a.slice(e), b = a.indexOf("%")) : b = a.indexOf("%", b + 1)
@@ -2468,7 +2468,7 @@ function embedhtml5(Wd, Lc) {
 
             function f(d, f, g) {
                 var m, k;
-                0 <= (m = f.indexOf(_[363])) ? (k = f.indexOf(_[348])) > m && (f = f.slice(m + 11, k), m = f.indexOf(_[457]), 0 <= m && (f = f.slice(m + 9, -3), 0 <= f.indexOf(_[105]) && (f = f.split(_[105]).join(_[593])))) : g && 0 <= (m = f.indexOf('"[[KENC')) && (k = f.lastIndexOf(']]"')) > m && (f = f.slice(m + 3, k));
+                0 <= (m = f.indexOf("<encrypted>")) ? (k = f.indexOf("</encrypted>")) > m && (f = f.slice(m + 11, k), m = f.indexOf("<![CDATA["), 0 <= m && (f = f.slice(m + 9, -3), 0 <= f.indexOf("]]]]\x3e<![CDATA[>") && (f = f.split("]]]]\x3e<![CDATA[>").join("]]\x3e")))) : g && 0 <= (m = f.indexOf('"[[KENC')) && (k = f.lastIndexOf(']]"')) > m && (f = f.slice(m + 3, k));
                 var h = null;
                 m = f.slice(0, 8);
                 k = f.slice(8);
@@ -2514,7 +2514,7 @@ function embedhtml5(Wd, Lc) {
                             h = k = e(f)
                         }
                     } else h = a(k), (h = b(h, c)) && (h = e(h));
-                null == h && d && cb(d + _[208]);
+                null == h && d && cb(d + " - invalid encryption!");
                 return h
             }
 
@@ -2525,16 +2525,16 @@ function embedhtml5(Wd, Lc) {
             }
 
             function k(a, b, d) {
-                void 0 !== b ? b(a, d) : cb(a + _[101] + d + ")")
+                void 0 !== b ? b(a, d) : cb(a + " - loading failed! (" + d + ")")
             }
 
             function m(a, b, e, f, r) {
-                if (0 == g.DMcheck(a)) k(a, r, _[257]);
+                if (0 == g.DMcheck(a)) k(a, r, "access permitted");
                 else {
                     var h = null,
                         c = !1;
                     if (d.ie && "" == ca.domain) try {
-                        h = new ActiveXObject(_[245]), c = !0
+                        h = new ActiveXObject("Microsoft.XMLHTTP"), c = !0
                     } catch (m) {
                         h = null
                     }
@@ -2547,7 +2547,7 @@ function embedhtml5(Wd, Lc) {
                             if (0 == b && d || 200 == b || 304 == b)
                                 if (e) {
                                     var g = null,
-                                        g = c ? (new DOMParser).parseFromString(d, _[36]) : h.responseXML;
+                                        g = c ? (new DOMParser).parseFromString(d, "text/xml") : h.responseXML;
                                     f(a, g, b)
                                 } else f(a, d);
                             else k(a, r, h.status)
@@ -2636,8 +2636,8 @@ function embedhtml5(Wd, Lc) {
                 a = a.type;
                 var b = 1;
                 if ("load" == a) b = 2;
-                else if (_[94] == a) b = 4;
-                else if (_[41] == a && (b = 3, ++this.retries < l.network.retrycount)) {
+                else if ("abort" == a) b = 4;
+                else if ("error" == a && (b = 3, ++this.retries < l.network.retrycount)) {
                     this.reload();
                     return
                 }
@@ -2647,8 +2647,8 @@ function embedhtml5(Wd, Lc) {
             n.prototype.removeImage = function() {
                 var a = this.img;
                 a.removeEventListener("load", this);
-                a.removeEventListener(_[41], this);
-                a.removeEventListener(_[94], this);
+                a.removeEventListener("error", this);
+                a.removeEventListener("abort", this);
                 this.img = null
             };
             n.prototype.clear = function() {
@@ -2662,7 +2662,7 @@ function embedhtml5(Wd, Lc) {
             n.prototype.load = function() {
                 var a = this.img,
                     b = this.state;
-                null == a && (a = Fa(1), a.addEventListener("load", this), a.addEventListener(_[41], this), a.addEventListener(_[94], this), this.img = a);
+                null == a && (a = Fa(1), a.addEventListener("load", this), a.addEventListener("error", this), a.addEventListener("abort", this), this.img = a);
                 0 == b && (this.state = 1, a.src = this.url)
             };
             n.prototype.reload = function() {
@@ -2684,11 +2684,11 @@ function embedhtml5(Wd, Lc) {
                 this.clear()
             };
             g.reportLoadingError = function(a, b, d) {
-                a = _[337] + a + _[455];
+                a = "loading of '" + a + "' failed!";
                 b && (a = b + " " + a);
                 d && (a = a + " " + d);
                 l.lasterror = a;
-                0 == ya(_[385]) && va(3, a)
+                0 == ya("onloaderror") && va(3, a)
             };
             g.loadimage = function(a, b, d, e) {
                 var f = u[a];
@@ -2707,7 +2707,7 @@ function embedhtml5(Wd, Lc) {
                 g.loadfile2(a, null, b, d)
             };
             g.loadxml = function(a, b, d) {
-                g.loadfile2(a, _[36], b, d, !0)
+                g.loadfile2(a, "text/xml", b, d, !0)
             };
             g.loadfile2 = function(a, b, d, e, g) {
                 g = !0 === g;
@@ -2718,10 +2718,10 @@ function embedhtml5(Wd, Lc) {
                 a = x(a);
                 h.url = a;
                 m(a, b, g, function(a, m, r) {
-                    !0 === g ? d(m, r) : (m = f(a, m, _[111] == b), h.data = m, null != m ? d && d(h) : e && e(h))
+                    !0 === g ? d(m, r) : (m = f(a, m, "text/javascript" == b), h.data = m, null != m ? d && d(h) : e && e(h))
                 }, g ? e : function(b, d) {
                     e && e(h);
-                    h.errmsg && va(3, a + _[101] + d + ")")
+                    h.errmsg && va(3, a + " - loading failed! (" + d + ")")
                 })
             };
             g.resolvecontentencryption = f;
@@ -2771,35 +2771,35 @@ function embedhtml5(Wd, Lc) {
                     F = !1;
                 g || (F = !0, g = [], m = [], l.xml.parsetime = Ja());
                 for (var E = 0; E < h; E++)
-                    if ((k = b[E]) && k.nodeName && "#text" != k.nodeName && (u = k.nodeName, u = G(u), _[144] != u)) {
-                        u = null == e && _[57] == u ? null : e ? e + "." + u : u;
+                    if ((k = b[E]) && k.nodeName && "#text" != k.nodeName && (u = k.nodeName, u = G(u), "include" != u)) {
+                        u = null == e && "krpano" == u ? null : e ? e + "." + u : u;
                         if (n = k.attributes)
                             if (n.devices && 0 == d.checkSupport(n.devices.value)) continue;
                             else if (n["if"] && !Z.calc(null, n["if"].value)) continue;
                         z = (t = n && n.name ? n.name.value : null) ? !0 : !1;
                         if (f) {
-                            if (_[517] == u && f & 16) continue;
-                            if ((_[62] == u || _[63] == u) && f & 4) continue;
-                            if (_[5] == u && f & 128) continue;
-                            if (_[96] == u && f & 65536) continue;
+                            if ("preview" == u && f & 16) continue;
+                            if (("plugin" == u || "layer" == u) && f & 4) continue;
+                            if ("hotspot" == u && f & 128) continue;
+                            if ("image" == u && f & 65536) continue;
                             if (f & 64 && t)
-                                if (_[62] == u || _[63] == u) {
+                                if ("plugin" == u || "layer" == u) {
                                     if ((y = Ga.getItem(t)) && y._pCD && y.keep) continue
-                                } else if (_[5] == u && (y = Ua.getItem(t)) && y._pCD && y.keep) continue
+                                } else if ("hotspot" == u && (y = Ua.getItem(t)) && y._pCD && y.keep) continue
                         }
                         if (u)
                             if (z) {
-                                if (_[11] == u || "data" == u || "scene" == u) {
+                                if ("action" == u || "data" == u || "scene" == u) {
                                     a(k);
                                     z = null;
-                                    if ((_[11] == u || "data" == u) && k.childNodes && 1 <= k.childNodes.length)
+                                    if (("action" == u || "data" == u) && k.childNodes && 1 <= k.childNodes.length)
                                         for (y = 0; y < k.childNodes.length; y++)
                                             if (4 == k.childNodes[y].nodeType) {
                                                 z = k.childNodes[y].nodeValue;
                                                 break
                                             }
-                                    null == z && (z = c.serializeToString(k), z = z.slice(z.indexOf(">") + 1, z.lastIndexOf("</")), _[11] == u && (z = z.split(_[589]).join('"').split(_[588]).join("'").split(_[161]).join(String.fromCharCode(160)).split("&amp;").join("&")));
-                                    _[11] == u && la(k.getAttribute(_[520])) ? Z.addPAction(G(t), z) : Y(u + "[" + t + _[79], z);
+                                    null == z && (z = c.serializeToString(k), z = z.slice(z.indexOf(">") + 1, z.lastIndexOf("</")), "action" == u && (z = z.split("&quot;").join('"').split("&apos;").join("'").split("&nbsp;").join(String.fromCharCode(160)).split("&amp;").join("&")));
+                                    "action" == u && la(k.getAttribute("protect")) ? Z.addPAction(G(t), z) : Y(u + "[" + t + "].content", z);
                                     if (n) {
                                         var N;
                                         z = n.length;
@@ -2836,7 +2836,7 @@ function embedhtml5(Wd, Lc) {
                                         if (d.checkSupport(y.slice(C + 1))) y = y.slice(0, C).toLowerCase();
                                         else continue;
                                     C = O + y;
-                                    t ? t[y] = B : !B || _[1] != typeof B || "get:" != B.slice(0, 4) && "calc:" != B.slice(0, 5) ? (Y(C, B), X && Y("xml." + C, B)) : (g.push(C), g.push(B))
+                                    t ? t[y] = B : !B || "string" != typeof B || "get:" != B.slice(0, 4) && "calc:" != B.slice(0, 5) ? (Y(C, B), X && Y("xml." + C, B)) : (g.push(C), g.push(B))
                                 }
                             }
                         }
@@ -2858,7 +2858,7 @@ function embedhtml5(Wd, Lc) {
                     e, g;
                 g = a.length;
                 for (e = 0; e < g; e++)
-                    if (d = a[e], !d || !d.nodeName || _[11] != G(d.nodeName)) {
+                    if (d = a[e], !d || !d.nodeName || "action" != G(d.nodeName)) {
                         var m = d.attributes;
                         if (m) {
                             var k, l = m.length,
@@ -2868,7 +2868,7 @@ function embedhtml5(Wd, Lc) {
                                 x = G(t.nodeName);
                                 var B = x.indexOf(".");
                                 0 < B && (x = x.slice(0, B));
-                                if (_[498] == x) {
+                                if ("videourl" == x) {
                                     x = t.value;
                                     var B = x.split("|"),
                                         C, z;
@@ -2876,7 +2876,7 @@ function embedhtml5(Wd, Lc) {
                                     for (C = 0; C < z; C++) x = B[C], "" != x && 0 > x.indexOf("://") && 47 != x.charCodeAt(0) && (B[C] = b + x);
                                     t.value = B.join("|")
                                 } else if (B = x.indexOf("url"), 0 == B || 0 < B && B == x.length - 3)
-                                    if (x = t.value) B = x.indexOf(":"), C = x.charCodeAt(0), 47 == C || 37 == C && 36 != x.charCodeAt(1) || 0 < B && ("//" == x.substr(B + 1, 2) || 0 <= _[113].indexOf(x.substr(0, B + 1))) || (x = b + x), t.value = x
+                                    if (x = t.value) B = x.indexOf(":"), C = x.charCodeAt(0), 47 == C || 37 == C && 36 != x.charCodeAt(1) || 0 < B && ("//" == x.substr(B + 1, 2) || 0 <= "get:calc:data:".indexOf(x.substr(0, B + 1))) || (x = b + x), t.value = x
                             }
                         }
                         d.childNodes && 0 < d.childNodes.length && f(d.childNodes, b)
@@ -2892,15 +2892,15 @@ function embedhtml5(Wd, Lc) {
             }
 
             function k(a, d) {
-                var e = b(a, _[447]);
+                var e = b(a, "encrypted");
                 if (e) {
                     var f = "",
                         g, k;
                     k = e.childNodes.length;
                     for (g = 0; g < k; g++) f += e.childNodes[g].nodeValue;
-                    return (e = na.resolvecontentencryption(d, f)) ? (e = (new DOMParser).parseFromString(e, _[36])) && e.documentElement && _[32] == e.documentElement.nodeName ? (va(3, d + _[28]), null) : e : null
+                    return (e = na.resolvecontentencryption(d, f)) ? (e = (new DOMParser).parseFromString(e, "text/xml")) && e.documentElement && "parsererror" == e.documentElement.nodeName ? (va(3, d + " - xml parsing failed!"), null) : e : null
                 }
-                return La & 32 ? (cb(d + _[212]), null) : a
+                return La & 32 ? (cb(d + " - wrong encryption!"), null) : a
             }
 
             function m(a, b) {
@@ -2924,8 +2924,8 @@ function embedhtml5(Wd, Lc) {
                 var f, l, p;
                 if (null != fa.xmlIncludeNode) {
                     p = Mc(a.url);
-                    if ((l = a.responseXML) && l.documentElement && _[32] == l.documentElement.nodeName) {
-                        cb(p + _[28]);
+                    if ((l = a.responseXML) && l.documentElement && "parsererror" == l.documentElement.nodeName) {
+                        cb(p + " - xml parsing failed!");
                         return
                     }
                     l = k(l, a.url);
@@ -2938,7 +2938,7 @@ function embedhtml5(Wd, Lc) {
                         p = f.length;
                         if (1 < p)
                             for (l = 0; l < p; l++)
-                                if (_[57] == G(f[l].nodeName)) {
+                                if ("krpano" == G(f[l].nodeName)) {
                                     u = l;
                                     break
                                 }
@@ -2956,13 +2956,13 @@ function embedhtml5(Wd, Lc) {
                 for (l = 0; l < p; l++)
                     if (f = fa.xmlAllNodes[l], u = null, null != f.nodeName) {
                         u = G(f.nodeName);
-                        if (_[144] == u) {
+                        if ("include" == u) {
                             var u = f.attributes,
                                 n, t = u.length,
                                 I = !1;
                             for (n = 0; n < t; n++) {
                                 var B = u[n];
-                                _[522] == B.nodeName ? 0 == d.checkSupport(B.value) && (I = !0) : "if" == B.nodeName && (Z.calc(null, B.value) || (I = !0))
+                                "devices" == B.nodeName ? 0 == d.checkSupport(B.value) && (I = !0) : "if" == B.nodeName && (Z.calc(null, B.value) || (I = !0))
                             }
                             if (0 == I)
                                 for (n = 0; n < t; n++)
@@ -2970,14 +2970,14 @@ function embedhtml5(Wd, Lc) {
                                         x = !0;
                                         I = B.value;
                                         B = I.indexOf(":");
-                                        0 < B && 0 <= _[113].indexOf(I.substr(0, B + 1)) && (I = Z.calc(null, I.substr(B + 1)));
+                                        0 < B && 0 <= "get:calc:data:".indexOf(I.substr(0, B + 1)) && (I = Z.calc(null, I.substr(B + 1)));
                                         fa.xmlIncludeNode = f;
                                         var C = na.parsePath(I);
                                         C ? na.loadxml(C, function(a, d) {
                                             a ? g({
                                                 url: C,
                                                 responseXML: a
-                                            }, b) : cb(C + " - " + (200 == d ? _[225] : _[198]))
+                                            }, b) : cb(C + " - " + (200 == d ? "xml parsing failed!" : "loading or parsing failed!"))
                                         }) : b()
                                     }
                         }
@@ -3002,7 +3002,7 @@ function embedhtml5(Wd, Lc) {
             fa.addNodes = function(a) {
                 var b, d, e;
                 e = a.length;
-                for (d = 0; d < e; d++)(b = a[d]) && b.nodeName && _[11] != G(b.nodeName) && (fa.xmlAllNodes.push(b), b.childNodes && 0 < b.childNodes.length && fa.addNodes(b.childNodes))
+                for (d = 0; d < e; d++)(b = a[d]) && b.nodeName && "action" != G(b.nodeName) && (fa.xmlAllNodes.push(b), b.childNodes && 0 < b.childNodes.length && fa.addNodes(b.childNodes))
             };
             fa.findxmlnode = b
         })();
@@ -3018,7 +3018,7 @@ function embedhtml5(Wd, Lc) {
             a.easeoutquad = function(a, d, f) {
                 return -f * a * (a - 2) + d
             };
-            a[_[6]] = a.easeoutquad;
+            a["default"] = a.easeoutquad;
             a.easeinoutquad = function(a, d, f) {
                 return (1 > (a /= .5) ? f / 2 * a * a : -f / 2 * (--a * (a - 2) - 1)) + d
             };
@@ -3076,7 +3076,7 @@ function embedhtml5(Wd, Lc) {
             };
             a.getTweenfu = function(d) {
                 d = G(d);
-                "" == d || "null" == d ? d = _[75] : void 0 === a[d] && (d = _[75]);
+                "" == d || "null" == d ? d = "easeoutquad" : void 0 === a[d] && (d = "easeoutquad");
                 return a[d]
             }
         })();
@@ -3161,7 +3161,7 @@ function embedhtml5(Wd, Lc) {
             }
 
             function g(a) {
-                va(2, _[197] + a)
+                va(2, "Calling deprecated action: " + a)
             }
 
             function w(a) {
@@ -3310,8 +3310,8 @@ function embedhtml5(Wd, Lc) {
                     e = null,
                     d = !1;
                 for (c = 0; c < a.length; c++)
-                    if (d = "" + a[c], 0 < d.length && 0 <= _[496].indexOf(d)) {
-                        if (0 == c || c >= a.length - 1) throw _[43];
+                    if (d = "" + a[c], 0 < d.length && 0 <= "<=>=!===".indexOf(d)) {
+                        if (0 == c || c >= a.length - 1) throw "Invalid expression";
                         b = a[c - 1];
                         e = a[c + 1];
                         switch (d) {
@@ -3336,7 +3336,7 @@ function embedhtml5(Wd, Lc) {
                                 d = b >= e;
                                 break;
                             default:
-                                throw _[43];
+                                throw "Invalid expression";
                         }
                         a.splice(c - 1, 3, d);
                         c -= 2
@@ -3344,7 +3344,7 @@ function embedhtml5(Wd, Lc) {
                 if (1 == a.length) return a[0];
                 for (c = 0; c < a.length; c++)
                     if (d = a[c], "&&" == d || "||" == d) {
-                        if (0 == c || c >= a.length - 1) throw _[43];
+                        if (0 == c || c >= a.length - 1) throw "Invalid expression";
                         b = a[c - 1];
                         e = a[c + 1];
                         d = "&&" == d ? b && e : b || e;
@@ -3352,7 +3352,7 @@ function embedhtml5(Wd, Lc) {
                         c -= 2
                     }
                 if (5 == a.length && "?" == a[1] && ":" == a[3]) return a[0] ? a[2] : a[4];
-                if (1 < a.length) throw _[43];
+                if (1 < a.length) throw "Invalid expression";
                 return a[0]
             }
 
@@ -3368,7 +3368,7 @@ function embedhtml5(Wd, Lc) {
                     if (f && 5 >= a.length) {
                         c = G(a);
                         if ("true" == c) return !0;
-                        if (_[26] == c) return !1;
+                        if ("false" == c) return !1;
                         if ("null" == c) return null
                     }
                     2 >= a.length && 0 <= D.indexOf("." + a + ".") && (a = q + a + q);
@@ -3376,7 +3376,7 @@ function embedhtml5(Wd, Lc) {
                 }
                 if (33 == d || 43 == d || 45 == d) e = d, a = a.slice(1), c = c.slice(1), d = c.charCodeAt(0);
                 b = c.charCodeAt(c.length - 1);
-                40 == d && 41 == b ? c = y(a.slice(1, -1)) : 37 == b ? c = a : (c = "null" != c ? S(a, h.actioncaller, !0) : null, void 0 === c ? (d = Number(a), isNaN(d) || isNaN(parseFloat(a)) ? f && (c = a) : c = d) : _[1] == typeof c && (a = G(c), "true" == a ? c = !0 : _[26] == a ? c = !1 : "null" == a ? c = null : (a = Number(c), isNaN(a) || (c = a))));
+                40 == d && 41 == b ? c = y(a.slice(1, -1)) : 37 == b ? c = a : (c = "null" != c ? S(a, h.actioncaller, !0) : null, void 0 === c ? (d = Number(a), isNaN(d) || isNaN(parseFloat(a)) ? f && (c = a) : c = d) : "string" == typeof c && (a = G(c), "true" == a ? c = !0 : "false" == a ? c = !1 : "null" == a ? c = null : (a = Number(c), isNaN(a) || (c = a))));
                 33 == e ? c = !c : 45 == e && (c = -c);
                 return c
             }
@@ -3390,7 +3390,7 @@ function embedhtml5(Wd, Lc) {
                     p(d);
                     v(d);
                     c = u(d);
-                    _[1] == typeof c && (c = c.split(q).join(""))
+                    "string" == typeof c && (c = c.split(q).join(""))
                 } catch (b) {
                     va(3, b + ": " + a)
                 }
@@ -3403,7 +3403,7 @@ function embedhtml5(Wd, Lc) {
                 t.hlookat = a.startH + c * (a.destH - a.startH);
                 t.vlookat = a.startV + c * (a.destV - a.startV);
                 t.fov = a.startF + c * (a.destF - a.startF);
-                bb(_[578])
+                bb("lookto")
             }
 
             function B(a, c) {
@@ -3428,7 +3428,7 @@ function embedhtml5(Wd, Lc) {
                 var e = 0,
                     e = a.position,
                     f = a.tweenmap;
-                0 <= c.indexOf(_[24], c.lastIndexOf(".") + 1) ? (d = parseInt(a.startval), b = parseInt(a.endval), 1 <= e ? e = b : (e = f(e, 0, 1), e = Math.min(Math.max((d >> 24) + e * ((b >> 24) - (d >> 24)), 0), 255) << 24 | Math.min(Math.max((d >> 16 & 255) + e * ((b >> 16 & 255) - (d >> 16 & 255)), 0), 255) << 16 | Math.min(Math.max((d >> 8 & 255) + e * ((b >> 8 & 255) - (d >> 8 & 255)), 0), 255) << 8 | Math.min(Math.max((d & 255) + e * ((b & 255) - (d & 255)), 0), 255))) : e = 1 <= e ? b : f(e, d, b - d);
+                0 <= c.indexOf("color", c.lastIndexOf(".") + 1) ? (d = parseInt(a.startval), b = parseInt(a.endval), 1 <= e ? e = b : (e = f(e, 0, 1), e = Math.min(Math.max((d >> 24) + e * ((b >> 24) - (d >> 24)), 0), 255) << 24 | Math.min(Math.max((d >> 16 & 255) + e * ((b >> 16 & 255) - (d >> 16 & 255)), 0), 255) << 16 | Math.min(Math.max((d >> 8 & 255) + e * ((b >> 8 & 255) - (d >> 8 & 255)), 0), 255) << 8 | Math.min(Math.max((d & 255) + e * ((b & 255) - (d & 255)), 0), 255))) : e = 1 <= e ? b : f(e, d, b - d);
                 Y(c, q ? e + "%" : e, !0, a.actioncaller);
                 null != a.updatefu && h.callaction(a.updatefu, a.actioncaller)
             }
@@ -3459,12 +3459,12 @@ function embedhtml5(Wd, Lc) {
                     var b = G(d);
                     if ("name" != b && "index" != b && "_type" != b) {
                         var e = c[d];
-                        if (_[15] !== typeof e) {
-                            if (e && _[1] == typeof e) {
+                        if ("function" !== typeof e) {
+                            if (e && "string" == typeof e) {
                                 var q = e.slice(0, 4);
                                 "get:" == q ? e = S(e.slice(4)) : "calc" == q && 58 == e.charCodeAt(4) && (e = y(e.slice(5)))
                             }
-                            a[b] = _[53] == typeof a[b] ? la(e) : e
+                            a[b] = "boolean" == typeof a[b] ? la(e) : e
                         }
                     }
                 }
@@ -3477,8 +3477,8 @@ function embedhtml5(Wd, Lc) {
                         e, q;
                     q = b.length;
                     for (e = 0; e < q; e++) {
-                        var f = S(_[573] + b[e] + "]");
-                        f ? h.copyattributes(d, f) : va(3, a + _[214] + b[e])
+                        var f = S("style[" + b[e] + "]");
+                        f ? h.copyattributes(d, f) : va(3, a + " - style not found: " + b[e])
                     }
                 }
             };
@@ -3515,7 +3515,7 @@ function embedhtml5(Wd, Lc) {
                 q = b.length;
                 if (0 < q) {
                     d = "";
-                    for (e = 0; e < q; e++) f = b[e], d += _[536] + f.name + ");";
+                    for (e = 0; e < q; e++) f = b[e], d += "action(" + f.name + ");";
                     h.callaction(d, null, c)
                 }
             };
@@ -3523,11 +3523,11 @@ function embedhtml5(Wd, Lc) {
                 var d = S(a, h.actioncaller);
                 if (d) {
                     var b = d._type;
-                    _[62] != b && _[5] != b || h.callaction(c, d)
+                    "plugin" != b && "hotspot" != b || h.callaction(c, d)
                 }
             };
             h.callaction = function(a, c, d) {
-                a && "null" != a && "" != a && (d = typeof a, _[15] === d ? a() : _[87] !== d && h.executeActions(Ab(a, c, !1)))
+                a && "null" != a && "" != a && (d = typeof a, "function" === d ? a() : "object" !== d && h.executeActions(Ab(a, c, !1)))
             };
             h.haltActions = function() {
                 c = !0;
@@ -3578,7 +3578,7 @@ function embedhtml5(Wd, Lc) {
                                 break
                             }
                             a(e, g, "set" == b);
-                            if (_[279] == b && 0 == la(e[1])) {
+                            if ("events.dispatch" == b && 0 == la(e[1])) {
                                 var b = e[0],
                                     b = G(b),
                                     D = null,
@@ -3590,11 +3590,11 @@ function embedhtml5(Wd, Lc) {
                                 for (d = 0; d < g; d++)
                                     if (D = e[d]) D = D[b], null != D && void 0 !== D && "" != D && h.nexttick(D)
                             } else if (void 0 !== h[b]) h[b].apply(h[b], e);
-                            else if (g && void 0 !== g[b]) d = g[b], _[15] === typeof d ? d.apply(d, e) : h.executeActions(Ab(g[b], g, !1));
+                            else if (g && void 0 !== g[b]) d = g[b], "function" === typeof d ? d.apply(d, e) : h.executeActions(Ab(g[b], g, !1));
                             else {
-                                if (_[11] == b || "call" == b) b = G(e.shift());
+                                if ("action" == b || "call" == b) b = G(e.shift());
                                 d = null;
-                                null != (d = S(b)) ? (D = typeof d, _[15] === D ? d.apply(d, e) : _[87] === D ? va(2, _[109] + td(b)) : _[1] === typeof d && (e.splice(0, 0, b), d = x(d, e), h.executeActions(Ab(d, g, !1)))) : (D = S(_[544] + b + "]")) ? ((d = D.content) || (d = F[b]), d && (e.splice(0, 0, b), _[424] === G(D.type) ? k(d, e, g) : (d = x(d, e), h.executeActions(Ab(d, g, !1))))) : va(2, _[109] + td(b))
+                                null != (d = S(b)) ? (D = typeof d, "function" === D ? d.apply(d, e) : "object" === D ? va(2, "Unknown action: " + td(b)) : "string" === typeof d && (e.splice(0, 0, b), d = x(d, e), h.executeActions(Ab(d, g, !1)))) : (D = S("action[" + b + "]")) ? ((d = D.content) || (d = F[b]), d && (e.splice(0, 0, b), "javascript" === G(D.type) ? k(d, e, g) : (d = x(d, e), h.executeActions(Ab(d, g, !1))))) : va(2, "Unknown action: " + td(b))
                             }
                         }
                     }
@@ -3642,13 +3642,13 @@ function embedhtml5(Wd, Lc) {
                 eb.stopFrictions(4)
             };
             h.stopall = function() {
-                g(_[545]);
+                g("stopall");
                 E = [];
                 K = [];
                 P = ea = Ba = null
             };
             h.breakall = function() {
-                g(_[490]);
+                g("breakall");
                 h.processAnimations(!0)
             };
             h.oninterrupt = function(a) {
@@ -3678,7 +3678,7 @@ function embedhtml5(Wd, Lc) {
                         b = "" + a[0],
                         e = G(a[1]),
                         a = 3 == c ? a[2] : S(b, d, !1);
-                    _[87] == e ? a = {} : _[546] == e ? (a = parseInt(a), isNaN(a) && (a = 0)) : a = ka(a, e);
+                    "object" == e ? a = {} : "integer" == e ? (a = parseInt(a), isNaN(a) && (a = 0)) : a = ka(a, e);
                     Y(b, a, !1, d, !0)
                 }
             };
@@ -3701,7 +3701,7 @@ function embedhtml5(Wd, Lc) {
                 var a = arguments;
                 1 == a.length && Y(a[0], X.pop(), !1, h.actioncaller)
             };
-            h[_[565]] = function() {
+            h["switch"] = function() {
                 var a = arguments,
                     c = a.length,
                     d = a[0],
@@ -3741,7 +3741,7 @@ function embedhtml5(Wd, Lc) {
                     c = a.length;
                 if (0 < c) {
                     var d = parseInt(S(a[0], h.actioncaller)).toString(16).toUpperCase();
-                    2 < c && (d = (_[489] + d).slice(-parseInt(a[2])));
+                    2 < c && (d = ("00000000" + d).slice(-parseInt(a[2])));
                     1 < c && (d = a[1] + d);
                     Y(a[0], d, !1, h.actioncaller, !0)
                 }
@@ -3938,7 +3938,7 @@ function embedhtml5(Wd, Lc) {
                     var d = ("" + B(a[0], h.actioncaller)).split("" + a[1]),
                         b;
                     if (3 == c)
-                        for (b = 0; b < d.length; b++) Y(a[2] + "[" + b + _[548], d[b], !1, h.actioncaller, !0);
+                        for (b = 0; b < d.length; b++) Y(a[2] + "[" + b + "].value", d[b], !1, h.actioncaller, !0);
                     else
                         for (b = 2; b < c; b++) Y(a[b], d[b - 2], !1, h.actioncaller, !0)
                 }
@@ -3948,7 +3948,7 @@ function embedhtml5(Wd, Lc) {
                     a = !(1 == a.length && 0 == la(a[0]));
                 V.showlog(a)
             };
-            h[_[562]] = function() {
+            h["delete"] = function() {
                 var a = arguments,
                     c, d = a.length,
                     b = h.actioncaller;
@@ -4014,16 +4014,16 @@ function embedhtml5(Wd, Lc) {
             };
             h.openurl = function() {
                 var a = arguments;
-                T.open(a[0], 0 < a.length ? a[1] : _[561])
+                T.open(a[0], 0 < a.length ? a[1] : "_blank")
             };
             h.loadscene = function() {
                 var a = arguments;
                 if (0 < a.length) {
                     var c = a[0],
-                        d = S(_[91] + c + _[79]),
-                        b = S(_[91] + c + _[443]);
+                        d = S("scene[" + c + "].content"),
+                        b = S("scene[" + c + "].onstart");
                     b && (b += ";");
-                    null == d ? va(3, 'loadscene() - scene "' + c + '" not found') : (l.xml.sceneNEW = c, l.xml.view = {}, Ya.loadxml(_[139] + d + _[136], a[1], a[2], a[3], b))
+                    null == d ? va(3, 'loadscene() - scene "' + c + '" not found') : (l.xml.sceneNEW = c, l.xml.view = {}, Ya.loadxml("<krpano>" + d + "</krpano>", a[1], a[2], a[3], b))
                 }
             };
             h.jsget = function() {
@@ -4059,7 +4059,7 @@ function embedhtml5(Wd, Lc) {
                     d = d[0];
                     a(d.args, h.actioncaller);
                     var b = !1;
-                    if (_[15] == typeof T[d.cmd]) {
+                    if ("function" == typeof T[d.cmd]) {
                         b = !0;
                         try {
                             T[d.cmd].apply(T[d.cmd], d.args)
@@ -4120,22 +4120,22 @@ function embedhtml5(Wd, Lc) {
                 }
             };
             h.loop = function() {
-                f("loop", _[318], arguments, h.actioncaller)
+                f("loop", "for(,%1,,%2);", arguments, h.actioncaller)
             };
             h.asyncloop = function() {
-                f(_[442], _[175], arguments, h.actioncaller)
+                f("asyncloop", "if(%1,%2;delayedcall(0,asyncloop(%1,%2,%3));,%3);", arguments, h.actioncaller)
             };
             h.callwhen = function() {
-                f(_[485], _[181], arguments, h.actioncaller)
+                f("callwhen", "if(%1,%2,delayedcall(0,callwhen(%1,%2)));", arguments, h.actioncaller)
             };
             h.asyncfor = function() {
-                f(_[484], "if('%5'!='NEXTLOOP',%1);if(%2,%4;%3;delayedcall(0,asyncfor(%1,%2,%3,%4,NEXTLOOP)););", arguments, h.actioncaller)
+                f("asyncfor", "if('%5'!='NEXTLOOP',%1);if(%2,%4;%3;delayedcall(0,asyncfor(%1,%2,%3,%4,NEXTLOOP)););", arguments, h.actioncaller)
             };
             h.setinterval = function() {
-                f(_[383], _[172], arguments, h.actioncaller)
+                f("setinterval", "delayedcall(interval_%1,%2,setinterval(%1,%2,%3);%3);", arguments, h.actioncaller)
             };
             h.clearinterval = function(a) {
-                h.stopdelayedcall(_[441] + a)
+                h.stopdelayedcall("interval_" + a)
             };
             var q = String.fromCharCode(2),
                 D = ".<.<<.<=.==.===.=>.>.>>.!=.!==.+.-.*./.^.&&.||.?.:.~|.~&.";
@@ -4170,20 +4170,20 @@ function embedhtml5(Wd, Lc) {
                 h["if"](a[0], a[2], a[1])
             };
             h.stoplookto = function() {
-                m(_[90])
+                m("LOOKTO")
             };
             h.lookto = function() {
                 var c = arguments,
                     d = c.length;
                 if (2 <= d)
-                    if (ea) va(2, _[163]);
+                    if (ea) va(2, "There is already a blocking lookto() action, the current call will be skipped!");
                     else {
                         var b = 0 == la(c[5]),
                             e = h.actioncaller,
                             q = new qa;
                         h.stopmovements();
-                        m(_[90]);
-                        q.id = _[90];
+                        m("LOOKTO");
+                        q.id = "LOOKTO";
                         q.actioncaller = e;
                         0 == b ? q.donecall = c[6] : (ea = q, q.blockedactions = [], Ba = q, K.push(q));
                         4 < d && void 0 === c[4] && d--;
@@ -4225,7 +4225,7 @@ function embedhtml5(Wd, Lc) {
                             q.destV = g;
                             q.destF = D;
                             f = Math.sqrt((f - r) * (f - r) + (g - v) * (g - v) + (D - w) * (D - w));
-                            k && ((k = Ab(k, null, !1)) && (k = k[0]), k && (g = k.cmd, D = k.args, a(D, e), _[59] == g ? (p = 0, b = 360, 1 == k.args.length && (b = parseFloat(D[0]))) : _[559] == g ? (p = 1, 0 < k.args.length && (c = parseFloat(D[0])), 1 < k.args.length && (d = parseFloat(D[1])), 2 < k.args.length && (b = parseFloat(D[2])), c = +Math.abs(c), d = -Math.abs(d), b = +Math.abs(b)) : "tween" == g && (p = 2, q.tweenfu = zc.getTweenfu(D[0]), q.maxruntime = parseFloat(D[1]), isNaN(q.maxruntime) && (q.maxruntime = .5))));
+                            k && ((k = Ab(k, null, !1)) && (k = k[0]), k && (g = k.cmd, D = k.args, a(D, e), "linear" == g ? (p = 0, b = 360, 1 == k.args.length && (b = parseFloat(D[0]))) : "smooth" == g ? (p = 1, 0 < k.args.length && (c = parseFloat(D[0])), 1 < k.args.length && (d = parseFloat(D[1])), 2 < k.args.length && (b = parseFloat(D[2])), c = +Math.abs(c), d = -Math.abs(d), b = +Math.abs(b)) : "tween" == g && (p = 2, q.tweenfu = zc.getTweenfu(D[0]), q.maxruntime = parseFloat(D[1]), isNaN(q.maxruntime) && (q.maxruntime = .5))));
                             q.motionmode = p;
                             0 == p ? q.maxruntime = f / b : 1 == p && (e = f, p = b * b / (2 * c), k = b / c, f = -(b * b) / (2 * d), g = -b / d, D = e - (p + f), r = D / b, 0 > r && (b = Math.sqrt(2 * e * c * d / (d - c)), p = b * b / (2 * c), k = b / c, f = -(b * b) / (2 * d), g = -b / d, r = D = 0), v = k + r + g, q.accelspeed = c, q.breakspeed = d, q.Vmax = b, q.Tmax = v, q.Smax = e, q.T1 = k, q.T2 = r, q.T3 = g, q.S1 = p, q.S2 = D, q.S3 = f, q.maxruntime = v);
                             q.starttime = Ja();
@@ -4332,7 +4332,7 @@ function embedhtml5(Wd, Lc) {
                         k = a[1];
                         D = !1;
                         e && 0 > f.indexOf(".") && e.hasOwnProperty(f) && (g = e._type + "[" + e.name + "]." + f, D = !0);
-                        0 == D && 0 < f.indexOf("[") && (g = f = d(f, e), g = g.split(_[158]).join(_[146]));
+                        0 == D && 0 < f.indexOf("[") && (g = f = d(f, e), g = g.split("layer[").join("plugin["));
                         q.id = g;
                         q.varname = f;
                         q.actioncaller = e;
@@ -4342,12 +4342,12 @@ function embedhtml5(Wd, Lc) {
                         f = 2 < c ? String(a[2]) : "0.5";
                         if (0 < f.indexOf("(") && (l = Ab(f, null, !1))) {
                             var n = l[0];
-                            _[481] == n.cmd && (l = Number(n.args[0]), f = Number(n.args[1]), k = Math.abs(parseFloat(k) - parseFloat(q.startval)), f = f * k / l)
+                            "distance" == n.cmd && (l = Number(n.args[0]), f = Number(n.args[1]), k = Math.abs(parseFloat(k) - parseFloat(q.startval)), f = f * k / l)
                         }
                         f = parseFloat(f);
                         isNaN(f) && (f = .5);
                         q.maxruntime = f;
-                        q.tweenmap = zc.getTweenfu(3 < c ? a[3] : _[75]);
+                        q.tweenmap = zc.getTweenfu(3 < c ? a[3] : "easeoutquad");
                         if (4 < c)
                             if ("wait" == G(a[4])) q.blockedactions = [], Ba = q, K.push(q);
                             else if (k = a[4]) 0 == D && 0 < k.indexOf("[") && (k = d(k, e)), q.donecall = k;
@@ -4370,7 +4370,7 @@ function embedhtml5(Wd, Lc) {
                     else {
                         if (a && 0 > f.indexOf(".")) {
                             if (m(a._type + "[" + a.name + "]." + f)) continue
-                        } else 0 < f.indexOf("[") && (f = d(f, a)), f = f.split(_[158]).join(_[146]);
+                        } else 0 < f.indexOf("[") && (f = d(f, a)), f = f.split("layer[").join("plugin[");
                         m(f)
                     }
                 }
@@ -4407,7 +4407,7 @@ function embedhtml5(Wd, Lc) {
             h.addlensflare = function() {};
             h.removelensflare = function() {};
             h.SAcall = function(a) {
-                var c = S(_[11]);
+                var c = S("action");
                 if ((a = Ab(a, null, !1)) && c) {
                     var d, b;
                     b = a.length;
@@ -4416,7 +4416,7 @@ function embedhtml5(Wd, Lc) {
                         if (e) {
                             var q = e.cmd,
                                 f = c.getItem(q);
-                            f && 1 == la(f.secure) ? (e = e.args, e.splice(0, 0, q), h.callaction(x(f.content, e))) : va(2, _[480] + q + _[333])
+                            f && 1 == la(f.secure) ? (e = e.args, e.splice(0, 0, q), h.callaction(x(f.content, e))) : va(2, "Calling " + q + " not allowed!")
                         }
                     }
                 }
@@ -4425,26 +4425,26 @@ function embedhtml5(Wd, Lc) {
         var V = {};
         (function() {
             function a(a) {
-                a = _[200] + a;
+                a = "krpano embedding error: " + a;
                 T.console ? T.console.log(a) : alert(a)
             }
 
             function b(a, c, d, b, e, f) {
                 var g = Fa(),
                     h = g.style;
-                h.position = _[0];
+                h.position = "absolute";
                 "LT" == a ? (h.left = c, h.top = d) : (h.left = c, h.bottom = d);
                 h.width = b;
                 h.height = e;
-                h.overflow = _[7];
+                h.overflow = "hidden";
                 !1 === f && (h.webkitUserSelect = h.MozUserSelect = h.msUserSelect = h.oUserSelect = h.userSelect = "none");
                 return g
             }
 
             function x(a) {
                 if (n.fullscreen = a) T.activekrpanowindow = z.id;
-                z.style.background = a ? ua(l.bgcolor, 1) : _[13];
-                ya(1 == a ? _[241] : _[253])
+                z.style.background = a ? ua(l.bgcolor, 1) : "transparent";
+                ya(1 == a ? "onenterfullscreen" : "onexitfullscreen")
             }
 
             function f(a) {
@@ -4457,16 +4457,16 @@ function embedhtml5(Wd, Lc) {
 
             function k() {
                 v(!Rc, ge);
-                N.style.textDecoration = Rc ? _[133] : "none"
+                N.style.textDecoration = Rc ? "underline" : "none"
             }
 
             function m() {
                 v(Rc, !ge);
-                X.style.textDecoration = ge ? _[133] : "none"
+                X.style.textDecoration = ge ? "underline" : "none"
             }
 
             function g(a) {
-                bb(_[29])
+                bb("visibilitychange")
             }
 
             function w(a) {
@@ -4513,14 +4513,14 @@ function embedhtml5(Wd, Lc) {
             }
 
             function v(a, c) {
-                var d = a ? _[98] : "none";
+                var d = a ? "1px solid rgba(0,255,0,0.5)" : "none";
                 Rc = a;
                 ge = c;
                 var b, e, f, g;
                 f = Ga.getArray();
                 e = f.length;
                 for (b = 0; b < e; b++)(g = f[b]) && g.sprite && (g.sprite.style.outline = d);
-                d = c ? _[193] : "none";
+                d = c ? "1px solid rgba(255,255,0,0.5)" : "none";
                 f = Ua.getArray();
                 e = f.length;
                 for (b = 0; b < e; b++)(g = f[b]) && g.sprite && (g.sprite.style.outline = d);
@@ -4532,13 +4532,13 @@ function embedhtml5(Wd, Lc) {
                 var a, c = Fa();
                 a = 25;
                 d.androidstock && (a *= d.pixelratio);
-                e(c, [_[37], _[0], "left", "50%", "top", "50%", _[24], _[54], _[52], a + "px", _[67], "none", _[40], _[6], _[312], "none"]);
+                e(c, ["position", "absolute", "left", "50%", "top", "50%", "color", "#FFFFFF", "fontSize", a + "px", "-webkit-text-size-adjust", "none", "cursor", "default", "pointerEvents", "none"]);
                 a = c.style;
                 a.zIndex = 999999;
                 a.opacity = .67;
                 a = Fa();
                 e(a, "position;relative;left;-50%;top;-25px;fontFamily;sans-serif;textShadow;#000000 1px 1px 2px;lineHeight;110%".split(";"));
-                a.innerHTML = _[477] + (Va && Va[1] && 6 < Qa(Va[1], !1).length ? Va[1] : _[180]) + _[434];
+                a.innerHTML = "<center>" + (Va && Va[1] && 6 < Qa(Va[1], !1).length ? Va[1] : "") + "</center>";
                 c.appendChild(a);
                 h.appendChild(c);
                 J = c
@@ -4570,30 +4570,30 @@ function embedhtml5(Wd, Lc) {
                 ea = !1;
             n.build = function(r) {
                 function q(a) {
-                    a && _[8] == a.type && 0 != (a.button | 0) || p(null, !1)
+                    a && "mousedown" == a.type && 0 != (a.button | 0) || p(null, !1)
                 }
                 var D = r.target,
                     L = r.id,
                     M = ca.getElementById(D);
-                if (!M) return a(_[182] + D), !1;
+                if (!M) return a("there is no html element with this id: " + D), !1;
                 for (var D = null, u = L, v = 1;;)
                     if (D = ca.getElementById(L))
-                        if (_[269] == u) v++, L = u + v;
-                        else return a(_[176] + L), !1;
+                        if ("krpanoSWFObject" == u) v++, L = u + v;
+                        else return a("there is already a html element with this id: " + L), !1;
                 else break;
                 D = Fa();
                 D.id = L;
-                D.style.position = _[138];
-                D.style.overflow = _[7];
-                D.style.lineHeight = _[58];
-                D.style.fontWeight = _[58];
-                D.style.fontStyle = _[58];
+                D.style.position = "relative";
+                D.style.overflow = "hidden";
+                D.style.lineHeight = "normal";
+                D.style.fontWeight = "normal";
+                D.style.fontStyle = "normal";
                 D.tabIndex = -1;
                 D.style.outline = 0;
-                L = _[38];
+                L = "#000000";
                 r.bgcolor && (L = r.bgcolor, l.bgcolor = parseInt(L.slice(1), 16));
                 u = G(r.wmode);
-                if (_[13] == u || _[154] == u) L = null;
+                if ("transparent" == u || "opaque" == u) L = null;
                 null != L && (D.style.background = L);
                 M.appendChild(D);
                 z = D;
@@ -4605,72 +4605,72 @@ function embedhtml5(Wd, Lc) {
                 n.controllayer = h;
                 M = b("LT", 0, 0, "100%", "100%");
                 n.panolayer = M;
-                e(M, [_[301], "none"]);
+                e(M, ["pointer-events", "none"]);
                 r = b("LT", 0, 0, "100%", "100%", !1);
-                0 == d.ie && 0 == d.firefox && e(r, [ze, _[124]]);
-                d.android && d.firefox && yc && (L = b("LT", 0, 0, "1px", "1px"), L.style.background = _[259], L.style.pointerEvents = "none", L.style.zIndex = 999999999, L.style[qb] = _[27], r.appendChild(L));
+                0 == d.ie && 0 == d.firefox && e(r, [ze, "preserve-3d"]);
+                d.android && d.firefox && yc && (L = b("LT", 0, 0, "1px", "1px"), L.style.background = "rgba(0,0,0,0.01)", L.style.pointerEvents = "none", L.style.zIndex = 999999999, L.style[qb] = "translateZ(+2000000000000px)", r.appendChild(L));
                 var L = d.androidstock ? d.pixelratio : 1,
                     u = 156 * L,
                     v = (d.mobile ? 8 : 13) * L,
                     t = d.androidstock || d.android && d.chrome ? 6 : 8;
                 c = b("LB", 0, 0, "100%", u + "px", !0);
                 c.style.display = "none";
-                !0 !== d.opera && yc && (2 > xc && (c.style[qb] = _[27]), d.ios && 0 == d.simulator || d.android && d.chrome) && (c.style[qb] = _[27]);
+                !0 !== d.opera && yc && (2 > xc && (c.style[qb] = "translateZ(+2000000000000px)"), d.ios && 0 == d.simulator || d.android && d.chrome) && (c.style[qb] = "translateZ(+2000000000000px)");
                 c.style.zIndex = 999999999;
                 var x = b("LT", 0, 0, "100%", "100%", !0);
                 x.style.opacity = .67;
-                d.android && d.opera && (x.style.borderTop = _[189]);
-                e(x, [_[266], _[38], Sb, _[474] + t + _[406], _[137], t + "px", _[535], .67]);
+                d.android && d.opera && (x.style.borderTop = "1px solid rgba(255,255,255,0.5)");
+                e(x, ["backgroundColor", "#000000", Sb, "0px 0px " + t + "px #FFFFFF", "marginTop", t + "px", "opacity", .67]);
                 F = ca.createElement("pre");
                 t = null;
-                d.mac && (t = _[324] + (T.chrome ? "1px" : "0"));
-                d.realDesktop ? (F.style.fontFamily = _[30], F.style.fontSize = "11px", t && (F.style.fontSize = "13px", F.style.textShadow = t)) : (F.style.fontFamily = _[20], F.style.fontSize = v + "px");
-                e(F, [_[37], _[0], "left", "5px", "top", "0px", _[66], "left", _[367], 0, _[342], d.realDesktop ? "16px" : 0, _[419], 0, _[332], 0, _[129], "none", _[86], 0, _[137], (d.realDesktop ? 10 : 8) + "px", _[64], "100%", _[17], u - 10 + "px", _[472], "auto", _[232], "none", _[82], "block", _[427], "left", _[415], _[471], _[67], "none", _[24], _[54], _[40], "text"]);
+                d.mac && (t = "#FFF 0px 0px " + (T.chrome ? "1px" : "0"));
+                d.realDesktop ? (F.style.fontFamily = "Courier New", F.style.fontSize = "11px", t && (F.style.fontSize = "13px", F.style.textShadow = t)) : (F.style.fontFamily = "sans-serif", F.style.fontSize = v + "px");
+                e(F, ["position", "absolute", "left", "5px", "top", "0px", "align", "left", "paddingLeft", 0, "paddingRight", d.realDesktop ? "16px" : 0, "paddingTop", 0, "paddingBottom", 0, "background", "none", "border", 0, "marginTop", (d.realDesktop ? 10 : 8) + "px", "width", "100%", "height", u - 10 + "px", "overflow", "auto", "-ms-overflow-style", "none", "display", "block", "textAlign", "left", "whiteSpace", "pre-line", "-webkit-text-size-adjust", "none", "color", "#FFFFFF", "cursor", "text"]);
                 E = Fa();
                 t && (E.style.textShadow = t);
-                e(E, [_[37], _[0], _[3], 0, "top", "10px", _[55], "0 4px", _[17], "30px", _[69], "none", _[70], "none", _[76], "none", _[40], _[10], _[42], _[13], _[77], d.realDesktop ? _[30] : _[20], _[52], (d.realDesktop ? 10 : 9 * L | 0) + "px", _[24], _[54]]);
+                e(E, ["position", "absolute", "right", 0, "top", "10px", "padding", "0 4px", "height", "30px", "webkitUserSelect", "none", "mozUserSelect", "none", "userSelect", "none", "cursor", "pointer", "-webkit-tap-highlight-color", "transparent", "fontFamily", d.realDesktop ? "Courier New" : "sans-serif", "fontSize", (d.realDesktop ? 10 : 9 * L | 0) + "px", "color", "#FFFFFF"]);
                 E.innerHTML = "CLOSE";
-                aa(E, _[47], ta, !0);
-                aa(E, _[48], ta, !0);
-                aa(E, _[50], q, !0);
-                aa(E, _[2], q, !0);
+                aa(E, "touchstart", ta, !0);
+                aa(E, "touchmove", ta, !0);
+                aa(E, "touchend", q, !0);
+                aa(E, "mouseup", q, !0);
                 c.appendChild(x);
                 c.appendChild(F);
                 c.appendChild(E);
                 N = Fa();
                 t && (N.style.textShadow = t);
-                e(N, [_[37], _[0], _[3], "0px", _[4], "0px", _[55], _[273], _[17], "12px", _[69], "none", _[70], "none", _[76], "none", _[40], _[10], _[42], _[13], _[77], d.realDesktop ? _[30] : _[20], _[52], (d.realDesktop ? 10 : 9 * L | 0) + "px", _[24], _[145], _[82], "none"]);
-                N.innerHTML = _[577];
-                aa(N, _[47], ta, !0);
-                aa(N, _[48], ta, !0);
-                aa(N, _[50], k, !0);
-                aa(N, _[2], k, !0);
+                e(N, ["position", "absolute", "right", "0px", "bottom", "0px", "padding", "0px 4px 4px 4px", "height", "12px", "webkitUserSelect", "none", "mozUserSelect", "none", "userSelect", "none", "cursor", "pointer", "-webkit-tap-highlight-color", "transparent", "fontFamily", d.realDesktop ? "Courier New" : "sans-serif", "fontSize", (d.realDesktop ? 10 : 9 * L | 0) + "px", "color", "#0FFF00", "display", "none"]);
+                N.innerHTML = "LAYERS";
+                aa(N, "touchstart", ta, !0);
+                aa(N, "touchmove", ta, !0);
+                aa(N, "touchend", k, !0);
+                aa(N, "mouseup", k, !0);
                 c.appendChild(N);
                 X = Fa();
                 t && (X.style.textShadow = t);
-                e(X, [_[37], _[0], _[3], "0px", _[4], "18px", _[55], _[265], _[17], "12px", _[69], "none", _[70], "none", _[76], "none", _[40], _[10], _[42], _[13], _[77], d.realDesktop ? _[30] : _[20], _[52], (d.realDesktop ? 10 : 9 * L | 0) + "px", _[24], _[145], _[82], "none"]);
-                X.innerHTML = _[466];
-                aa(X, _[47], ta, !0);
-                aa(X, _[48], ta, !0);
-                aa(X, _[50], m, !0);
-                aa(X, _[2], m, !0);
+                e(X, ["position", "absolute", "right", "0px", "bottom", "18px", "padding", "4px 4px 0px 4px", "height", "12px", "webkitUserSelect", "none", "mozUserSelect", "none", "userSelect", "none", "cursor", "pointer", "-webkit-tap-highlight-color", "transparent", "fontFamily", d.realDesktop ? "Courier New" : "sans-serif", "fontSize", (d.realDesktop ? 10 : 9 * L | 0) + "px", "color", "#0FFF00", "display", "none"]);
+                X.innerHTML = "HOTSPOTS";
+                aa(X, "touchstart", ta, !0);
+                aa(X, "touchmove", ta, !0);
+                aa(X, "touchend", m, !0);
+                aa(X, "mouseup", m, !0);
                 c.appendChild(X);
                 D.appendChild(h);
                 h.appendChild(M);
                 h.appendChild(r);
-                d.ios && (M = Fa(), M.style.position = _[0], M.style.webkitTransformStyle = _[124], r.appendChild(M));
+                d.ios && (M = Fa(), M.style.position = "absolute", M.style.webkitTransformStyle = "preserve-3d", r.appendChild(M));
                 D.appendChild(c);
                 n.pluginlayer = r;
                 n.hotspotlayer = r;
                 d.fullscreensupport && aa(ca, d.browser.events.fullscreenchange, w);
-                aa(T, _[51], g, !1);
-                aa(T, _[465], g, !1);
-                aa(ca, _[29], g, !1);
+                aa(T, "pagehide", g, !1);
+                aa(T, "pageshow", g, !1);
+                aa(ca, "visibilitychange", g, !1);
                 O = [D.style.width, D.style.height];
                 n.onResize(null);
-                aa(T, _[152], n.onResize, !1);
-                d.iphone && d.safari && aa(T, _[159], H, !1);
-                aa(T, _[106], f, !1);
+                aa(T, "resize", n.onResize, !1);
+                d.iphone && d.safari && aa(T, "scroll", H, !1);
+                aa(T, "orientationchange", f, !1);
                 return !0
             };
             n.focus = function(a) {
@@ -4686,8 +4686,8 @@ function embedhtml5(Wd, Lc) {
                         var b = ca.body,
                             e = b.style,
                             f = z.style;
-                        if (a) n.fsbkup = [e.padding, e.margin, e.overflow, b.scrollTop, b.scrollLeft, T.pageYOffset], e.padding = "0 0", e.margin = "0 0", e.overflow = _[7], b.scrollTop = "0", b.scrollLeft = "0", b.appendChild(z), f.position = _[0], f.left = 0, f.top = 0, f.width = "100%", f.height = "100%", eb.domUpdate(), T.scrollTo(0, 0), x(!0);
-                        else if (a = n.fsbkup) n.htmltarget.appendChild(z), e.padding = a[0], e.margin = a[1], e.overflow = a[2], b.scrollTop = a[3], b.scrollLeft = a[4], f.position = _[138], eb.domUpdate(), T.scrollTo(0, a[5]), n.fsbkup = null, x(!1)
+                        if (a) n.fsbkup = [e.padding, e.margin, e.overflow, b.scrollTop, b.scrollLeft, T.pageYOffset], e.padding = "0 0", e.margin = "0 0", e.overflow = "hidden", b.scrollTop = "0", b.scrollLeft = "0", b.appendChild(z), f.position = "absolute", f.left = 0, f.top = 0, f.width = "100%", f.height = "100%", eb.domUpdate(), T.scrollTo(0, 0), x(!0);
+                        else if (a = n.fsbkup) n.htmltarget.appendChild(z), e.padding = a[0], e.margin = a[1], e.overflow = a[2], b.scrollTop = a[3], b.scrollLeft = a[4], f.position = "relative", eb.domUpdate(), T.scrollTo(0, a[5]), n.fsbkup = null, x(!1)
                     }
             };
             var P = 0;
@@ -4759,12 +4759,12 @@ function embedhtml5(Wd, Lc) {
                     K = lb;
                     gb && (gb._pxw = gb.pixelwidth = gb.imagewidth = Tb / ba, gb._pxh = gb.pixelheight = gb.imageheight = lb / ba);
                     ob && (ob._pxw = ob.pixelwidth = ob.imagewidth = Tb / ba, ob._pxh = ob.pixelheight = ob.imageheight = lb / ba);
-                    f && (Bb && Bb.calc(Tb, lb), ya(_[80]), f = !1);
+                    f && (Bb && Bb.calc(Tb, lb), ya("onresize"), f = !1);
                     Bb ? (f |= Bb.calc(Tb, lb), h.style.left = Bb.pixelx * ba + "px", h.style.top = Bb.pixely * ba + "px", h.style.width = Ta + "px", h.style.height = Ea + "px", g = Ta, e = Ea) : (Ta = Tb, Ea = lb);
                     Qc = Math.max(4 * e / 3, g);
                     d.desktop && (l = T.devicePixelRatio, isNaN(l) || (d.pixelratio = l, d.fractionalscaling = 0 != l % 1));
                     fb.size(g, e);
-                    f && ya(_[80]);
+                    f && ya("onresize");
                     "" == c.style.display && (F.scrollTop = F.scrollHeight);
                     Ya.updateview(!1, !0);
                     ea = b
@@ -4778,9 +4778,9 @@ function embedhtml5(Wd, Lc) {
                 else {
                     var c = 4 > d.firefoxversion ? 4096 : 1E4,
                         b = a.slice(0, 6).charCodeAt(0);
-                    73 != b ? (c = _[216] + (68 == b ? _[585] : 87 == b ? _[586] : _[591]) + ";'>" + a + _[506], qa += c + "\n", F.innerHTML += "\n" + c) : (qa += a + "\n", qa.length > c ? (qa = qa.slice(-c / 2, -1), F.innerHTML = qa) : F.lastChild ? F.lastChild.nodeValue += "\n" + a : F.innerHTML += a);
+                    73 != b ? (c = "<span style='color:#" + (68 == b ? "0FFF00" : 87 == b ? "AACCFF" : "FFFF00") + ";'>" + a + "</span> ", qa += c + "\n", F.innerHTML += "\n" + c) : (qa += a + "\n", qa.length > c ? (qa = qa.slice(-c / 2, -1), F.innerHTML = qa) : F.lastChild ? F.lastChild.nodeValue += "\n" + a : F.innerHTML += a);
                     F.scrollTop = F.scrollHeight;
-                    oc.so.vars && la(oc.so.vars.consolelog) && (c = T.console) && c.log && (d.firefox || d.chrome ? c.log("%c" + a, 68 == b ? _[303] : 69 == b ? _[190] : 87 == b ? _[304] : _[295]) : c.log(a))
+                    oc.so.vars && la(oc.so.vars.consolelog) && (c = T.console) && c.log && (d.firefox || d.chrome ? c.log("%c" + a, 68 == b ? "color:#007700;" : 69 == b ? "color:#FF0000;font-weight:bold;" : 87 == b ? "color:#AA7700;" : "color:#333333;") : c.log(a))
                 }
             };
             n.showlog = function(a) {
@@ -4788,7 +4788,7 @@ function embedhtml5(Wd, Lc) {
             };
             var Q = 0;
             n.handleKeydown = function(a) {
-                l[Pb[1]] ? 79 == a ? p() : "none" != c.style.display && (68 == a ? (l.debugmode = !l.debugmode, p(null, !0), 0 == l.debugmode && (N.style.textDecoration = X.style.textDecoration = "none", fe = !1, v(!1, !1))) : l.debugmode && (72 == a ? m() : 76 == a ? k() : 80 == a ? (fe = !fe, $a = !0) : 83 == a ? (ja.stereo = !ja.stereo, $a = !0) : 65 == a ? (Db.enabled = !Db.enabled, va(0, (Db.enabled ? "en" : "dis") + _[292]), $a = !0) : 67 == a ? da.mousetype = _[18] == da.mousetype ? _[596] : _[18] : 85 == a && (va(0, _[218]), t.maxpixelzoom = Number.NaN, t.fovmin = 0, t.fovmax = 179, t.limitview = "off", $a = !0))) : 0 != Q || 220 != a && 160 != a ? 1 == Q && 73 == a ? Q++ : 2 == Q && 68 == a ? Q++ : 3 == Q && 75 == a ? Q++ : 4 == Q && 70 == a ? Q++ : 5 == Q && 65 == a ? l[Pb[1]] = !0 : Q = 0 : Q++
+                l[Pb[1]] ? 79 == a ? p() : "none" != c.style.display && (68 == a ? (l.debugmode = !l.debugmode, p(null, !0), 0 == l.debugmode && (N.style.textDecoration = X.style.textDecoration = "none", fe = !1, v(!1, !1))) : l.debugmode && (72 == a ? m() : 76 == a ? k() : 80 == a ? (fe = !fe, $a = !0) : 83 == a ? (ja.stereo = !ja.stereo, $a = !0) : 65 == a ? (Db.enabled = !Db.enabled, va(0, (Db.enabled ? "en" : "dis") + "able autorotate"), $a = !0) : 67 == a ? da.mousetype = "moveto" == da.mousetype ? "drag2d" : "moveto" : 85 == a && (va(0, "unlock viewing range"), t.maxpixelzoom = Number.NaN, t.fovmin = 0, t.fovmax = 179, t.limitview = "off", $a = !0))) : 0 != Q || 220 != a && 160 != a ? 1 == Q && 73 == a ? Q++ : 2 == Q && 68 == a ? Q++ : 3 == Q && 75 == a ? Q++ : 4 == Q && 70 == a ? Q++ : 5 == Q && 65 == a ? l[Pb[1]] = !0 : Q = 0 : Q++
             };
             n.getMousePos = function(a, c) {
                 var d = {},
@@ -4801,7 +4801,7 @@ function embedhtml5(Wd, Lc) {
             n.remove = function() {
                 null != C && (clearInterval(C), C = null);
                 try {
-                    ia(T, _[152], n.onResize, !1), d.iphone && d.safari && ia(T, _[159], H, !1), ia(T, _[106], f, !1), d.fullscreensupport && ia(ca, d.browser.events.fullscreenchange, w), n.htmltarget.removeChild(z), n.htmltarget = null, n.viewerlayer = null, n.controllayer = null, n.panolayer = null, n.pluginlayer = null, h = z = E = F = c = n.hotspotlayer = null
+                    ia(T, "resize", n.onResize, !1), d.iphone && d.safari && ia(T, "scroll", H, !1), ia(T, "orientationchange", f, !1), d.fullscreensupport && ia(ca, d.browser.events.fullscreenchange, w), n.htmltarget.removeChild(z), n.htmltarget = null, n.viewerlayer = null, n.controllayer = null, n.panolayer = null, n.pluginlayer = null, h = z = E = F = c = n.hotspotlayer = null
                 } catch (a) {}
             };
             var J = null
@@ -4810,7 +4810,7 @@ function embedhtml5(Wd, Lc) {
         (function() {
             function a(a) {
                 var c = a.pointerType;
-                if (4 != c && _[19] != c) {
+                if (4 != c && "mouse" != c) {
                     a = a.changedTouches ? a.changedTouches : [a];
                     var c = a.length,
                         d, b, e;
@@ -4836,7 +4836,7 @@ function embedhtml5(Wd, Lc) {
 
             function b(a) {
                 var c = a.pointerType;
-                if (4 != c && _[19] != c) {
+                if (4 != c && "mouse" != c) {
                     a = a.changedTouches ? a.changedTouches : [a];
                     var c = a.length,
                         d, b;
@@ -4855,11 +4855,11 @@ function embedhtml5(Wd, Lc) {
 
             function x() {
                 var a = G(da.usercontrol);
-                return (_[19] == a || "all" == a) && !Z.isblocked()
+                return ("mouse" == a || "all" == a) && !Z.isblocked()
             }
 
             function f(a) {
-                return a && (a = a.pointerType, 4 == a || _[19] == a) ? !0 : !1
+                return a && (a = a.pointerType, 4 == a || "mouse" == a) ? !0 : !1
             }
 
             function e(a, c, d, b) {
@@ -4895,8 +4895,8 @@ function embedhtml5(Wd, Lc) {
             }
 
             function w(a) {
-                a ? (_[31] == a.type ? V.controllayer.contains(a.target) && a.preventDefault() : I(), _[51] == a.type && !1 === a.persisted && (Jd = !0), H.down && F(a)) : I();
-                for (var c in Za) 1 == Za[c] && (l.keycode = c, ya(_[148]), Za[c] = !1);
+                a ? ("contextmenu" == a.type ? V.controllayer.contains(a.target) && a.preventDefault() : I(), "pagehide" == a.type && !1 === a.persisted && (Jd = !0), H.down && F(a)) : I();
+                for (var c in Za) 1 == Za[c] && (l.keycode = c, ya("onkeyup"), Za[c] = !1);
                 l.keycode = 0;
                 Da()
             }
@@ -4909,7 +4909,7 @@ function embedhtml5(Wd, Lc) {
 
             function r(a) {
                 var c = 0;
-                if (1 != da.disablewheel && (ta(a), bb(_[263]), x())) {
+                if (1 != da.disablewheel && (ta(a), bb("pano.mousewheel"), x())) {
                     a.wheelDelta ? c = a.wheelDelta / -120 : a.detail && (c = a.detail, 0 == d.mac && (c /= 3));
                     var b = c * da.mousefovchange;
                     da.zoomtocursor ? (Ga = !0, u(a), Ja = H.x, xa = H.y, 0 < b && 0 == da.zoomoutcursor && (Ga = !1)) : Ga = !1;
@@ -4918,18 +4918,18 @@ function embedhtml5(Wd, Lc) {
                     Ra += .001 * b;
                     l.wheeldelta_raw = -c;
                     l.wheeldelta = 3 * -c;
-                    z(_[73])
+                    z("onmousewheel")
                 }
             }
 
             function A(a) {
                 var c = V.viewerlayer;
-                ca.activeElement == c != 0 && T.activekrpanowindow == c.id && (bb(_[83]), c = a.keyCode, 0 == (a.altKey || a.ctrlKey || a.shiftKey || a.metaKey || 32 > c || 111 < c && 124 > c) && ta(a), l.keycode = c, Z.checkInterrupt(), 0 != Z.isblocked() || !0 === Za[c] && !da.keydownrepeat || (Za[c] = !0, ya(_[436])), V.handleKeydown(c), v(c, 1), 27 == c && (I(), V.fullscreen && (V.fsbkup || d.opera) && V.setFullscreen(!1)))
+                ca.activeElement == c != 0 && T.activekrpanowindow == c.id && (bb("keydown"), c = a.keyCode, 0 == (a.altKey || a.ctrlKey || a.shiftKey || a.metaKey || 32 > c || 111 < c && 124 > c) && ta(a), l.keycode = c, Z.checkInterrupt(), 0 != Z.isblocked() || !0 === Za[c] && !da.keydownrepeat || (Za[c] = !0, ya("onkeydown")), V.handleKeydown(c), v(c, 1), 27 == c && (I(), V.fullscreen && (V.fsbkup || d.opera) && V.setFullscreen(!1)))
             }
 
             function p(a) {
                 var c = V.viewerlayer;
-                ca.activeElement == c != 0 && T.activekrpanowindow == c.id && (bb(_[97]), a = a.keyCode, l.keycode = a, 1 == Za[a] && (Za[a] = !1, ya(_[148])), v(a, 0))
+                ca.activeElement == c != 0 && T.activekrpanowindow == c.id && (bb("keyup"), a = a.keyCode, l.keycode = a, 1 == Za[a] && (Za[a] = !1, ya("onkeyup")), v(a, 0))
             }
 
             function v(a, c) {
@@ -4988,20 +4988,20 @@ function embedhtml5(Wd, Lc) {
                     H.downx = H.x = c.x / ba;
                     H.downy = H.y = c.y / ba;
                     $a = xf(c.x, c.y, I, 0 <= G(a.type).indexOf("touch"));
-                    null != $a && (Qa = Fa(), a = Qa.style, a.position = _[0], d.androidstock || (a.zIndex = 99999999998, a[qb] = _[27]), a.width = "100%", a.height = "100%", M.appendChild(Qa), M.appendChild($a))
+                    null != $a && (Qa = Fa(), a = Qa.style, a.position = "absolute", d.androidstock || (a.zIndex = 99999999998, a[qb] = "translateZ(+2000000000000px)"), a.width = "100%", a.height = "100%", M.appendChild(Qa), M.appendChild($a))
                 }
             }
 
             function C(a, b) {
                 var e = a.timeStamp | 0;
-                500 < e && 500 > e - Ac ? Ac = 0 : (V.focus(1), ta(a), (e = 0 == (a.button | 0)) && I(), Z.checkInterrupt(), !Z.isblocked() && e && (1 != b ? (aa(T, _[9], h, !0), aa(T, _[2], c, !0), d.topAccess && aa(top, _[2], F, !0)) : aa(d.topAccess ? top : T, L.touchend, K, !0), e = D(a), Na = e.x, fa = e.y, ga = a.timeStamp, Rd = t.hlookat, la = t.vlookat, oa = 0, H.down = !0, H.up = !1, H.moved = !1, H.downx = H.x = e.x / ba, H.downy = H.y = e.y / ba, 1 == z(_[46]) ? (ia(T, _[9], h, !0), H.down = !1) : Oc.update()))
+                500 < e && 500 > e - Ac ? Ac = 0 : (V.focus(1), ta(a), (e = 0 == (a.button | 0)) && I(), Z.checkInterrupt(), !Z.isblocked() && e && (1 != b ? (aa(T, "mousemove", h, !0), aa(T, "mouseup", c, !0), d.topAccess && aa(top, "mouseup", F, !0)) : aa(d.topAccess ? top : T, L.touchend, K, !0), e = D(a), Na = e.x, fa = e.y, ga = a.timeStamp, Rd = t.hlookat, la = t.vlookat, oa = 0, H.down = !0, H.up = !1, H.moved = !1, H.downx = H.x = e.x / ba, H.downy = H.y = e.y / ba, 1 == z("onmousedown") ? (ia(T, "mousemove", h, !0), H.down = !1) : Oc.update()))
             }
 
             function z(a) {
-                var c = _[39] == a,
+                var c = "onclick" == a,
                     d = !1;
-                if (_[46] == a || _[33] == a || c || _[73] == a) d = fb.hittesthotspots(a);
-                0 == d && (c ? (ya(_[33]), ya(_[39])) : ya(a));
+                if ("onmousedown" == a || "onmouseup" == a || c || "onmousewheel" == a) d = fb.hittesthotspots(a);
+                0 == d && (c ? (ya("onmouseup"), ya("onclick")) : ya(a));
                 return d
             }
 
@@ -5011,7 +5011,7 @@ function embedhtml5(Wd, Lc) {
                 H.x = d.x / ba;
                 H.y = d.y / ba;
                 H.moved = !0;
-                if (_[18] == G(da.mousetype)) {
+                if ("moveto" == G(da.mousetype)) {
                     Oa = !0;
                     var b = k(Na, fa, d.x, d.y, da.movetorelative).h;
                     H.vinvert && (b *= -1);
@@ -5025,18 +5025,18 @@ function embedhtml5(Wd, Lc) {
             }
 
             function c(a, b) {
-                0 == H.downLayer && bb(_[340]);
+                0 == H.downLayer && bb("pano.mouseup");
                 ta(a);
-                ia(T, _[9], h, !0);
-                ia(T, _[2], c, !0);
-                d.topAccess && ia(top, _[2], F, !0);
+                ia(T, "mousemove", h, !0);
+                ia(T, "mouseup", c, !0);
+                d.topAccess && ia(top, "mouseup", F, !0);
                 var f = D(a);
                 Na = f.x;
                 fa = f.y;
                 ga = a.timeStamp;
                 e(Na, fa, ga, hb);
                 if (da.drag_oldmode) yb = !0, 1 >= Ia.length && (yb = !1, ka = pa = 0);
-                else if (_[18] != G(da.mousetype))
+                else if ("moveto" != G(da.mousetype))
                     if (x() && 1 < Ia.length && 0 == va) {
                         var q = Ia[0],
                             g = Ia[Ia.length - 1],
@@ -5046,7 +5046,7 @@ function embedhtml5(Wd, Lc) {
                 H.down = !1;
                 H.dragging = !1;
                 Oc.update();
-                0 == H.up && (H.up = !0, f = _[33], !0 !== b && (0 == H.moved || 5 > Math.abs(H.x - H.downx) && 5 > Math.abs(H.y - H.downy)) && (f = _[39]), z(f))
+                0 == H.up && (H.up = !0, f = "onmouseup", !0 !== b && (0 == H.moved || 5 > Math.abs(H.x - H.downx) && 5 > Math.abs(H.y - H.downy)) && (f = "onclick"), z(f))
             }
 
             function F(a) {
@@ -5082,7 +5082,7 @@ function embedhtml5(Wd, Lc) {
                     N(c)
                 }
                 T.activekrpanowindow = V.viewerlayer.id;
-                bb(_[278]);
+                bb("pano.touchstart");
                 0 == V.__scrollpage_yet && E(c);
                 I();
                 if (!(wa || 0 == U && 1 < Wa.length || (Z.checkInterrupt(), Z.isblocked()))) {
@@ -5105,13 +5105,13 @@ function embedhtml5(Wd, Lc) {
                     q = {
                         t: Ac
                     };
-                    va = 1 == z(_[46]) ? !0 : !1
+                    va = 1 == z("onmousedown") ? !0 : !1
                 }
             }
 
             function R(a) {
                 var c = a.pointerType;
-                if (4 != c && _[19] != c) {
+                if (4 != c && "mouse" != c) {
                     var c = a.changedTouches ? a.changedTouches : [a],
                         d = c.length,
                         b, g, l;
@@ -5148,7 +5148,7 @@ function embedhtml5(Wd, Lc) {
                     c = Math.sqrt(c * c + d * d);
                     1 > c && (c = 1);
                     0 == Jb ? (Jb = !0, be = c, ea(a)) : P(a, c / be)
-                } else bb(_[307]), 0 == V.__scrollpage_yet && E(a), wa || 0 == c || (c = a.changedTouches ? a.changedTouches[0] : a, dc == (c.pointerId ? c.pointerId : c.identifier) && (c = D(c), 0 == va && (_[18] == G(da.touchtype) ? (Oa = !0, d = k(Na, fa, c.x, c.y, da.movetorelative).h, -180 > d ? d = 360 + d : 180 < d && (d = -360 + d), oa += d) : m(Na, fa, c.x, c.y)), Na = c.x, fa = c.y, ga = a.timeStamp, e(Na, fa, ga, hb), -99 == na && (H.x = c.x / ba, H.y = c.y / ba), q && 16 < H.dd && (q = null), ta(a)))
+                } else bb("pano.touchmove"), 0 == V.__scrollpage_yet && E(a), wa || 0 == c || (c = a.changedTouches ? a.changedTouches[0] : a, dc == (c.pointerId ? c.pointerId : c.identifier) && (c = D(c), 0 == va && ("moveto" == G(da.touchtype) ? (Oa = !0, d = k(Na, fa, c.x, c.y, da.movetorelative).h, -180 > d ? d = 360 + d : 180 < d && (d = -360 + d), oa += d) : m(Na, fa, c.x, c.y)), Na = c.x, fa = c.y, ga = a.timeStamp, e(Na, fa, ga, hb), -99 == na && (H.x = c.x / ba, H.y = c.y / ba), q && 16 < H.dd && (q = null), ta(a)))
             }
 
             function K(a) {
@@ -5177,7 +5177,7 @@ function embedhtml5(Wd, Lc) {
                         fa = g.y;
                         ga = a.timeStamp;
                         e(Na, fa, ga, hb);
-                        if (_[18] != G(da.touchtype))
+                        if ("moveto" != G(da.touchtype))
                             if (x() && 1 < Ia.length && 0 == va) {
                                 var h = Ia[0],
                                     m = Ia[Ia.length - 1],
@@ -5189,8 +5189,8 @@ function embedhtml5(Wd, Lc) {
                         if (0 == H.up) {
                             H.up = !0;
                             q && 0 == va && (g = 52800 / (Math.min(Math.max(ja.currentfps, 10), 60) + 35), 32 > H.dd && (a.timeStamp | 0) - q.t > g && B(a));
-                            a = _[33];
-                            if (0 == H.moved || 5 > Math.abs(H.x - H.downx) && 5 > Math.abs(H.y - H.downy)) a = _[39];
+                            a = "onmouseup";
+                            if (0 == H.moved || 5 > Math.abs(H.x - H.downx) && 5 > Math.abs(H.y - H.downy)) a = "onclick";
                             z(a)
                         }
                         q = null;
@@ -5222,7 +5222,7 @@ function embedhtml5(Wd, Lc) {
                         d = Vc *= d
                     }
                     ta(a);
-                    bb(_[277]);
+                    bb("pano.multitouch");
                     if (x()) {
                         ka = pa = 0;
                         var b = 2 / W,
@@ -5256,7 +5256,7 @@ function embedhtml5(Wd, Lc) {
                                 t.vlookat = e
                             }
                         } else t.fov = b, t.updateView();
-                        z(_[73]);
+                        z("onmousewheel");
                         t.haschanged = !0
                     }
                 }
@@ -5339,19 +5339,19 @@ function embedhtml5(Wd, Lc) {
                 ra.touch = c;
                 L.mouse = a;
                 L.touch = c;
-                aa(ca, _[83], A, !1);
-                aa(ca, _[97], p, !1);
-                aa(d.topAccess ? top : T, _[31], w, !0);
-                aa(d.topAccess ? top : T, _[51], w, !0);
-                aa(ca, _[29], g);
-                aa(ca, _[100], g);
-                aa(ca, _[102], g);
-                aa(ca, _[103], g);
-                if (a || md) aa(M, _[115], r, !1), aa(M, _[130], r, !1);
-                (a || md) && aa(T, _[9], u, !0);
-                a && aa(M, _[8], C, !1);
-                (a && d.realDesktop || d.ie) && aa(M, _[31], B, !0);
-                c && (aa(M, L.touchstart, n, !0), aa(M, L.touchmove, n, !0), aa(M, L.touchstart, O, !1), aa(M, L.touchmove, R, !0), aa(M, L.touchend, K, !0), aa(M, L.touchcancel, Ba, !0), U && (aa(M, L.gesturestart, ea, !1), aa(M, L.gesturechange, P, !1), aa(M, L.gestureend, J, !0), wb && (aa(M, _[117], J, !0), Cb = new MSGesture, Cb.target = M)))
+                aa(ca, "keydown", A, !1);
+                aa(ca, "keyup", p, !1);
+                aa(d.topAccess ? top : T, "contextmenu", w, !0);
+                aa(d.topAccess ? top : T, "pagehide", w, !0);
+                aa(ca, "visibilitychange", g);
+                aa(ca, "webkitvisibilitychange", g);
+                aa(ca, "mozvisibilitychange", g);
+                aa(ca, "msvisibilitychange", g);
+                if (a || md) aa(M, "DOMMouseScroll", r, !1), aa(M, "mousewheel", r, !1);
+                (a || md) && aa(T, "mousemove", u, !0);
+                a && aa(M, "mousedown", C, !1);
+                (a && d.realDesktop || d.ie) && aa(M, "contextmenu", B, !0);
+                c && (aa(M, L.touchstart, n, !0), aa(M, L.touchmove, n, !0), aa(M, L.touchstart, O, !1), aa(M, L.touchmove, R, !0), aa(M, L.touchend, K, !0), aa(M, L.touchcancel, Ba, !0), U && (aa(M, L.gesturestart, ea, !1), aa(M, L.gesturechange, P, !1), aa(M, L.gestureend, J, !0), wb && (aa(M, "MSInertiaStart", J, !0), Cb = new MSGesture, Cb.target = M)))
             };
             ra.domUpdate = function() {
                 if (Cb) {
@@ -5363,22 +5363,22 @@ function embedhtml5(Wd, Lc) {
             };
             ra.unregister = function() {
                 Cb && (Cb = Cb.target = null);
-                ia(ca, _[83], A, !1);
-                ia(ca, _[97], p, !1);
-                ia(d.topAccess ? top : T, _[31], w, !0);
-                ia(d.topAccess ? top : T, _[51], w, !0);
-                d.topAccess && ia(top, _[2], F, !0);
-                ia(ca, _[29], g);
-                ia(ca, _[100], g);
-                ia(ca, _[102], g);
-                ia(ca, _[103], g);
-                ia(T, _[9], u, !0);
-                ia(T, _[9], h, !0);
-                ia(T, _[2], c, !0);
-                ia(M, _[115], r, !1);
-                ia(M, _[130], r, !1);
-                ia(M, _[8], C, !1);
-                ia(M, _[31], B, !0);
+                ia(ca, "keydown", A, !1);
+                ia(ca, "keyup", p, !1);
+                ia(d.topAccess ? top : T, "contextmenu", w, !0);
+                ia(d.topAccess ? top : T, "pagehide", w, !0);
+                d.topAccess && ia(top, "mouseup", F, !0);
+                ia(ca, "visibilitychange", g);
+                ia(ca, "webkitvisibilitychange", g);
+                ia(ca, "mozvisibilitychange", g);
+                ia(ca, "msvisibilitychange", g);
+                ia(T, "mousemove", u, !0);
+                ia(T, "mousemove", h, !0);
+                ia(T, "mouseup", c, !0);
+                ia(M, "DOMMouseScroll", r, !1);
+                ia(M, "mousewheel", r, !1);
+                ia(M, "mousedown", C, !1);
+                ia(M, "contextmenu", B, !0);
                 ia(M, L.touchstart, n, !0);
                 ia(M, L.touchmove, n, !0);
                 ia(M, L.touchstart, O, !1);
@@ -5388,7 +5388,7 @@ function embedhtml5(Wd, Lc) {
                 ia(M, L.gesturestart, ea, !1);
                 ia(M, L.gesturechange, P, !1);
                 ia(M, L.gestureend, J, !0);
-                ia(M, _[117], J, !0);
+                ia(M, "MSInertiaStart", J, !0);
                 D = L = M = null
             };
             ra.handleFrictions = function() {
@@ -5528,13 +5528,13 @@ function embedhtml5(Wd, Lc) {
                     var b = l.webVR;
                     b && b.enabled && b.updateview();
                     b = Z.isBusy();
-                    0 == b && ya(_[355]);
+                    0 == b && ya("onviewchange");
                     t.updateView();
                     ga && fb.renderpano(ga, 2);
                     U && fb.renderpano(U, 1);
                     z && (z = fb.rendersnapshot(z, U));
                     Nd(!0);
-                    0 == b && ya(_[314])
+                    0 == b && ya("onviewchanged")
                 }
             }
 
@@ -5546,7 +5546,7 @@ function embedhtml5(Wd, Lc) {
                     Z.haltActions();
                     l.xml.url = "";
                     l.xml.content = a;
-                    var h = (new DOMParser).parseFromString(a, _[36]);
+                    var h = (new DOMParser).parseFromString(a, "text/xml");
                     fa.resolvexmlincludes(h, function() {
                         h = fa.xmlDoc;
                         m(h, d, b, f, g)
@@ -5597,7 +5597,7 @@ function embedhtml5(Wd, Lc) {
             }
 
             function e() {
-                return 1 < y.count && y.removeid != y.id && (y.removeid = y.id, ya(_[343], !0), y.removeid != y.id) ? !1 : !0
+                return 1 < y.count && y.removeid != y.id && (y.removeid = y.id, ya("onremovepano", !0), y.removeid != y.id) ? !1 : !0
             }
 
             function k(a) {
@@ -5614,16 +5614,16 @@ function embedhtml5(Wd, Lc) {
                 Db.currentmovingspeed = 0;
                 B = !1;
                 I = U ? 64 : 0;
-                e && (e = G(e), 0 <= e.indexOf(_[365]) && (I |= 4), 0 <= e.indexOf(_[351]) && (I |= 128), 0 <= e.indexOf(_[458]) && (I |= 16), 0 <= e.indexOf(_[504]) && (I |= 32), 0 <= e.indexOf("merge") && (I |= 16448), 0 <= e.indexOf(_[417]) && (I |= 256), 0 <= e.indexOf(_[507]) && (I |= 4), 0 <= e.indexOf(_[508]) && (I |= 36), 0 <= e.indexOf(_[446]) && (B = !0, I |= 65536), 0 <= e.indexOf(_[344]) && Y(_[126], 0), 0 <= e.indexOf(_[413]) && (I |= 1056));
-                0 == B && (pb = 0, h && (h = G(h), e = h.indexOf(_[595]), 0 <= e && (pb = parseFloat(h.slice(e + 6)), isNaN(pb) || 0 > pb)) && (pb = 2), U && (e = 0 != (I & 1024), d.webgl ? (e && (ga || z) && (ga && (z = fb.snapshot(z, ga)), e = !1), ga && (ga.destroy(), ga = null), 0 == e ? (U.stop(), z = fb.snapshot(z, U), U.destroy(), U = null) : (U.suspended = !0, ga = U, U = null, fb.renderpano(ga, 2)), fb.setblendmode(h), Cc = -1, Bc = !1) : (0 == Bc ? (ga && (ga.destroy(), ga = null), ga = U, 0 == e ? ga.stop() : ga.suspended = !0, U = null) : (h = (Ja() - Cc) / 1E3 / pb, h = v(h), .5 < h ? U && (U.destroy(), U = null) : (ga && (ga.destroy(), ga = null), ga = U, 0 == e ? ga.stop() : ga.suspended = !0, U = null), Bc = !1), ga && ga.stopped && fb.renderpano(ga, 2))), I & 32 && (n[0] = t.hlookat, n[1] = t.vlookat, n[2] = t.camroll, n[3] = t.fov, n[4] = t.fovtype, n[5] = t.fovmin, n[6] = t.fovmax, n[7] = t.maxpixelzoom, n[8] = t.fisheye, n[9] = t.fisheyefovlink, n[10] = t.stereographic, n[12] = t.pannini, n[13] = t.architectural, n[14] = t.architecturalonlymiddle), 0 == (I & 16384) && t.defaults(), t.limitview = "auto", t.hlookatmin = Number.NaN, t.hlookatmax = Number.NaN, t.vlookatmin = Number.NaN, t.vlookatmax = Number.NaN, l.preview && delete l.preview, l.image && delete l.image, l.onstart = null, J = l.image = {}, J.type = null, J.multires = !1, J.multiresthreshold = .025, J.cubelabels = "l|f|r|b|u|d", J.stereo = !1, J.stereoformat = "TB", J.stereolabels = "1|2", J.tiled = !1, J.tilesize = 0, J.tiledimagewidth = 0, J.tiledimageheight = 0, J.baseindex = 1, J.level = new ub, J.hfov = 0, J.vfov = 0, J.voffset = 0, J.hres = 0, J.vres = 0, J.viewoffset = 0, J.haschanged = !1, sa(J, "frame", 1), J.frames = 1);
+                e && (e = G(e), 0 <= e.indexOf("keepplugins") && (I |= 4), 0 <= e.indexOf("keephotspots") && (I |= 128), 0 <= e.indexOf("nopreview") && (I |= 16), 0 <= e.indexOf("keepview") && (I |= 32), 0 <= e.indexOf("merge") && (I |= 16448), 0 <= e.indexOf("ignorekeep") && (I |= 256), 0 <= e.indexOf("keepbase") && (I |= 4), 0 <= e.indexOf("keepall") && (I |= 36), 0 <= e.indexOf("keepimage") && (B = !0, I |= 65536), 0 <= e.indexOf("removescenes") && Y("scene.count", 0), 0 <= e.indexOf("keepmoving") && (I |= 1056));
+                0 == B && (pb = 0, h && (h = G(h), e = h.indexOf("blend("), 0 <= e && (pb = parseFloat(h.slice(e + 6)), isNaN(pb) || 0 > pb)) && (pb = 2), U && (e = 0 != (I & 1024), d.webgl ? (e && (ga || z) && (ga && (z = fb.snapshot(z, ga)), e = !1), ga && (ga.destroy(), ga = null), 0 == e ? (U.stop(), z = fb.snapshot(z, U), U.destroy(), U = null) : (U.suspended = !0, ga = U, U = null, fb.renderpano(ga, 2)), fb.setblendmode(h), Cc = -1, Bc = !1) : (0 == Bc ? (ga && (ga.destroy(), ga = null), ga = U, 0 == e ? ga.stop() : ga.suspended = !0, U = null) : (h = (Ja() - Cc) / 1E3 / pb, h = v(h), .5 < h ? U && (U.destroy(), U = null) : (ga && (ga.destroy(), ga = null), ga = U, 0 == e ? ga.stop() : ga.suspended = !0, U = null), Bc = !1), ga && ga.stopped && fb.renderpano(ga, 2))), I & 32 && (n[0] = t.hlookat, n[1] = t.vlookat, n[2] = t.camroll, n[3] = t.fov, n[4] = t.fovtype, n[5] = t.fovmin, n[6] = t.fovmax, n[7] = t.maxpixelzoom, n[8] = t.fisheye, n[9] = t.fisheyefovlink, n[10] = t.stereographic, n[12] = t.pannini, n[13] = t.architectural, n[14] = t.architecturalonlymiddle), 0 == (I & 16384) && t.defaults(), t.limitview = "auto", t.hlookatmin = Number.NaN, t.hlookatmax = Number.NaN, t.vlookatmin = Number.NaN, t.vlookatmax = Number.NaN, l.preview && delete l.preview, l.image && delete l.image, l.onstart = null, J = l.image = {}, J.type = null, J.multires = !1, J.multiresthreshold = .025, J.cubelabels = "l|f|r|b|u|d", J.stereo = !1, J.stereoformat = "TB", J.stereolabels = "1|2", J.tiled = !1, J.tilesize = 0, J.tiledimagewidth = 0, J.tiledimageheight = 0, J.baseindex = 1, J.level = new ub, J.hfov = 0, J.vfov = 0, J.voffset = 0, J.hres = 0, J.vres = 0, J.viewoffset = 0, J.haschanged = !1, sa(J, "frame", 1), J.frames = 1);
                 f();
-                if (a && a.documentElement && _[32] == a.documentElement.nodeName) cb(a.baseURI + _[28]);
+                if (a && a.documentElement && "parsererror" == a.documentElement.nodeName) cb(a.baseURI + " - xml parsing failed!");
                 else {
                     fa.parsexml(a.childNodes, null, I);
                     if (null != l._loadpanoscene_name) {
-                        var m = S(_[91] + l._loadpanoscene_name + "]");
-                        m && (h = _[139] + m.content + _[136], l.xml.url = "", l.xml.scene = l._loadpanoscene_name, l.xml.content = h, l.onstart = null, h = (new DOMParser).parseFromString(h, _[36]), fa.resolvexmlincludes(h, function() {
-                            (a = fa.xmlDoc) && a.documentElement && _[32] == a.documentElement.nodeName ? cb(a.baseURI + _[28]) : (fa.parsexml(a.childNodes, null, I), k = m.onstart)
+                        var m = S("scene[" + l._loadpanoscene_name + "]");
+                        m && (h = "<krpano>" + m.content + "</krpano>", l.xml.url = "", l.xml.scene = l._loadpanoscene_name, l.xml.content = h, l.onstart = null, h = (new DOMParser).parseFromString(h, "text/xml"), fa.resolvexmlincludes(h, function() {
+                            (a = fa.xmlDoc) && a.documentElement && "parsererror" == a.documentElement.nodeName ? cb(a.baseURI + " - xml parsing failed!") : (fa.parsexml(a.childNodes, null, I), k = m.onstart)
                         }));
                         l._loadpanoscene_name = null
                     }
@@ -5669,18 +5669,18 @@ function embedhtml5(Wd, Lc) {
                         0 < pb ? (nd = !0, U.setblend(0), wc = 0) : (nd = !1, U.setblend(1), wc = 1)
                     }
                     Z.resumeActions();
-                    Z.actions_autorun(_[515], !0);
+                    Z.actions_autorun("preinit", !0);
                     a = l.onstart;
                     C && (a = C, C = null);
                     b = y.id;
                     Z.callaction(a, null, !0);
-                    if (b == y.id && (Z.actions_autorun(_[516], !1), ya(_[334]), l.xml && l.xml.scene && ya(_[394]), b == y.id)) {
+                    if (b == y.id && (Z.actions_autorun("onstart", !1), ya("onxmlcomplete"), l.xml && l.xml.scene && ya("onnewscene"), b == y.id)) {
                         0 == B && r();
                         a = Ua.getArray();
                         b = a.length;
                         for (f = 0; f < b; f++)(d = a[f]) && 0 == d._ready && (d.create(), d.sprite && V.hotspotlayer.appendChild(d.sprite));
                         w();
-                        0 < lb && ya(_[80]);
+                        0 < lb && ya("onresize");
                         Ya.updateview();
                         Z.processactions()
                     }
@@ -5695,7 +5695,7 @@ function embedhtml5(Wd, Lc) {
                     var h = d[e];
                     if (h) {
                         var k = !1;
-                        1 == a ? 1 == h.preload && _[22] != h.type && 0 == h.loaded && (h.onloaded = g, h.altonloaded = null, k = !0, f = !1) : (1 == h.preload && (h.preload = !1, h.onloaded = null), k = !0);
+                        1 == a ? 1 == h.preload && "container" != h.type && 0 == h.loaded && (h.onloaded = g, h.altonloaded = null, k = !0, f = !1) : (1 == h.preload && (h.preload = !1, h.onloaded = null), k = !0);
                         k && 0 == h._ready && (h.create(), h.sprite && null == h._parent && V.pluginlayer.appendChild(h.sprite))
                     }
                 }
@@ -5703,7 +5703,7 @@ function embedhtml5(Wd, Lc) {
             }
 
             function Da() {
-                ya(_[247])
+                ya("onpreviewcomplete")
             }
 
             function r() {
@@ -5722,24 +5722,24 @@ function embedhtml5(Wd, Lc) {
                 c || 0 != k || !m && !l || (e = "cube", b = !0);
                 if (null == e)
                     if (J.left || J.cube) e = "cube";
-                    else if (J.cubestrip) e = _[49];
-                else if (J.sphere) e = _[60];
-                else if (J.cylinder) e = _[35];
+                    else if (J.cubestrip) e = "cubestrip";
+                else if (J.sphere) e = "sphere";
+                else if (J.cylinder) e = "cylinder";
                 else if (J.flat) e = "flat";
-                else if (J.fisheye) e = _[81];
+                else if (J.fisheye) e = "fisheye";
                 else {
                     if (m || l) e = "cube", b = !0
                 } else e = G(e);
-                var n = _[60] == e || _[35] == e || _[81] == e,
+                var n = "sphere" == e || "cylinder" == e || "fisheye" == e,
                     r = 0 < f && 1 >= f && 45 >= g && n || "flat" == e,
-                    u = "cube" == e || _[49] == e || null == e && 0 == n && 0 == r,
+                    u = "cube" == e || "cubestrip" == e || null == e && 0 == n && 0 == r,
                     c = !1,
                     v = null;
                 if (u) f = 360, g = 180;
                 else if (n || r)
-                    if (v = na.parsePath(S(_[579] + e + ".url"))) {
+                    if (v = na.parsePath(S("image." + e + ".url"))) {
                         var t = 0;
-                        0 <= (t = G(v).indexOf(_[529])) && (n = c = !0, k = r = !1, d.panovideosupport && (v = v.slice(t + 7)))
+                        0 <= (t = G(v).indexOf("plugin:")) && (n = c = !0, k = r = !1, d.panovideosupport && (v = v.slice(t + 7)))
                     }
                 J.type = e;
                 J.hfov = f;
@@ -5751,11 +5751,11 @@ function embedhtml5(Wd, Lc) {
                 U.stereoformat = "sbs" == G(J.stereoformat) ? 0 : 1;
                 h = ("" + J.stereolabels).split("|");
                 2 == h.length && (U.stereolabels = h);
-                t = G(S(_[360]));
-                if (h = S(_[376])) {
+                t = G(S("preview.type"));
+                if (h = S("preview.url")) {
                     h = na.parsePath(h);
-                    if (_[49] == t || "null" == t && u) {
-                        t = S(_[233]);
+                    if ("cubestrip" == t || "null" == t && u) {
+                        t = S("preview.striporder");
                         if (null != t) {
                             var t = G(t),
                                 w = [0, 1, 2, 3, 4, 5];
@@ -5768,7 +5768,7 @@ function embedhtml5(Wd, Lc) {
                             t = w
                         }
                         U.addCubestripPreview(h, t)
-                    } else("flat" == t || ("null" == t || _[60] == t || _[35] == t) && r) && U.addFlatLevel(h, f, g, 0, 0, 0, J.baseindex, !0);
+                    } else("flat" == t || ("null" == t || "sphere" == t || "cylinder" == t) && r) && U.addFlatLevel(h, f, g, 0, 0, 0, J.baseindex, !0);
                     a(!1, !0)
                 } else if (0 == t.indexOf("grid")) {
                     if (h = Ab(t, null, !1))
@@ -5791,7 +5791,7 @@ function embedhtml5(Wd, Lc) {
                 h = !1;
                 t = d.androidstock && !d.webgl;
                 if (r || u) {
-                    if (b || u && t) l ? h = p(_[354]) : m && (h = p(_[356]));
+                    if (b || u && t) l ? h = p("image.tablet") : m && (h = p("image.mobile"));
                     if (0 == h)
                         if ("cube" == e) {
                             if (k)
@@ -5801,31 +5801,31 @@ function embedhtml5(Wd, Lc) {
                                     g = d.iphone && d.retina || d.tablet || d.android ? 1100 : d.iphone ? 512 : 2560;
                                     0 < pc && (g = pc + 256);
                                     for (v = c - 1; 0 <= v && !(f = b[v].tiledimagewidth, f <= g); v--);
-                                    0 <= v && (h = p(_[71] + v + "]", !0))
+                                    0 <= v && (h = p("image.level[" + v + "]", !0))
                                 } else
                                     for (b.sort(function(a, c) {
                                             return +parseInt(a.tiledimagewidth, 10) - parseInt(c.tiledimagewidth, 10)
                                         }), v = 0; v < c; v++)
-                                        if (b = _[71] + v + "]", k = S(b), g = A(b)) b = k.tilesize ? k.tilesize : J.tilesize, f = parseInt(k.tiledimagewidth, 10), 0 < b && 0 < f && (U.addCubeLevel(g, f, b, J.baseindex), h = !0);
-                            0 == h && (h = p(_[96]))
-                        } else if (_[49] == e && J.cubestrip) U.addCubestripPano(na.parsePath("" + J.cubestrip.url)), h = !0;
-                    else if ((_[60] == e || _[35] == e) && 1 >= f && 45 >= g || "flat" == e) {
+                                        if (b = "image.level[" + v + "]", k = S(b), g = A(b)) b = k.tilesize ? k.tilesize : J.tilesize, f = parseInt(k.tiledimagewidth, 10), 0 < b && 0 < f && (U.addCubeLevel(g, f, b, J.baseindex), h = !0);
+                            0 == h && (h = p("image"))
+                        } else if ("cubestrip" == e && J.cubestrip) U.addCubestripPano(na.parsePath("" + J.cubestrip.url)), h = !0;
+                    else if (("sphere" == e || "cylinder" == e) && 1 >= f && 45 >= g || "flat" == e) {
                         if (d.multiressupport && k)
                             for (b = J.level.getArray(), c = b.length, b.sort(function(a, c) {
                                     return +parseInt(a.tiledimagewidth, 10) - parseInt(c.tiledimagewidth, 10)
                                 }), v = 0; v < c; v++)
-                                if (b = _[71] + v + "]", k = S(b), m = S(b + "." + e + ".url"), m = na.parsePath(m)) b = k.tilesize ? k.tilesize : J.tilesize, l = parseInt(k.tiledimagewidth, 10), k = parseInt(k.tiledimageheight, 10), 0 < b && 0 < l && 0 < k && (U.addFlatLevel(m, f, g, l, k, b, J.baseindex, !1), h = !0);
+                                if (b = "image.level[" + v + "]", k = S(b), m = S(b + "." + e + ".url"), m = na.parsePath(m)) b = k.tilesize ? k.tilesize : J.tilesize, l = parseInt(k.tiledimagewidth, 10), k = parseInt(k.tiledimageheight, 10), 0 < b && 0 < l && 0 < k && (U.addFlatLevel(m, f, g, l, k, b, J.baseindex, !1), h = !0);
                         0 == h && (c = J[e]) && c.url && (U.addFlatLevel(na.parsePath("" + c.url), f, g, 0, 0, 0, J.baseindex, !1), h = !0)
                     }
                 } else n && 0 == k && d.webgl && v && ((f = [Number(J.hfov), Number(J.vfov), Number(J.voffset)], g = J[e], c) ? d.panovideosupport && (c = Ga.getItem(v)) && (c.renderToBitmap = !0, c.visible = !1, U.addRoundPano(e, null, f, c, g), h = !0) : (U.addRoundPano(e, v, f, null, g), h = !0));
                 h && (Wc = je = !0);
                 U.finalize();
-                0 == h && null != e && (va(2, _[195]), ya(_[116]));
+                0 == h && null != e && (va(2, "No compatible pano image..."), ya("onloadcomplete"));
                 a(!1, !0)
             }
 
             function A(a) {
-                var d = _[184].split(" "),
+                var d = "left front right back up down cube".split(" "),
                     b = Array(6),
                     e, f;
                 if (e = S(a + "." + d[6] + ".url")) {
@@ -5862,7 +5862,7 @@ function embedhtml5(Wd, Lc) {
                 y.count++;
                 y.id = y.count;
                 if (e())
-                    if (0 > G(f).indexOf(_[396]) && Y(_[126], 0), "null" == G(a) && (a = null), l.xml.content = null, l.xml.scene = null, a) {
+                    if (0 > G(f).indexOf("keepscenes") && Y("scene.count", 0), "null" == G(a) && (a = null), l.xml.content = null, l.xml.scene = null, a) {
                         Z.haltActions();
                         null == na.firstxmlpath ? na.firstxmlpath = k(a) : a = na.parsePath(a, !0);
                         na.currentxmlpath = k(a);
@@ -5873,15 +5873,15 @@ function embedhtml5(Wd, Lc) {
                                 if (b && b.childNodes) {
                                     var k = b.childNodes,
                                         l = k.length;
-                                    0 == l ? b = null : 2 == l && k[1] && _[32] == k[1].nodeName && (b = null)
+                                    0 == l ? b = null : 2 == l && k[1] && "parsererror" == k[1].nodeName && (b = null)
                                 }
                                 b ? (b = fa.resolvexmlencryption(b, a), null != b && fa.resolvexmlincludes(b, function() {
                                     b = fa.xmlDoc;
                                     m(b, d, f, g, h)
-                                })) : 200 == e ? cb(a + _[28]) : cb(a + _[192])
+                                })) : 200 == e ? cb(a + " - xml parsing failed!") : cb(a + " - loading or parsing failed!")
                             }
                         })
-                    } else l.xml.url = "", b(_[243], d, f, g, h)
+                    } else l.xml.url = "", b("<krpano></krpano>", d, f, g, h)
             };
             u.loadxml = b;
             u.loadxmldoc = m;
@@ -5895,18 +5895,18 @@ function embedhtml5(Wd, Lc) {
                     g = 0;
                 for (e = 0; e < b; e++) {
                     var h = d[e];
-                    h && h._ready && (0 != h.haschanged_flags && (h.processUpdates(), f++), (a || h.poschanged) && h.loaded && (h.updatepos(_[435]), g++))
+                    h && h._ready && (0 != h.haschanged_flags && (h.processUpdates(), f++), (a || h.poschanged) && h.loaded && (h.updatepos("frameloop"), g++))
                 }
             };
             u.idlecheck = function() {
                 var a = Ja();
-                H.moved && (H.down || H.downLayer) && bb((H.downLayer ? _[63] : "pano") + _[196]);
-                (a - kc) / 1E3 > l.idletime && h != kc && (h = kc, ya(_[564]));
+                H.moved && (H.down || H.downLayer) && bb((H.downLayer ? "layer" : "pano") + ".idlecheck.mouse.down+moved");
+                (a - kc) / 1E3 > l.idletime && h != kc && (h = kc, ya("onidle"));
                 return Db.checkIdletime(a, kc)
             };
             u.previewdone = Da;
             u.havepanosize = function(a) {
-                U && U.id == a.id && (J.hfov = a.hfov, J.vfov = a.vfov, J.hres = a.hres, J.vres = a.vres, ya(_[437]), t.haschanged = !0)
+                U && U.id == a.id && (J.hfov = a.hfov, J.vfov = a.vfov, J.hres = a.hres, J.vres = a.vres, ya("onnewpano"), t.haschanged = !0)
             };
             u.removeelements = f;
             u.isLoading = function() {
@@ -5938,7 +5938,7 @@ function embedhtml5(Wd, Lc) {
                 0 == Bc && (ga && (a |= ga.doloading()), U && (a |= U.doloading()));
                 Wc = U && U.isloading();
                 var d = fb.handleloading();
-                je && 1 != Wc && (je = !1, ya(_[116]));
+                je && 1 != Wc && (je = !1, ya("onloadcomplete"));
                 d & 1 && (Wc = !0);
                 d & 2 && (a = !0);
                 if (U && (ga || z))
@@ -5980,7 +5980,7 @@ function embedhtml5(Wd, Lc) {
             }
 
             function k(a, c) {
-                return "#ifdef GL_ES\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#endif\nuniform float aa;uniform sampler2D sm;varying vec2 tt;void main(){vec4 c=texture2D(sm,vec2(tt.s,tt.t)" + (a ? ",-1.0" : "") + ");" + (c ? _[188] : "") + "gl_FragColor=vec4(c.rgb,c.a*aa);}"
+                return "#ifdef GL_ES\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#endif\nuniform float aa;uniform sampler2D sm;varying vec2 tt;void main(){vec4 c=texture2D(sm,vec2(tt.s,tt.t)" + (a ? ",-1.0" : "") + ");" + (c ? "c.a*=1.0-length(mod(tt,1.0)-tt);" : "") + "gl_FragColor=vec4(c.rgb,c.a*aa);}"
             }
 
             function m(a) {
@@ -5996,13 +5996,13 @@ function embedhtml5(Wd, Lc) {
                     f = e.createShader(e.VERTEX_SHADER);
                     e.shaderSource(f, a);
                     e.compileShader(f);
-                    if (!e.getShaderParameter(f, e.COMPILE_STATUS)) return va(0, _[118] + e.getShaderInfoLog(f)), null;
+                    if (!e.getShaderParameter(f, e.COMPILE_STATUS)) return va(0, "WebGL-Error: " + e.getShaderInfoLog(f)), null;
                     Mb[a] = f
                 } else f = Mb[a];
                 a = e.createShader(e.FRAGMENT_SHADER);
                 e.shaderSource(a, c);
                 e.compileShader(a);
-                if (!e.getShaderParameter(a, e.COMPILE_STATUS)) return va(0, _[118] + e.getShaderInfoLog(a)), null;
+                if (!e.getShaderParameter(a, e.COMPILE_STATUS)) return va(0, "WebGL-Error: " + e.getShaderInfoLog(a)), null;
                 c = e.createProgram();
                 e.attachShader(c, f);
                 e.attachShader(c, a);
@@ -6052,18 +6052,18 @@ function embedhtml5(Wd, Lc) {
                     b = q;
                     var h;
                     for (h = 0; 6 > h; h++) {
-                        var c = _[170],
+                        var c = "uniform sampler2D sm;varying vec2 tx;uniform float aa;",
                             m = q = f = "";
-                        0 == h ? q = _[179] : 1 == h ? (m = "cc", f = _[107], q = _[169]) : 2 == h ? (m = "cc", f = _[107], q = _[165]) : 3 == h ? (m = "ct,zf", f = _[186], q = _[164]) : 4 == h ? (m = "fp,bl", f = _[185], q = "float t=(tx.x*fp.x+tx.y*fp.y+fp.z)*(1.0-2.0*bl)+bl;gl_FragColor=vec4(texture2D(sm,tx).rgb,smoothstep(t-bl,t+bl,aa));") : 5 == h && (m = _[488], f = _[174], q = "float t=(1.0-sqrt(2.0)*sqrt((ap.x*(tx.x-0.5)*(tx.x-0.5)+ap.y*(tx.y-0.5)*(tx.y-0.5))/(0.5*(ap.x+ap.y))))*(1.0-2.0*bl)+bl;gl_FragColor=vec4(texture2D(sm,(tx-vec2(0.5,0.5))*mix(1.0,aa,zf)+vec2(0.5,0.5)).rgb,smoothstep(t-bl,t+bl,aa));");
-                        c = _[202] + c + f + "void main(){" + q + "}";
+                        0 == h ? q = "gl_FragColor=vec4(texture2D(sm,tx).rgb,aa);" : 1 == h ? (m = "cc", f = "uniform vec3 cc;", q = "gl_FragColor=vec4(texture2D(sm,tx).rgb+(1.0-aa)*cc,aa);") : 2 == h ? (m = "cc", f = "uniform vec3 cc;", q = "gl_FragColor=vec4(mix(texture2D(sm,tx).rgb,cc,2.0*(1.0-aa)),aa*2.0);") : 3 == h ? (m = "ct,zf", f = "uniform vec2 ct;uniform float zf;", q = "gl_FragColor=vec4(texture2D(sm,(tx-ct)/mix(1.0,zf,1.0-aa)+ct).rgb,aa);") : 4 == h ? (m = "fp,bl", f = "uniform vec3 fp;uniform float bl;", q = "float t=(tx.x*fp.x+tx.y*fp.y+fp.z)*(1.0-2.0*bl)+bl;gl_FragColor=vec4(texture2D(sm,tx).rgb,smoothstep(t-bl,t+bl,aa));") : 5 == h && (m = "ap,zf,bl", f = "uniform vec2 ap;uniform float zf;uniform float bl;", q = "float t=(1.0-sqrt(2.0)*sqrt((ap.x*(tx.x-0.5)*(tx.x-0.5)+ap.y*(tx.y-0.5)*(tx.y-0.5))/(0.5*(ap.x+ap.y))))*(1.0-2.0*bl)+bl;gl_FragColor=vec4(texture2D(sm,(tx-vec2(0.5,0.5))*mix(1.0,aa,zf)+vec2(0.5,0.5)).rgb,smoothstep(t-bl,t+bl,aa));");
+                        c = "precision mediump float;" + c + f + "void main(){" + q + "}";
                         ib[h] = g(null, c, "vx", "aa," + m);
                         if (null == ib[h]) return !1
                     }
-                    var l = g(e(), k(!0, !1), _[93], _[68]);
-                    null == l && d.ie && (l = g(e(), k(!1, !1), _[93], _[68]));
+                    var l = g(e(), k(!0, !1), "vx,tx", "sh,ch,aa,mx,ot,tm");
+                    null == l && d.ie && (l = g(e(), k(!1, !1), "vx,tx", "sh,ch,aa,mx,ot,tm"));
                     if (null == l) return !1;
                     ya = l;
-                    Ra = g(e(), k(!1, !0), _[93], _[68]);
+                    Ra = g(e(), k(!1, !0), "vx,tx", "sh,ch,aa,mx,ot,tm");
                     ob = l.vx;
                     pb = l.tx;
                     xb = l.sh;
@@ -6248,7 +6248,7 @@ function embedhtml5(Wd, Lc) {
                             else if (1 * q == 6 * h) k = q / 6;
                             else if (6 * q == 1 * h) k = q / 1;
                             else {
-                                0 == a.type && va(2, _[281] + c.src + _[201]);
+                                0 == a.type && va(2, "ignoring image " + c.src + " (not a cubestrip image)");
                                 return
                             }
                             q /= k;
@@ -6259,7 +6259,7 @@ function embedhtml5(Wd, Lc) {
                             D = new F,
                             ke = new B(6, l, l, l, 1, !1),
                             p, n, r, t = [2, 0, 3, 1, 4, 5];
-                        0 == pa && (p = Fa(), p.style.position = _[0], p.style.pointerEvents = "none", D.layer = p);
+                        0 == pa && (p = Fa(), p.style.position = "absolute", p.style.pointerEvents = "none", D.layer = p);
                         D.tiles = Array(6);
                         for (n = 0; n < h; n++)
                             for (p = 0; p < q; p++) {
@@ -6271,12 +6271,12 @@ function embedhtml5(Wd, Lc) {
                                     x = Fa(2);
                                 x.width = l + 2 * w;
                                 x.height = l + 2 * qc;
-                                x.style.position = _[0];
+                                x.style.position = "absolute";
                                 x.style[Tc] = "0 0";
                                 var M = x.getContext("2d");
                                 M && (0 < qc && (M.drawImage(c, m * p * k, m * n * k, k, 1, w, 0, k, qc), M.drawImage(c, m * p * k, m * n * k + k - 1, k, 1, w, l + qc, k, qc)), 0 < w && (M.drawImage(c, m * p * k + 0, m * n * k + 0, 1, k, 0, w, w, k), M.drawImage(c, m * p * k + k - 1, m * n * k + 0, 1, k, l + w, w, w, k)), M.drawImage(c, m * p * k, m * n * k, k, k, w, qc, l, l), aa && M.getImageData(l >> 1, l >> 1, 1, 1));
                                 u.canvas = x;
-                                0 == pa ? (u.elmt = x, x = -l / 2, u.transform = Pb[v] + _[72] + (x - w) + "px," + (x - qc) + "px," + x + "px) ") : (S(u, l, l), v = f.createTexture(), f.activeTexture(Zc), f.bindTexture(ha, v), f.texParameteri(ha, f.TEXTURE_WRAP_T, f.CLAMP_TO_EDGE), f.texParameteri(ha, f.TEXTURE_WRAP_S, f.CLAMP_TO_EDGE), f.texParameteri(ha, f.TEXTURE_MAG_FILTER, Vb), f.texParameteri(ha, f.TEXTURE_MIN_FILTER, Vb), f.texImage2D(ha, 0, Wb, Wb, Yc, x), f.bindTexture(ha, null), u.texture = v, u.mem = 0);
+                                0 == pa ? (u.elmt = x, x = -l / 2, u.transform = Pb[v] + "translate3D(" + (x - w) + "px," + (x - qc) + "px," + x + "px) ") : (S(u, l, l), v = f.createTexture(), f.activeTexture(Zc), f.bindTexture(ha, v), f.texParameteri(ha, f.TEXTURE_WRAP_T, f.CLAMP_TO_EDGE), f.texParameteri(ha, f.TEXTURE_WRAP_S, f.CLAMP_TO_EDGE), f.texParameteri(ha, f.TEXTURE_MAG_FILTER, Vb), f.texParameteri(ha, f.TEXTURE_MIN_FILTER, Vb), f.texImage2D(ha, 0, Wb, Wb, Yc, x), f.bindTexture(ha, null), u.texture = v, u.mem = 0);
                                 u.state = 2;
                                 D.tiles[r] = u
                             }
@@ -6300,7 +6300,7 @@ function embedhtml5(Wd, Lc) {
                             m = b,
                             l = f,
                             D = 180,
-                            D = 4 == a.type ? 2 * Math.atan(q / 2 * (l / m) * W) / W : _[147] == a.mapping ? l / m * (q / 2) * Ma : q * l / m;
+                            D = 4 == a.type ? 2 * Math.atan(q / 2 * (l / m) * W) / W : "lambert" == a.mapping ? l / m * (q / 2) * Ma : q * l / m;
                         180 < D && (D = 180);
                         q = D
                     }
@@ -6381,7 +6381,7 @@ function embedhtml5(Wd, Lc) {
                 k.type = 0;
                 k.typeinfos = null;
                 k.mapping = null;
-                k.cubelabels = _[574].split("");
+                k.cubelabels = "lfrbud".split("");
                 k.stereo = !1;
                 k.stereoformat = 0;
                 k.stereolabels = ["1", "2"];
@@ -6409,7 +6409,7 @@ function embedhtml5(Wd, Lc) {
                     if (0 == pa) {
                         var c = Fa(),
                             d = c.style;
-                        d.position = _[0];
+                        d.position = "absolute";
                         d.left = 0;
                         d.top = 0;
                         k.layer = c;
@@ -6488,7 +6488,7 @@ function embedhtml5(Wd, Lc) {
                     }));
                     k.mapping = q.mapping ? G(q.mapping) : "equi";
                     a = G(a);
-                    _[35] == a ? k.type = 4 : _[81] == a ? (k.type = 5, k.stereo = !1, k.typeinfos = {
+                    "cylinder" == a ? k.type = 4 : "fisheye" == a ? (k.type = 5, k.stereo = !1, k.typeinfos = {
                         fov: q.fov,
                         align: q.align,
                         crop: q.crop,
@@ -6758,10 +6758,10 @@ function embedhtml5(Wd, Lc) {
                                     t = 0 < M.indexOf("e-") ? t = t.toFixed(18) : M;
                                     M = "" + x;
                                     x = 0 < M.indexOf("e-") ? x = x.toFixed(18) : M;
-                                    a.transform = Pb[k] + _[72] + n + "px," + t + "px," + x + "px) ";
-                                    if (1 != p || 1 != l) a.transform += _[494] + u + "," + w + ",1) ";
-                                    (p = a.overlap) ? (k = Fa(2), k.width = e + p[0] + p[2], k.height = f + p[1] + p[3], k.style.overflow = _[7], g = k.width * k.height * 4, x = M = 0, l = k.getContext("2d"), p && (M = p[0], x = p[1], Ba(l, k, b, m, p, q ? 0 : 250)), D ? l.drawImage(b, 0, 0, m[0], m[1], M, x, e, f) : l.drawImage(b, M, x), aa && l.getImageData(m[0] >> 1, m[1] >> 1, 1, 1), a.canvas = k, a.elmt = k, a.image = null) : a.elmt = b;
-                                    a.elmt.style.position = _[0];
+                                    a.transform = Pb[k] + "translate3D(" + n + "px," + t + "px," + x + "px) ";
+                                    if (1 != p || 1 != l) a.transform += "scale3D(" + u + "," + w + ",1) ";
+                                    (p = a.overlap) ? (k = Fa(2), k.width = e + p[0] + p[2], k.height = f + p[1] + p[3], k.style.overflow = "hidden", g = k.width * k.height * 4, x = M = 0, l = k.getContext("2d"), p && (M = p[0], x = p[1], Ba(l, k, b, m, p, q ? 0 : 250)), D ? l.drawImage(b, 0, 0, m[0], m[1], M, x, e, f) : l.drawImage(b, M, x), aa && l.getImageData(m[0] >> 1, m[1] >> 1, 1, 1), a.canvas = k, a.elmt = k, a.image = null) : a.elmt = b;
+                                    a.elmt.style.position = "absolute";
                                     a.elmt.style[Tc] = "0 0"
                                 }
                                 a.mem = g;
@@ -6919,7 +6919,7 @@ function embedhtml5(Wd, Lc) {
                     if (1E-14 > qb || qb > jf - 1E-14 && qb < jf + 1E-14 || qb > 1 - 1E-14 || 1E-14 > w || w > 1 - 1E-14) f += (.5 + .5 * Math.random()) * vb * (.5 > Math.random() ? -1 : 1), g += (.5 + .5 * Math.random()) * vb * (.5 > Math.random() ? -1 : 1);
                     d.firefox && (m < -(1 - 1E-14) && (g += .5), m > +(1 - 1E-14) && (g -= .5))
                 }
-                Wc = _[72] + Ta / 2 + "px," + Ea / 2 + _[221] + b.yf.toFixed(16) + _[260] + q.toFixed(16) + _[121] + (-b.r).toFixed(16) + _[108] + q.toFixed(16) + _[357] + g.toFixed(16) + _[327] + f.toFixed(16) + "deg) " + Cc;
+                Wc = "translate3D(" + Ta / 2 + "px," + Ea / 2 + "px,0px) translateY(" + b.yf.toFixed(16) + "px) perspective(" + q.toFixed(16) + "px) rotateZ(" + (-b.r).toFixed(16) + "deg) translateZ(" + q.toFixed(16) + "px) rotateX(" + g.toFixed(16) + "deg) rotateY(" + f.toFixed(16) + "deg) " + Cc;
                 if (0 < z) {
                     var rb = 1 == la(ja.loadwhilemoving) ? !0 : 0 == a.hasmoved || da,
                         tb = K;
@@ -7061,7 +7061,7 @@ function embedhtml5(Wd, Lc) {
                                         Ec = Ec * W;
                                     4 == gd ? (od = 1E3 * Math.tan(.5 * od), Ec = 500 * Math.sin(1 * Ec)) : Ec = -Ec + .5 * Ma;
                                     var gc = Fc = 0,
-                                        Wd = _[147] === a.mapping;
+                                        Wd = "lambert" === a.mapping;
                                     if (5 == gd) {
                                         var Ce = Ka(),
                                             Fb = new vc,
@@ -7543,18 +7543,18 @@ function embedhtml5(Wd, Lc) {
                 var c, b = null;
                 if (2 == a) {
                     var e = {};
-                    if (0 <= G(oc.so.html5).indexOf(_[211]) || d.mac && d.firefox) e.preserveDrawingBuffer = !0;
+                    if (0 <= G(oc.so.html5).indexOf("preservedrawingbuffer") || d.mac && d.firefox) e.preserveDrawingBuffer = !0;
                     if (d.mobile || d.ios) e.antialias = !1;
                     e.depth = !1;
                     e.stencil = !1;
                     var q = oc.so.webglsettings;
                     q && (!0 === q.preserveDrawingBuffer && (e.preserveDrawingBuffer = !0), !0 === q.depth && (e.depth = !0), !0 === q.stencil && (e.stencil = !0));
                     q = G(oc.so.wmode);
-                    _[13] == q || _[154] == q ? (Qa = !0, e.alpha = !0, e.premultipliedAlpha = !0) : e.alpha = !1;
+                    "transparent" == q || "opaque" == q ? (Qa = !0, e.alpha = !0, e.premultipliedAlpha = !0) : e.alpha = !1;
                     try {
-                        for (Oa = Fa(2), Oa.style.position = _[0], Oa.style.left = 0, c = Oa.style.top = 0; 4 > c && !(b = Oa.getContext([_[65], _[104], _[134], _[135]][c], e)); c++);
+                        for (Oa = Fa(2), Oa.style.position = "absolute", Oa.style.left = 0, c = Oa.style.top = 0; 4 > c && !(b = Oa.getContext(["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"][c], e)); c++);
                     } catch (k) {}
-                    Oa && b && (ma = b, ab = {}, ha = b.TEXTURE_2D, tc = b.COLOR_BUFFER_BIT | b.DEPTH_BUFFER_BIT | b.STENCIL_BUFFER_BIT, Xa = b.FRAMEBUFFER, Zc = b.TEXTURE0, mb = b.ARRAY_BUFFER, Rb = b.ELEMENT_ARRAY_BUFFER, Ib = b.RGBA, Wb = b.RGB, Yc = b.UNSIGNED_BYTE, Sb = b.UNSIGNED_SHORT, fc = b.FLOAT, bc = b.TRIANGLES, Xc = b.STATIC_DRAW, Vb = b.LINEAR, A() && (Qa ? b.clearColor(0, 0, 0, 0) : x(1), b.disable(b.DEPTH_TEST), b.depthFunc(b.NEVER), b.enable(b.BLEND), b.blendFunc(b.SRC_ALPHA, b.ONE_MINUS_SRC_ALPHA), b.enable(b.CULL_FACE), b.cullFace(b.FRONT), sa = b.getParameter(b.MAX_TEXTURE_SIZE), !d.desktop && 4096 < sa && (sa = 4096), 2048 >= sa && d.firefox && !d.mac && !d.android && (d.css3d = !1), d.ios && (sa = 2048), V.panolayer.appendChild(Oa), wa.infoString = _[499], l.webGL = {
+                    Oa && b && (ma = b, ab = {}, ha = b.TEXTURE_2D, tc = b.COLOR_BUFFER_BIT | b.DEPTH_BUFFER_BIT | b.STENCIL_BUFFER_BIT, Xa = b.FRAMEBUFFER, Zc = b.TEXTURE0, mb = b.ARRAY_BUFFER, Rb = b.ELEMENT_ARRAY_BUFFER, Ib = b.RGBA, Wb = b.RGB, Yc = b.UNSIGNED_BYTE, Sb = b.UNSIGNED_SHORT, fc = b.FLOAT, bc = b.TRIANGLES, Xc = b.STATIC_DRAW, Vb = b.LINEAR, A() && (Qa ? b.clearColor(0, 0, 0, 0) : x(1), b.disable(b.DEPTH_TEST), b.depthFunc(b.NEVER), b.enable(b.BLEND), b.blendFunc(b.SRC_ALPHA, b.ONE_MINUS_SRC_ALPHA), b.enable(b.CULL_FACE), b.cullFace(b.FRONT), sa = b.getParameter(b.MAX_TEXTURE_SIZE), !d.desktop && 4096 < sa && (sa = 4096), 2048 >= sa && d.firefox && !d.mac && !d.android && (d.css3d = !1), d.ios && (sa = 2048), V.panolayer.appendChild(Oa), wa.infoString = " - WebGL", l.webGL = {
                         canvas: Oa,
                         context: b,
                         ppShaderArray: gb,
@@ -7569,12 +7569,12 @@ function embedhtml5(Wd, Lc) {
                     }, pa = !0));
                     0 == pa && (ab = ma = Oa = null, a = 1)
                 }
-                1 == a && (wa.infoString = _[500], d.webgl = !1);
+                1 == a && (wa.infoString = " - CSS3D", d.webgl = !1);
                 nb = d.browser.css.tileoverlap | 0;
                 if (6 < d.iosversion || d.mac && "7" <= d.safariversion) aa = !0;
                 d.multiressupport = d.androidstock && 0 == d.webgl ? !1 : !0;
                 (a = d.webgl) && d.android && d.androidstock && (a = !1);
-                9 <= d.iosversion && document.addEventListener(_[29], f, !1);
+                9 <= d.iosversion && document.addEventListener("visibilitychange", f, !1);
                 d.panovideosupport = a;
                 d.buildList()
             };
@@ -7728,26 +7728,26 @@ function embedhtml5(Wd, Lc) {
                         q = Z.parseFunction(a);
                     if (q) switch (q[0].toUpperCase()) {
                         case "BLEND":
-                            (e = q[2]) || (e = _[378]);
+                            (e = q[2]) || (e = "easeInCubic");
                             za = ib[0];
                             break;
-                        case _[399]:
+                        case "LIGHTBLEND":
                             f = Number(q[2]);
                             g = Number(q[3]);
-                            (e = q[4]) || (e = _[361]);
+                            (e = q[4]) || (e = "easeincubic");
                             isNaN(f) && (f = 16777215);
                             isNaN(g) && (g = 2);
                             za = ib[1];
                             r(za.prg);
                             break;
-                        case _[410]:
+                        case "COLORBLEND":
                             f = Number(q[2]);
-                            (e = q[3]) || (e = _[382]);
+                            (e = q[3]) || (e = "easeoutsine");
                             isNaN(f) && (f = 0);
                             za = ib[2];
                             r(za.prg);
                             break;
-                        case _[422]:
+                        case "SLIDEBLEND":
                             var b = !1,
                                 k = Number(q[2]);
                             a = Number(q[3]);
@@ -7755,7 +7755,7 @@ function embedhtml5(Wd, Lc) {
                             isNaN(k) && (k = 0);
                             isNaN(a) && (a = .2);
                             a = 0 > a ? 0 : 1 < a ? 1 : a;
-                            e || (e = _[59]);
+                            e || (e = "linear");
                             var h = q = 0,
                                 m = Math.cos(k * W),
                                 l = Math.sin(k * W);
@@ -7770,22 +7770,22 @@ function embedhtml5(Wd, Lc) {
                             c.uniform3f(za.fp, m * k, l * k, (-q * m - h * l) * k);
                             c.uniform1f(za.bl, .5 * a);
                             break;
-                        case _[461]:
+                        case "ZOOMBLEND":
                             b = !1;
                             a = Number(q[2]);
-                            (e = q[3]) || (e = _[323]);
+                            (e = q[3]) || (e = "easeInOutSine");
                             isNaN(a) && (a = 2);
                             za = ib[3];
                             r(za.prg);
                             c.uniform2f(za.ct, .5, .5);
                             c.uniform1f(za.zf, a);
                             break;
-                        case _[464]:
-                            b = !1, a = Number(q[2]), k = Number(q[3]), h = Number(q[4]), (e = q[5]) || (e = _[59]), isNaN(a) && (a = .2), isNaN(k) && (k = .2), isNaN(h) && (h = 0), a = -1 > a ? -1 : 1 < a ? 1 : a, k = 0 > k ? 0 : 1 < k ? 1 : k, h = 0 > h ? 0 : 1 < h ? 1 : h, q = d.gl.width / d.gl.height, m = 1, isNaN(q) && (q = 1), q *= q, 0 > a ? q *= 1 + a : m *= 1 - a, za = ib[5], r(za.prg), c.uniform2f(za.ap, q, m), c.uniform1f(za.bl, .5 * k), c.uniform1f(za.zf, h)
+                        case "OPENBLEND":
+                            b = !1, a = Number(q[2]), k = Number(q[3]), h = Number(q[4]), (e = q[5]) || (e = "linear"), isNaN(a) && (a = .2), isNaN(k) && (k = .2), isNaN(h) && (h = 0), a = -1 > a ? -1 : 1 < a ? 1 : a, k = 0 > k ? 0 : 1 < k ? 1 : k, h = 0 > h ? 0 : 1 < h ? 1 : h, q = d.gl.width / d.gl.height, m = 1, isNaN(q) && (q = 1), q *= q, 0 > a ? q *= 1 + a : m *= 1 - a, za = ib[5], r(za.prg), c.uniform2f(za.ap, q, m), c.uniform1f(za.bl, .5 * k), c.uniform1f(za.zf, h)
                     }
                     if (null == za || 0 == b && ja.stereo) za = ib[0], f = null;
                     null !== f && c.uniform3f(za.cc, g * (f >> 16 & 255) / 255, g * (f >> 8 & 255) / 255, g * (f & 255) / 255);
-                    null == e && (e = _[59]);
+                    null == e && (e = "linear");
                     cb = zc.getTweenfu(e);
                     bb = 0 == d.realDesktop && 1 < d.pixelratio || 33 < ja.r_ft
                 }
@@ -7863,7 +7863,7 @@ function embedhtml5(Wd, Lc) {
                     Kd(Rc, m);
                     Cc = "";
                     ac = null;
-                    a.image && a.image.prealign && (k = ("" + a.image.prealign).split("|"), 3 == k.length && (g = Number(k[0]), q = -Number(k[1]), k = -Number(k[2]), isNaN(g) || isNaN(q) || isNaN(k) || (Cc = _[140] + q.toFixed(4) + _[311] + k.toFixed(4) + _[322] + g.toFixed(4) + "deg) ", ac = Ub, xe(h, m), m = Rc, h = pc, Kd(m, qd), we(ac, g, q, k, !1), hf(m, ac))));
+                    a.image && a.image.prealign && (k = ("" + a.image.prealign).split("|"), 3 == k.length && (g = Number(k[0]), q = -Number(k[1]), k = -Number(k[2]), isNaN(g) || isNaN(q) || isNaN(k) || (Cc = "rotateY(" + q.toFixed(4) + "deg) rotateZ(" + k.toFixed(4) + "deg) rotateX(" + g.toFixed(4) + "deg) ", ac = Ub, xe(h, m), m = Rc, h = pc, Kd(m, qd), we(ac, g, q, k, !1), hf(m, ac))));
                     xe(h, m);
                     g = (d.android && 0 == d.androidstock || d.blackberry || d.ios) && 0 == d.hidpi ? d.pixelratio : 1;
                     d.ios && d.retina && (g = 1.5);
@@ -7891,7 +7891,7 @@ function embedhtml5(Wd, Lc) {
                             }
                         Vc && 0 < g && --g;
                         k = l.lockmultireslevel;
-                        _[519] == G(k) && (l.lockmultireslevel = k = "" + g);
+                        "current" == G(k) && (l.lockmultireslevel = k = "" + g);
                         k |= 0;
                         0 <= k && k < q && (g = k);
                         a.currentlevel != g && (a.currentlevel = g)
@@ -8020,9 +8020,9 @@ function embedhtml5(Wd, Lc) {
                 sb = Ka(),
                 se = Ka();
             wa.hittesthotspots = function(a) {
-                if (_[33] == a) {
+                if ("onmouseup" == a) {
                     if (Eb) return Eb.process_onup(Eb, !0), Eb = null, !0
-                } else if (_[39] == a && Eb) return Eb.process_onup(Eb, !1), Eb = null, !0;
+                } else if ("onclick" == a && Eb) return Eb.process_onup(Eb, !1), Eb = null, !0;
                 var c = l.webVR,
                     b = c && c.enabled,
                     c = b ? c.getcursor() : null,
@@ -8096,7 +8096,7 @@ function embedhtml5(Wd, Lc) {
                                 null == a && b != vb && (null != vb && (vb.hovering = !1, Z.callaction(vb.onout, vb), c && Z.callaction(c.onout, vb), vb.DATA.onovercrop && ($a = !0), vb = null), vb = b, b.hovering = !0, f.onovercrop && ($a = !0), Z.isblocked() || (Z.callaction(b.onover, b), c && Z.callaction(c.onover, b)));
                                 q = !0;
                                 h = D;
-                                _[46] == a && (Eb = b, b.process_ondown(b), b.capture && (k = !0));
+                                "onmousedown" == a && (Eb = b, b.process_ondown(b), b.capture && (k = !0));
                                 break
                             }
                         }
@@ -8114,13 +8114,13 @@ function embedhtml5(Wd, Lc) {
                 b.r_rmatrix = Ka();
                 (function() {
                     var a = "hlookat vlookat camroll fov maxpixelzoom fisheye fisheyefovlink architectural tx ty tz".split(" "),
-                        d = [_[325], _[204]],
+                        d = ["stereographic", "architecturalonlymiddle"],
                         f;
                     for (f in a) sa(b, a[f], 0);
                     for (f in d) sa(b, d[f], !1);
-                    sa(b, _[533], "VFOV");
+                    sa(b, "fovtype", "VFOV");
                     b.continuousupdates = !1;
-                    Ca(b, _[543], function() {
+                    Ca(b, "pannini", function() {
                         return "" + b._pannini
                     }, function(a) {
                         var d = Number(a),
@@ -8128,17 +8128,17 @@ function embedhtml5(Wd, Lc) {
                         b._pannini = d;
                         b.haschanged = !0
                     });
-                    Ca(b, _[420], function() {
+                    Ca(b, "distortion", function() {
                         return b._fisheye
                     }, function(a) {
                         b.fisheye = a
                     });
-                    Ca(b, _[238], function() {
+                    Ca(b, "distortionfovlink", function() {
                         return b._fisheyefovlink
                     }, function(a) {
                         b.fisheyefovlink = a
                     });
-                    Ca(b, _[350], function() {
+                    Ca(b, "hlookatrange", function() {
                         if ("off" == G(b.limitview)) return 360;
                         var a = b.hlookatmax,
                             d = b.hlookatmin,
@@ -8147,7 +8147,7 @@ function embedhtml5(Wd, Lc) {
                         isNaN(a) && (a = e ? e[1] : 180);
                         return a - d
                     }, function(a) {});
-                    Ca(b, _[353], function() {
+                    Ca(b, "vlookatrange", function() {
                         if ("off" == G(b.limitview)) return 180;
                         var a = b.vlookatmax,
                             d = b.vlookatmin,
@@ -8296,14 +8296,14 @@ function embedhtml5(Wd, Lc) {
                     v < r && (n = r, r = v, v = n);
                     var h = !1,
                         c = !1,
-                        F = _[141] != u,
+                        F = "offrange" != u,
                         E = !0,
                         E = 180,
                         n = v - r,
                         N = z - C;
                     switch (u) {
                         case "off":
-                        case _[26]:
+                        case "false":
                             n = 360;
                             r = -180;
                             v = 180;
@@ -8311,9 +8311,9 @@ function embedhtml5(Wd, Lc) {
                             z = 1E5;
                             F = !1;
                             break;
-                        case _[439]:
+                        case "fullrange":
                             F = !0;
-                        case _[141]:
+                        case "offrange":
                             c = !0;
                         case "range":
                             if ((h = 360 > n) || 180 > N) B = l(a, b._fovtype, "HFOV"), B > n && (E = !0, c && l(n, "HFOV", "VFOV") < N && (E = h = !1), B = n, F && E && (a = l(B, "HFOV", b._fovtype))), y = l(a, b._fovtype, "VFOV"), y > N && (E = !0, c && l(N, "VFOV", "HFOV") < n && (E = h = !1), y = N, F && E && (a = l(y, "VFOV", b._fovtype))), l(a, b._fovtype, "HFOV"), E = y, I = y *= .5, B *= .5, -89.9 >= C && (y = 0), 89.9 <= z && (I = 0)
@@ -8345,7 +8345,7 @@ function embedhtml5(Wd, Lc) {
                     Ob = 0 == d.simulator && (d.iphone || d.ipad) ? .25 : 1;
                     d.ie && (Ob = t.r_zoom / 1E3 * 10);
                     if (d.androidstock || d.android && d.chrome || d.blackberry) Ob = t.r_zoom / 1E3 / 4;
-                    ye = _[341] + H + _[121] + -f + _[108] + (H - w / 2 * Ob) + "px) ";
+                    ye = "perspective(" + H + "px) rotateZ(" + -f + "deg) translateZ(" + (H - w / 2 * Ob) + "px) ";
                     b.haschanged = !1
                 };
                 b.getState = function(a) {
@@ -8409,20 +8409,20 @@ function embedhtml5(Wd, Lc) {
                     a.preventTouchEvents = !0
                 };
                 a.defaults();
-                zb(a, _[448], _[19]);
-                zb(a, _[451], "touch");
-                zb(a, _[272], _[256]);
-                zb(a, _[403], _[380]);
-                zb(a, _[328], _[299]);
-                zb(a, _[305], _[285]);
-                zb(a, _[316], _[346])
+                zb(a, "mousetype", "mouse");
+                zb(a, "touchtype", "touch");
+                zb(a, "mouseaccelerate", "movetoaccelerate");
+                zb(a, "mousespeed", "movetospeed");
+                zb(a, "mousefriction", "movetofriction");
+                zb(a, "mouseyfriction", "movetoyfriction");
+                zb(a, "touchfriction", "dragfriction")
             },
             Df = function() {
                 var a = this;
-                a.standard = _[6];
+                a.standard = "default";
                 a.dragging = "move";
                 a.moving = "move";
-                a.hit = _[10];
+                a.hit = "pointer";
                 a.update = function() {
                     var b = H.down,
                         d = !1,
@@ -8430,29 +8430,29 @@ function embedhtml5(Wd, Lc) {
                         e = Eb;
                     e ? f ? (d = f.DATA.handcursor, f == e ? (b = !1, f.capture || (b = H.down && H.moved)) : b = e.capture ? !1 : H.down && H.moved) : b = !e.capture : f && 0 == b && (d = f.DATA.handcursor);
                     f = G(da.mousetype);
-                    V.controllayer.style.cursor = b ? _[18] == f ? a.moving : a.dragging : d ? a.hit : a.standard
+                    V.controllayer.style.cursor = b ? "moveto" == f ? a.moving : a.dragging : d ? a.hit : a.standard
                 }
             },
             zf = function() {
                 var a = this;
                 a.haschanged = !1;
-                a.mode = _[66];
+                a.mode = "align";
                 a.pixelx = 0;
                 a.pixely = 0;
                 a.pixelwidth = 0;
                 a.pixelheight = 0;
-                sa(a, _[66], _[84]);
+                sa(a, "align", "lefttop");
                 sa(a, "x", "0");
                 sa(a, "y", "0");
-                sa(a, _[64], "100%");
-                sa(a, _[17], "100%");
+                sa(a, "width", "100%");
+                sa(a, "height", "100%");
                 sa(a, "left", "0");
                 sa(a, "top", "0");
-                sa(a, _[3], "0");
-                sa(a, _[4], "0");
+                sa(a, "right", "0");
+                sa(a, "bottom", "0");
                 a.calc = function(b, d) {
                     var f = 1 / ba,
-                        e = _[86] == G(a.mode),
+                        e = "border" == G(a.mode),
                         k = e ? a._left : a._x,
                         l = e ? a._top : a._y,
                         g = e ? a._right : a._width,
@@ -8465,7 +8465,7 @@ function embedhtml5(Wd, Lc) {
                         l = l / f,
                         g = g / f,
                         t = t / f;
-                    e ? (g = b - k - g, t = d - l - t) : (e = G(a._align), 0 <= e.indexOf("left") || (k = 0 <= e.indexOf(_[3]) ? b - g - k : (b - g) / 2 + k), 0 <= e.indexOf("top") || (l = 0 <= e.indexOf(_[4]) ? d - t - l : (d - t) / 2 + l));
+                    e ? (g = b - k - g, t = d - l - t) : (e = G(a._align), 0 <= e.indexOf("left") || (k = 0 <= e.indexOf("right") ? b - g - k : (b - g) / 2 + k), 0 <= e.indexOf("top") || (l = 0 <= e.indexOf("bottom") ? d - t - l : (d - t) / 2 + l));
                     a.pixelx = Math.round(k * f);
                     a.pixely = Math.round(l * f);
                     e = !1;
@@ -8517,15 +8517,15 @@ function embedhtml5(Wd, Lc) {
                 }
 
                 function f() {
-                    c.sprite && (c.sprite.style.overflow = F.maskchildren ? _[7] : _[16], S && d.safari && y())
+                    c.sprite && (c.sprite.style.overflow = F.maskchildren ? "hidden" : "visible", S && d.safari && y())
                 }
 
                 function e(a, c) {
                     var b = c;
-                    c && (b = c = a.DATA.enabled) && _[22] == a.type && (b = 0 != a.DATA.bgcapture);
+                    c && (b = c = a.DATA.enabled) && "container" == a.type && (b = 0 != a.DATA.bgcapture);
                     if (a.sprite) {
                         var d = a.sprite.style;
-                        d.cursor = b && a.DATA.handcursor ? _[10] : _[6];
+                        d.cursor = b && a.DATA.handcursor ? "pointer" : "default";
                         d.pointerEvents = b ? "auto" : "none";
                         0 == b && a.hovering && (a.hovering = !1, rb === a && (rb = null))
                     }
@@ -8560,9 +8560,9 @@ function embedhtml5(Wd, Lc) {
                         var c = a = G(a),
                             b = Ga,
                             d = a.indexOf("[");
-                        0 < d && (c = a.slice(0, d), _[5] == c && (b = Ua), a = a.slice(d + 1, a.indexOf("]")));
+                        0 < d && (c = a.slice(0, d), "hotspot" == c && (b = Ua), a = a.slice(d + 1, a.indexOf("]")));
                         if ("stage" == c) return null == gb.sprite && (gb.sprite = V.viewerlayer, gb.loaded = !0), gb;
-                        if (_[510] == c) return null == ob.sprite && (a = Fa(), c = a.style, c.position = _[0], c.width = "100%", c.height = "100%", c.overflow = _[7], c.zIndex = "0", c.pointerEvents = "none", V.controllayer.parentNode.insertBefore(a, V.controllayer), ob.sprite = a, ob.loaded = !0), ob;
+                        if ("bglayer" == c) return null == ob.sprite && (a = Fa(), c = a.style, c.position = "absolute", c.width = "100%", c.height = "100%", c.overflow = "hidden", c.zIndex = "0", c.pointerEvents = "none", V.controllayer.parentNode.insertBefore(a, V.controllayer), ob.sprite = a, ob.loaded = !0), ob;
                         c = b.getItem(a)
                     }
                     return c
@@ -8593,8 +8593,8 @@ function embedhtml5(Wd, Lc) {
                             if (b = m(a))
                                 if (b.sprite) null == b._childs && (b._childs = []), b._use_css_scale = !1, c._use_css_scale = !1, b._childs.push(c), b.sprite.appendChild(c.sprite), b.requestUpdate(), b.haschanged_flags |= 4096;
                                 else {
-                                    if (b.GL || b.ishotspot && _[65] == b.renderer) {
-                                        b.renderer = _[25];
+                                    if (b.GL || b.ishotspot && "webgl" == b.renderer) {
+                                        b.renderer = "css3d";
                                         b.processUpdatesHS();
                                         b.requestUpdate();
                                         g(a);
@@ -8614,7 +8614,7 @@ function embedhtml5(Wd, Lc) {
                 }
 
                 function w(a) {
-                    (a = this.kobject) && 0 == K && (a.DATA.reloading = !1, (a = a.loadingurl) && _[95] == a.slice(0, 5) && 50 < a.length && (a = a.slice(0, 50) + "..."), na.reportLoadingError(a, c.getfullpath() + " -"))
+                    (a = this.kobject) && 0 == K && (a.DATA.reloading = !1, (a = a.loadingurl) && "data:" == a.slice(0, 5) && 50 < a.length && (a = a.slice(0, 50) + "..."), na.reportLoadingError(a, c.getfullpath() + " -"))
                 }
 
                 function J() {
@@ -8627,11 +8627,11 @@ function embedhtml5(Wd, Lc) {
                 }
 
                 function r(a) {
-                    Q && (H.down = !1, eb.trackTouch(a), ia(T, a.type, r, !0), _[2] == a.type ? (ca.body.style.webkitUserSelect = ca.body.style.backupUserSelect, ia(T, _[9], A, !0), ia(T, _[2], r, !0)) : (ia(T, d.browser.events.touchmove, A, !0), ia(T, d.browser.events.touchend, r, !0)), c.process_onup(Q, R))
+                    Q && (H.down = !1, eb.trackTouch(a), ia(T, a.type, r, !0), "mouseup" == a.type ? (ca.body.style.webkitUserSelect = ca.body.style.backupUserSelect, ia(T, "mousemove", A, !0), ia(T, "mouseup", r, !0)) : (ia(T, d.browser.events.touchmove, A, !0), ia(T, d.browser.events.touchend, r, !0)), c.process_onup(Q, R))
                 }
 
                 function A(a, c) {
-                    bb(_[423]);
+                    bb("layer.move");
                     var b = a.changedTouches && 0 < a.changedTouches.length ? a.changedTouches[0] : a,
                         e = b.pageX,
                         b = b.pageY;
@@ -8642,10 +8642,10 @@ function embedhtml5(Wd, Lc) {
                     var e = a.timeStamp | 0,
                         f = !0;
                     switch (a.type) {
-                        case _[44]:
-                        case _[12]:
-                        case _[21]:
-                            1 == b && (e = _[22] == Q.type, u(Q) && (!e || e && Q.DATA.bgcapture) && Q.DATA.handcursor && (c.sprite.style.cursor = _[10]));
+                        case "MSPointerOver":
+                        case "pointerover":
+                        case "mouseover":
+                            1 == b && (e = "container" == Q.type, u(Q) && (!e || e && Q.DATA.bgcapture) && Q.DATA.handcursor && (c.sprite.style.cursor = "pointer"));
                             e = Q.sprite || Q._poly;
                             for (f = 0; e;) {
                                 var g = e.kobject;
@@ -8663,9 +8663,9 @@ function embedhtml5(Wd, Lc) {
                                 f = f.parentNode
                             }
                             break;
-                        case _[45]:
-                        case _[14]:
-                        case _[23]:
+                        case "MSPointerOut":
+                        case "pointerout":
+                        case "mouseout":
                             for (e = (f = a.relatedTarget) ? f.kobject : null; f && null == e;)
                                 if (f = f.parentNode) e = f.kobject;
                                 else break;
@@ -8685,18 +8685,18 @@ function embedhtml5(Wd, Lc) {
                                 f = f.parentNode
                             }
                             break;
-                        case _[8]:
+                        case "mousedown":
                             V.focus(2);
-                            bb(_[274]);
+                            bb("layer.mousedown");
                             if (500 < e && 500 > e - Ac) {
                                 Ac = 0;
                                 break
                             }
-                            if (f = 0 == (a.button | 0)) ca.body.style.backupUserSelect = ca.body.style.webkitUserSelect, ca.body.style.webkitUserSelect = "none", H.down = !0, A(a, !0), aa(T, _[2], r, !0), aa(T, _[9], A, !0), c.process_ondown(Q);
+                            if (f = 0 == (a.button | 0)) ca.body.style.backupUserSelect = ca.body.style.webkitUserSelect, ca.body.style.webkitUserSelect = "none", H.down = !0, A(a, !0), aa(T, "mouseup", r, !0), aa(T, "mousemove", A, !0), c.process_ondown(Q);
                             break;
                         case d.browser.events.touchstart:
                             V.focus(2);
-                            bb(_[255]);
+                            bb("layer.touchstart");
                             Ac = e;
                             eb.trackTouch(a);
                             if (eb.isMultiTouch()) break;
@@ -8722,24 +8722,24 @@ function embedhtml5(Wd, Lc) {
 
                 function n(a) {
                     var b = a.type;
-                    if (_[8] != b && b != d.browser.events.touchstart || !Z.isblocked()) {
+                    if ("mousedown" != b && b != d.browser.events.touchstart || !Z.isblocked()) {
                         var e = a.target.kobject;
-                        _[44] == b ? b = _[12] : _[45] == b && (b = _[14]);
+                        "MSPointerOver" == b ? b = "pointerover" : "MSPointerOut" == b && (b = "pointerout");
                         null == e && (e = c);
-                        if ((_[12] != b && _[14] != b || 4 == a.pointerType || _[19] == a.pointerType) && e) {
+                        if (("pointerover" != b && "pointerout" != b || 4 == a.pointerType || "mouse" == a.pointerType) && e) {
                             var e = a.timeStamp,
                                 f = c._eP;
                             e != c._eT && (f = 0);
-                            if (_[21] == b || _[12] == b) {
+                            if ("mouseover" == b || "pointerover" == b) {
                                 var g = a.relatedTarget;
                                 if (this === g || v(this, g)) return
-                            } else if (_[23] == b || _[14] == b)
+                            } else if ("mouseout" == b || "pointerout" == b)
                                 if (g = a.relatedTarget, this === g || v(this, g)) return;
-                            _[21] == b && 0 == c.hovering ? f = 0 : _[23] == b && 1 == c.hovering && (f = 0);
+                            "mouseover" == b && 0 == c.hovering ? f = 0 : "mouseout" == b && 1 == c.hovering && (f = 0);
                             b = F.enabled;
                             0 == d.pointerEvents && (b = u(c));
                             if (b && (!S || S && F.bgcapture)) 0 == c.children && a.stopPropagation(), 0 == f && (0 == c.children && 1 == a.eventPhase || 2 <= a.eventPhase) && (f = 1, c.jsplugin && c.jsplugin.hittest && (b = V.getMousePos(a.changedTouches ? a.changedTouches[0] : a, c.sprite), c.jsplugin.hittest(b.x * c.imagewidth / c.pixelwidth, b.y * c.imageheight / c.pixelheight) || (f = 2)), 1 == f && (Q = c, p(a), c.capture && (null != c.jsplugin && v(V.controllayer, c.sprite) || 0 == (a.target && "A" == a.target.nodeName) && ta(a), a.stopPropagation())));
-                            else if (0 == d.pointerEvents && ca.msElementsFromPoint && 0 == f && 2 == a.eventPhase && (g = a.type, b = _[2] == g || _[23] == g || _[45] == g || _[14] == g || g == d.browser.events.touchend, _[8] == g || _[21] == g || _[44] == g || _[12] == g || g == d.browser.events.touchstart || b) && (g = ca.msElementsFromPoint(a.clientX, a.clientY))) {
+                            else if (0 == d.pointerEvents && ca.msElementsFromPoint && 0 == f && 2 == a.eventPhase && (g = a.type, b = "mouseup" == g || "mouseout" == g || "MSPointerOut" == g || "pointerout" == g || g == d.browser.events.touchend, "mousedown" == g || "mouseover" == g || "MSPointerOver" == g || "pointerover" == g || g == d.browser.events.touchstart || b) && (g = ca.msElementsFromPoint(a.clientX, a.clientY))) {
                                 var h = [],
                                     l, m, n = null,
                                     n = null;
@@ -8756,7 +8756,7 @@ function embedhtml5(Wd, Lc) {
                                     }
                                 for (l = 0; l < g.length; l++)
                                     if (n = g[l], n = n.kobject) {
-                                        if (m = _[22] == n.type, 1 == (u(n) && (!m || m && n.DATA.bgcapture)) || b)
+                                        if (m = "container" == n.type, 1 == (u(n) && (!m || m && n.DATA.bgcapture)) || b)
                                             if (f = 1, Q = n, p(a, !0), n.capture) {
                                                 null == c.jsplugin && ta(a);
                                                 a.stopPropagation();
@@ -8804,7 +8804,7 @@ function embedhtml5(Wd, Lc) {
                                 }
                             }
                         }
-                        if (d.safari || d.ios) a.webkitMaskImage = F.maskchildren && !l && 0 < b[0] + b[1] + b[2] + b[3] ? _[178] : "";
+                        if (d.safari || d.ios) a.webkitMaskImage = F.maskchildren && !l && 0 < b[0] + b[1] + b[2] + b[3] ? "-webkit-radial-gradient(circle, white, black)" : "";
                         a[Sb] = e;
                         a.borderStyle = "solid";
                         a.borderColor = ua(h, g);
@@ -8844,8 +8844,8 @@ function embedhtml5(Wd, Lc) {
                             c.loaded = !1;
                             c.loadedurl = null;
                             c.createLoader();
-                            if (_[74] == b) S = K = !0, c.loading = !1, c.loaded = !0, c.loadedurl = a, c.createVars([_[530], c.bgcolor ? Number(c.bgcolor) : 0, 16384, _[532], c.bgalpha ? Number(c.bgalpha) : 0, 16384, _[371], c.bgroundedge ? c.bgroundedge : "0", 16384, _[468], c.bgborder ? c.bgborder : "0", 16384, _[469], c.bgshadow ? c.bgshadow : "", 16384, _[426], la(c.bgcapture), 4096]), c.haschanged_flags |= 4096, c.haschanged_flags |= 16384, c.jsplugin = new I(c), z();
-                            else if (0 <= a.indexOf(_[330])) {
+                            if ("<container>" == b) S = K = !0, c.loading = !1, c.loaded = !0, c.loadedurl = a, c.createVars(["bgcolor", c.bgcolor ? Number(c.bgcolor) : 0, 16384, "bgalpha", c.bgalpha ? Number(c.bgalpha) : 0, 16384, "bgroundedge", c.bgroundedge ? c.bgroundedge : "0", 16384, "bgborder", c.bgborder ? c.bgborder : "0", 16384, "bgshadow", c.bgshadow ? c.bgshadow : "", 16384, "bgcapture", la(c.bgcapture), 4096]), c.haschanged_flags |= 4096, c.haschanged_flags |= 16384, c.jsplugin = new I(c), z();
+                            else if (0 <= a.indexOf("textfield.swf")) {
                                 K = !0;
                                 c.loading = !1;
                                 c.loaded = !0;
@@ -8857,22 +8857,22 @@ function embedhtml5(Wd, Lc) {
                                     f.updatehtml();
                                     z()
                                 }, 7)
-                            } else "js" == d ? (K = !0, c.loadingurl = a, na.loadfile2(a, _[111], function(b) {
+                            } else "js" == d ? (K = !0, c.loadingurl = a, na.loadfile2(a, "text/javascript", function(b) {
                                 c.loading = !1;
                                 c.loaded = !0;
                                 c.loadedurl = a;
                                 b = b.data;
                                 debugger;
                                 if (null != b) {
-                                    var d = _[414] + a + _[199];
+                                    var d = "the file '" + a + "' is not a krpano plugin!";
                                     try {
                                         eval(b + ";")
                                     } catch (e) {
-                                        d = _[431] + a + _[409] + e
+                                        d = "parsing '" + a + "' failed: " + e
                                     }
-                                    _[15] == typeof krpanoplugin ? (b = new krpanoplugin, b.registerplugin(l, c.getfullpath(), c), c.jsplugin = b, z()) : va(3, d)
+                                    "function" == typeof krpanoplugin ? (b = new krpanoplugin, b.registerplugin(l, c.getfullpath(), c), c.jsplugin = b, z()) : va(3, d)
                                 }
-                            })) : "swf" == d ? (c.loading = !1, c.loaded = !1, va(2, c.getfullpath() + _[210] + Wd(a))) : (c.loaded && c.preload && (c._ispreload = !0, c.preload = !1, c.onloaded = null), na.DMcheck(a) ? (c.loading = !0, c.loaded = !1, c.loadingurl = a, c.loader.src = a) : (c.loading = !1, va(3, c.getfullpath() + _[254] + a)))
+                            })) : "swf" == d ? (c.loading = !1, c.loaded = !1, va(2, c.getfullpath() + " skipped flash file: " + Wd(a))) : (c.loaded && c.preload && (c._ispreload = !0, c.preload = !1, c.onloaded = null), na.DMcheck(a) ? (c.loading = !0, c.loaded = !1, c.loadingurl = a, c.loader.src = a) : (c.loading = !1, va(3, c.getfullpath() + " loading error: " + a)))
                         }
                     }
                 }
@@ -8918,7 +8918,7 @@ function embedhtml5(Wd, Lc) {
                 c.prototype = Ib;
                 this.prototype.call(this);
                 var F = c.DATA = {};
-                c._type = _[62];
+                c._type = "plugin";
                 c.layer = c.plugin = new ub(Qb);
                 c.haschanged_flags = 0;
                 c.renderer_flags = 0;
@@ -8952,10 +8952,10 @@ function embedhtml5(Wd, Lc) {
                     return 0 == (O & 2) || 0 != (c.haschanged_flags & 64)
                 };
                 c.__defineGetter__("type", function() {
-                    return _[74] == c.url ? _[22] : _[96]
+                    return "<container>" == c.url ? "container" : "image"
                 });
                 c.__defineSetter__("type", function(a) {
-                    _[22] == G(a) && (c.url = _[74])
+                    "container" == G(a) && (c.url = "<container>")
                 });
                 c.sprite = null;
                 c.loader = null;
@@ -8972,10 +8972,10 @@ function embedhtml5(Wd, Lc) {
                 c._zdeep = 0;
                 c._childs = null;
                 c._parent = null;
-                c.__defineGetter__(_[160], function() {
+                c.__defineGetter__("parent", function() {
                     return c._parent
                 });
-                c.__defineSetter__(_[160], function(a) {
+                c.__defineSetter__("parent", function(a) {
                     if (null == a || "" == a || "null" == G(a)) a = null;
                     c.sprite ? g(a) : c._parent = a
                 });
@@ -9019,7 +9019,7 @@ function embedhtml5(Wd, Lc) {
                 c.ondown = null;
                 c.onup = null;
                 c.onloaded = null;
-                c.createVars(["url", null, 1, _[16], !0, 4, _[64], null, 32, _[17], null, 64, "scale", 1, 16, _[568], 0, 8, "x", null, 512, "y", null, 512, "ox", null, 256, "oy", null, 256, _[66], null, 1024, "edge", null, 1024, _[567], null, 2048, _[335], !1, 32768, _[310], !1, 65536, "alpha", 1, 8192, _[438], !1, 8192, _[398], null, 0, _[401], null, 0, _[552], !0, 4096, _[404], !0, 4096]);
+                c.createVars(["url", null, 1, "visible", !0, 4, "width", null, 32, "height", null, 64, "scale", 1, 16, "rotate", 0, 8, "x", null, 512, "y", null, 512, "ox", null, 256, "oy", null, 256, "align", null, 1024, "edge", null, 1024, "zorder", null, 2048, "maskchildren", !1, 32768, "scalechildren", !1, 65536, "alpha", 1, 8192, "autoalpha", !1, 8192, "ondowncrop", null, 0, "onovercrop", null, 0, "enabled", !0, 4096, "handcursor", !0, 4096]);
                 F.crop = null;
                 c.__defineGetter__("crop", function() {
                     return F.crop
@@ -9086,17 +9086,17 @@ function embedhtml5(Wd, Lc) {
                 c._assignEvents = function(a, b) {
                     b || (b = "add");
                     eb.touch && (xb(b, a, d.browser.events.touchstart, n, !0), xb(b, a, d.browser.events.touchstart, n, !1));
-                    eb.mouse && (xb(b, a, _[8], n, !0), xb(b, a, _[8], n, !1));
-                    d.desktop && (eb.mouse || d.ie) && (0 == eb.mouse && d.ie ? (xb(b, a, d.browser.events.pointerover, n, !0), xb(b, a, d.browser.events.pointerover, n, !1), xb(b, a, d.browser.events.pointerout, n, !0), xb(b, a, d.browser.events.pointerout, n, !1)) : (xb(b, a, _[21], n, !0), xb(b, a, _[21], n, !1), xb(b, a, _[23], n, !0), xb(b, a, _[23], n, !1)))
+                    eb.mouse && (xb(b, a, "mousedown", n, !0), xb(b, a, "mousedown", n, !1));
+                    d.desktop && (eb.mouse || d.ie) && (0 == eb.mouse && d.ie ? (xb(b, a, d.browser.events.pointerover, n, !0), xb(b, a, d.browser.events.pointerover, n, !1), xb(b, a, d.browser.events.pointerout, n, !0), xb(b, a, d.browser.events.pointerout, n, !1)) : (xb(b, a, "mouseover", n, !0), xb(b, a, "mouseover", n, !1), xb(b, a, "mouseout", n, !0), xb(b, a, "mouseout", n, !1)))
                 };
                 c.createLoader = function() {
                     var a = c.loader;
                     a && "" != a.src && (c.destroyLoader(), a = null);
-                    a || (a = Fa(1), a.kobject = c, aa(a, _[41], w, !0), aa(a, "load", z, !1), c.loader = a)
+                    a || (a = Fa(1), a.kobject = c, aa(a, "error", w, !0), aa(a, "load", z, !1), c.loader = a)
                 };
                 c.destroyLoader = function() {
                     var a = c.loader;
-                    a && (a.kobject = null, ia(a, _[41], w, !0), ia(a, "load", z, !1), c.loader = null)
+                    a && (a.kobject = null, ia(a, "error", w, !0), ia(a, "load", z, !1), c.loader = null)
                 };
                 c.createSprite = function() {
                     if (!c.sprite) {
@@ -9104,8 +9104,8 @@ function embedhtml5(Wd, Lc) {
                             d = a.style;
                         a.kobject = c;
                         d.display = "none";
-                        d.position = _[0];
-                        Rc && (d.outline = _[98]);
+                        d.position = "absolute";
+                        Rc && (d.outline = "1px solid rgba(0,255,0,0.5)");
                         d.zIndex = X;
                         c.sprite = a;
                         c._assignEvents(a);
@@ -9118,7 +9118,7 @@ function embedhtml5(Wd, Lc) {
                 };
                 c.destroySprite = function() {
                     var a = c.sprite;
-                    a && (a.parentNode && a.parentNode.removeChild(a), a.style.background = "none", c._assignEvents(a, _[555]), a.kobject = null, c.sprite = null, he--)
+                    a && (a.parentNode && a.parentNode.removeChild(a), a.style.background = "none", c._assignEvents(a, "remove"), a.kobject = null, c.sprite = null, he--)
                 };
                 c.create = function() {
                     c._pCD = !0;
@@ -9178,24 +9178,24 @@ function embedhtml5(Wd, Lc) {
                         1 < a.length && (d = G(a[1]));
                         var a = String(F.align),
                             t = F.edge ? G(F.edge) : "null";
-                        if ("null" == t || _[557] == t) t = a;
+                        if ("null" == t || "origin" == t) t = a;
                         (e = String(F.x)) && (f = 0 < e.indexOf("%") ? parseFloat(e) / 100 * n : parseFloat(e));
                         isNaN(f) && (f = 0);
                         (e = String(F.y)) && (g = 0 < e.indexOf("%") ? parseFloat(e) / 100 * p : parseFloat(e));
                         isNaN(g) && (g = 0);
-                        if (e = a) k = 0 <= e.indexOf("left") ? 0 + f : 0 <= e.indexOf(_[3]) ? n - f : n / 2 + f, h = 0 <= e.indexOf("top") ? 0 + g : 0 <= e.indexOf(_[4]) ? p - g : p / 2 + g;
+                        if (e = a) k = 0 <= e.indexOf("left") ? 0 + f : 0 <= e.indexOf("right") ? n - f : n / 2 + f, h = 0 <= e.indexOf("top") ? 0 + g : 0 <= e.indexOf("bottom") ? p - g : p / 2 + g;
                         1 != F.scale && (l *= F.scale, r *= F.scale);
-                        k = 0 <= t.indexOf("left") ? k + 0 : 0 <= t.indexOf(_[3]) ? k + -l : k + -l / 2;
-                        h = 0 <= t.indexOf("top") ? h + 0 : 0 <= t.indexOf(_[4]) ? h + -r : h + -r / 2;
+                        k = 0 <= t.indexOf("left") ? k + 0 : 0 <= t.indexOf("right") ? k + -l : k + -l / 2;
+                        h = 0 <= t.indexOf("top") ? h + 0 : 0 <= t.indexOf("bottom") ? h + -r : h + -r / 2;
                         e = a = 0;
-                        a = 0 <= b.indexOf("left") ? 0 + f : 0 <= b.indexOf(_[3]) ? n - f : n / 2 + f;
-                        e = 0 <= b.indexOf("top") ? 0 + g : 0 <= b.indexOf(_[4]) ? p - g : p / 2 + g;
-                        a = 0 <= d.indexOf("left") ? a + 0 : 0 <= d.indexOf(_[3]) ? a + -l : a + -l / 2;
-                        e = 0 <= d.indexOf("top") ? e + 0 : 0 <= d.indexOf(_[4]) ? e + -r : e + -r / 2;
+                        a = 0 <= b.indexOf("left") ? 0 + f : 0 <= b.indexOf("right") ? n - f : n / 2 + f;
+                        e = 0 <= b.indexOf("top") ? 0 + g : 0 <= b.indexOf("bottom") ? p - g : p / 2 + g;
+                        a = 0 <= d.indexOf("left") ? a + 0 : 0 <= d.indexOf("right") ? a + -l : a + -l / 2;
+                        e = 0 <= d.indexOf("top") ? e + 0 : 0 <= d.indexOf("bottom") ? e + -r : e + -r / 2;
                         c.align = b;
                         c.edge = d;
-                        0 <= b.indexOf(_[3]) ? c.x = String(f + a - k) : c.x = String(f - a + k);
-                        0 <= b.indexOf(_[4]) ? c.y = String(g + e - h) : c.y = String(g - e + h)
+                        0 <= b.indexOf("right") ? c.x = String(f + a - k) : c.x = String(f - a + k);
+                        0 <= b.indexOf("bottom") ? c.y = String(g + e - h) : c.y = String(g - e + h)
                     }
                 };
                 c.requestUpdate = function(a) {
@@ -9232,7 +9232,7 @@ function embedhtml5(Wd, Lc) {
                 c.process_ondown = function(a) {
                     H.down = !0;
                     H.downLayer = !0;
-                    bb(_[349]);
+                    bb("layer.ondown");
                     a || (a = c);
                     R = !1;
                     a.pressed = !0;
@@ -9241,7 +9241,7 @@ function embedhtml5(Wd, Lc) {
                 };
                 c.process_onup = function(a, b) {
                     H.downLayer = !1;
-                    bb(_[486]);
+                    bb("layer.up");
                     a || (a = c);
                     if (a.pressed) {
                         a.pressed = !1;
@@ -9257,13 +9257,13 @@ function embedhtml5(Wd, Lc) {
                         if (a & 32) {
                             var d = F.width,
                                 e = 0,
-                                g = _[1] === typeof d,
+                                g = "string" === typeof d,
                                 l = parseFloat(d);
                             0 == 0 * l ? (O &= -2, g && 0 < d.indexOf("%") ? (l /= 100, e = 2) : e = 1) : g && "prop" == d.toLowerCase() ? (l = 0, e = 3, O &= -2) : (F.width = null, O |= 1, l = 0);
                             E.w = l;
                             E.flags = E.flags & -4 | e
                         }
-                        a & 64 && (a = F.height, d = 0, e = _[1] === typeof a, g = parseFloat(a), 0 == 0 * g ? (O &= -3, e && 0 < a.indexOf("%") ? (g /= 100, d = 8) : d = 4) : e && "prop" == a.toLowerCase() ? (g = 0, d = 12, O &= -3) : (F.height = null, O |= 2, g = 0), E.h = g, E.flags = E.flags & -13 | d);
+                        a & 64 && (a = F.height, d = 0, e = "string" === typeof a, g = parseFloat(a), 0 == 0 * g ? (O &= -3, e && 0 < a.indexOf("%") ? (g /= 100, d = 8) : d = 4) : e && "prop" == a.toLowerCase() ? (g = 0, d = 12, O &= -3) : (F.height = null, O |= 2, g = 0), E.h = g, E.flags = E.flags & -13 | d);
                         c.requestUpdate(ac);
                         S && y();
                         c.haschanged_flags &= -97
@@ -9275,15 +9275,15 @@ function embedhtml5(Wd, Lc) {
                         null != a ? B() : (J(), c.jsplugin = null, c.loadedurl = null, c.loadingurl = null, c.loading = !1, c.loaded = !1)
                     }
                     c.haschanged_flags & 2 && (c.haschanged_flags &= -3, h());
-                    c.haschanged_flags & 4 && (c.haschanged_flags &= -5, (a = F.visible) && c.ishotspot && ($a = !0), 0 == a && rb === c && (rb = null), c._poly && (c._poly.style.visibility = a ? _[16] : _[7]), c.sprite && (d = !0, c.jsplugin && c.jsplugin.onvisibilitychanged && (d = !0 !== c.jsplugin.onvisibilitychanged(a)), d && (0 == a ? c.sprite.style.display = "none" : c.requestUpdate())));
+                    c.haschanged_flags & 4 && (c.haschanged_flags &= -5, (a = F.visible) && c.ishotspot && ($a = !0), 0 == a && rb === c && (rb = null), c._poly && (c._poly.style.visibility = a ? "visible" : "hidden"), c.sprite && (d = !0, c.jsplugin && c.jsplugin.onvisibilitychanged && (d = !0 !== c.jsplugin.onvisibilitychanged(a)), d && (0 == a ? c.sprite.style.display = "none" : c.requestUpdate())));
                     c.haschanged_flags & 16 && (c.haschanged_flags &= -17, c.requestUpdate());
                     c.haschanged_flags & 8 && (c.haschanged_flags &= -9, c.requestUpdate());
                     if (c.haschanged_flags & 256) {
                         c.haschanged_flags &= -257;
                         var a = F.ox,
                             d = F.oy,
-                            e = _[1] === typeof a,
-                            g = _[1] === typeof d,
+                            e = "string" === typeof a,
+                            g = "string" === typeof d,
                             l = 0,
                             m = parseFloat(a),
                             n = parseFloat(d);
@@ -9294,22 +9294,22 @@ function embedhtml5(Wd, Lc) {
                         E.flags = E.flags & -193 | l;
                         c.requestUpdate(2)
                     }
-                    c.haschanged_flags & 512 && (c.haschanged_flags &= -513, a = F.x, d = F.y, e = _[1] === typeof a, g = _[1] === typeof d, l = 0, m = parseFloat(a), n = parseFloat(d), 0 == 0 * m ? e && 0 < a.indexOf("%") && (m /= 100, l |= 16) : (m = 0, F.x = null), 0 == 0 * n ? g && 0 < d.indexOf("%") && (n /= 100, l |= 32) : (n = 0, F.y = null), E.x = m, E.y = n, E.flags = E.flags & -49 | l, c.requestUpdate(2));
+                    c.haschanged_flags & 512 && (c.haschanged_flags &= -513, a = F.x, d = F.y, e = "string" === typeof a, g = "string" === typeof d, l = 0, m = parseFloat(a), n = parseFloat(d), 0 == 0 * m ? e && 0 < a.indexOf("%") && (m /= 100, l |= 16) : (m = 0, F.x = null), 0 == 0 * n ? g && 0 < d.indexOf("%") && (n /= 100, l |= 32) : (n = 0, F.y = null), E.x = m, E.y = n, E.flags = E.flags & -49 | l, c.requestUpdate(2));
                     if (c.haschanged_flags & 1024) {
                         c.haschanged_flags &= -1025;
                         a = F.align;
                         d = F.edge;
-                        a && "" != a || (a = _[84]);
+                        a && "" != a || (a = "lefttop");
                         d && "" != d || (d = a);
                         var a = G(a),
                             d = G(d),
                             g = e = .5,
                             m = l = 1,
                             p = n = .5;
-                        0 <= a.indexOf("left") ? e = 0 : 0 <= a.indexOf(_[3]) && (e = 1, l = -1);
-                        0 <= a.indexOf("top") ? g = 0 : 0 <= a.indexOf(_[4]) && (g = 1, m = -1);
-                        0 <= d.indexOf("left") ? n = 0 : 0 <= d.indexOf(_[3]) && (n = 1);
-                        0 <= d.indexOf("top") ? p = 0 : 0 <= d.indexOf(_[4]) && (p = 1);
+                        0 <= a.indexOf("left") ? e = 0 : 0 <= a.indexOf("right") && (e = 1, l = -1);
+                        0 <= a.indexOf("top") ? g = 0 : 0 <= a.indexOf("bottom") && (g = 1, m = -1);
+                        0 <= d.indexOf("left") ? n = 0 : 0 <= d.indexOf("right") && (n = 1);
+                        0 <= d.indexOf("top") ? p = 0 : 0 <= d.indexOf("bottom") && (p = 1);
                         E.ax = e;
                         E.ay = g;
                         E.asx = l;
@@ -9356,7 +9356,7 @@ function embedhtml5(Wd, Lc) {
                                     y = !0;
                                 if (w) {
                                     var A = m(w);
-                                    A ? (A.poschanged && A.updatepos(c.getfullpath() + _[551]), 0 == l ? (e = A._pxw * b, f = A._pxh * b) : (e = A.imagewidth * b, f = A.imageheight * b), A.DATA.scalechildren ? (v = 0 != A.imagewidth ? e / b / A.imagewidth : 1, x = 0 != A.imageheight ? f / b / A.imageheight : 1) : (v *= A._finalxscale, x *= A._finalyscale), 0 == A.loaded && (y = !1, a.style.display = "none")) : va(3, 'no parent "' + w + '" found')
+                                    A ? (A.poschanged && A.updatepos(c.getfullpath() + ".parent"), 0 == l ? (e = A._pxw * b, f = A._pxh * b) : (e = A.imagewidth * b, f = A.imageheight * b), A.DATA.scalechildren ? (v = 0 != A.imagewidth ? e / b / A.imagewidth : 1, x = 0 != A.imageheight ? f / b / A.imageheight : 1) : (v *= A._finalxscale, x *= A._finalyscale), 0 == A.loaded && (y = !1, a.style.display = "none")) : va(3, 'no parent "' + w + '" found')
                                 }
                                 var B = E.flags,
                                     z = E.w,
@@ -9410,7 +9410,7 @@ function embedhtml5(Wd, Lc) {
                                         null == Q && (Q = [0, 0, X, g]);
                                         n = 'url("' + n.src + '")';
                                         if (null == Y)
-                                            for (Y = Array(9), u = 0; 9 > u; u++) p = Fa(), p.kobject = c, p.imgurl = null, p.style.position = _[0], p.style.overflow = _[7], Y[u] = p, t.appendChild(p);
+                                            for (Y = Array(9), u = 0; 9 > u; u++) p = Fa(), p.kobject = c, p.imgurl = null, p.style.position = "absolute", p.style.overflow = "hidden", Y[u] = p, t.appendChild(p);
                                         for (var u = [Q[0] + 0, Q[0] + R[0], Q[0] + R[0] + R[2], Q[0] + Q[2]], v = [Q[1] + 0, Q[1] + R[1], Q[1] + R[1] + R[3], Q[1] + Q[3]], x = [R[0], R[2], Q[2] - R[0] - R[2]], R = [R[1], R[3], Q[3] - R[1] - R[3]], O = [x[0] * N | 0, O - ((x[0] + x[2]) * N | 0), x[2] * N | 0], S = [R[0] * N | 0, J - ((R[0] + R[2]) * N | 0), R[2] * N | 0], U = [0, O[0], O[0] + O[1]], V = [0, S[0], S[0] + S[1]], W, Ba, Q = 0; 3 > Q; Q++)
                                             for (N = 0; 3 > N; N++) p = Y[3 * Q + N], J = p.style, W = 0 != x[N] ? O[N] / x[N] : 0, Ba = 0 != R[Q] ? S[Q] / R[Q] : 0, p.imgurl != n && (p.imgurl = n, J.backgroundImage = n), p = d.mac && d.firefox ? T.devicePixelRatio : 1, J[Qd] = (X * W * p | 0) / p + "px " + (g * Ba * p | 0) / p + "px", J.backgroundPosition = (-u[N] * W * p | 0) / p + "px " + (-v[Q] * Ba * p | 0) / p + "px", J.left = U[N] + "px", J.top = V[Q] + "px", J.width = O[N] + "px", J.height = S[Q] + "px";
                                         t.style.background = "none"
@@ -9428,10 +9428,10 @@ function embedhtml5(Wd, Lc) {
                                 c.jsplugin && c.jsplugin.onresize && (c._pxw != c.imagewidth || c._pxh != c.imageheight || c.forceresize) && (t = [c.imagewidth, c.imageheight], c.imagewidth = 0 < c._pxw ? c._pxw : 1, c.imageheight = 0 < c._pxh ? c._pxh : 1, c.forceresize = !1, !0 === c.jsplugin.onresize(c._pxw, c._pxh) && (c.imagewidth = t[0], c.imageheight = t[1]));
                                 n = "";
                                 X = t = 0;
-                                0 == k && (k = E.ex * -z, g = E.ey * -C, t = E.ax * e + E.asx * G + k, X = E.ay * f + E.asy * I + g, c.pixelx = (t + w) / b, c.pixely = (X + H) / b, t -= ea[3], X -= ea[0], 0 == c.accuracy && (t = bc(t), X = bc(X)), b = z / 2 + k, e = C / 2 + g, l && (f = l = 1, C = c.imagewidth / 2, z = c.imageheight / 2, I = G = 0, A && 0 == A.DATA.scalechildren && (l /= A.pixelwidth / A.imagewidth, f /= A.pixelheight / A.imageheight, G = -k * (1 - l), I = -g * (1 - f)), n = _[78] + (G - C) + "px," + (I - z) + _[418] + h * l + "," + B * f + _[345] + C + "px," + z + "px) ", 0 != h && (b /= h, w /= h), 0 != B && (e /= B, H /= B)), n = _[78] + t + "px," + X + "px) " + n + _[78] + -b + "px," + -e + _[370] + F.rotate + _[262] + (b + w) + "px," + (e + H) + "px)", yc && 2 > xc && !0 !== d.opera ? n = _[194] + n : d.androidstock && (n = _[217] + n), qb ? a.style[qb] = n : (a.style.left = t + "px", a.style.top = X + "px"), A = F.visible && y ? "" : "none", A != a.style.display && (a.style.display = A));
+                                0 == k && (k = E.ex * -z, g = E.ey * -C, t = E.ax * e + E.asx * G + k, X = E.ay * f + E.asy * I + g, c.pixelx = (t + w) / b, c.pixely = (X + H) / b, t -= ea[3], X -= ea[0], 0 == c.accuracy && (t = bc(t), X = bc(X)), b = z / 2 + k, e = C / 2 + g, l && (f = l = 1, C = c.imagewidth / 2, z = c.imageheight / 2, I = G = 0, A && 0 == A.DATA.scalechildren && (l /= A.pixelwidth / A.imagewidth, f /= A.pixelheight / A.imageheight, G = -k * (1 - l), I = -g * (1 - f)), n = "translate(" + (G - C) + "px," + (I - z) + "px) scale(" + h * l + "," + B * f + ") translate(" + C + "px," + z + "px) ", 0 != h && (b /= h, w /= h), 0 != B && (e /= B, H /= B)), n = "translate(" + t + "px," + X + "px) " + n + "translate(" + -b + "px," + -e + "px) rotate(" + F.rotate + "deg) translate(" + (b + w) + "px," + (e + H) + "px)", yc && 2 > xc && !0 !== d.opera ? n = "translateZ(+1000000000000px) " + n : d.androidstock && (n = "translateZ(+1000px) " + n), qb ? a.style[qb] = n : (a.style.left = t + "px", a.style.top = X + "px"), A = F.visible && y ? "" : "none", A != a.style.display && (a.style.display = A));
                                 if (r || P) {
                                     if (a = c._childs)
-                                        for (A = a.length, r = 0; r < A; r++) a[r].updatepos(c.getfullpath() + _[527] + r + "]");
+                                        for (A = a.length, r = 0; r < A; r++) a[r].updatepos(c.getfullpath() + ".child[" + r + "]");
                                     P = !1
                                 }
                             }
@@ -9464,7 +9464,7 @@ function embedhtml5(Wd, Lc) {
                 }
 
                 function f(a) {
-                    a && 0 == a.indexOf(_[95]) && ((a = S("data[" + a.slice(5) + _[79])) || (a = ""));
+                    a && 0 == a.indexOf("data:") && ((a = S("data[" + a.slice(5) + "].content")) || (a = ""));
                     return a
                 }
 
@@ -9475,7 +9475,7 @@ function embedhtml5(Wd, Lc) {
                 }
 
                 function k(a) {
-                    a && (a.style.left = _[143], a.style.visibility = _[7], V.viewerlayer.appendChild(a), a.childNodes[0].getBoundingClientRect())
+                    a && (a.style.left = "-10000px", a.style.visibility = "hidden", V.viewerlayer.appendChild(a), a.childNodes[0].getBoundingClientRect())
                 }
 
                 function m(a) {
@@ -9541,36 +9541,36 @@ function embedhtml5(Wd, Lc) {
                                 var E = Qa(w[h - 1]),
                                     q = w[h],
                                     D = "p" == G(E) ? "div" : E,
-                                    e = e.split("<" + E).join("<" + D + _[495] + q + "' "),
+                                    e = e.split("<" + E).join("<" + D + " style='" + q + "' "),
                                     e = e.split("</" + E + ">").join("</" + D + ">");
                                 B.push(w[h])
                             }
                             h = ""
                         }
-                        e = _[223] + I[0] + "px " + I[1] + "px " + I[2] + "px " + I[3] + "px;" + h + "'>" + e + _[88];
-                        1 == A.vcenter && 0 == b && (e = "<table style='width:100%;height:100%;border-collapse:collapse;text-decoration:inherit;'><tr style='vertical-align:middle;'><td style='padding:0;'>" + e + _[234]);
-                        e = e.split("<p").join(_[173]);
-                        e = e.split("</p>").join(_[88]);
-                        h = _[235];
-                        if (1 == a || 0 == la(A.wordwrap)) h += _[226];
-                        0 == b && (h += _[358]);
+                        e = "<div style='margin:" + I[0] + "px " + I[1] + "px " + I[2] + "px " + I[3] + "px;" + h + "'>" + e + "</div>";
+                        1 == A.vcenter && 0 == b && (e = "<table style='width:100%;height:100%;border-collapse:collapse;text-decoration:inherit;'><tr style='vertical-align:middle;'><td style='padding:0;'>" + e + "</td></tr></table>");
+                        e = e.split("<p").join("<div style='padding-top:2.5px; padding-bottom:5px;' ");
+                        e = e.split("</p>").join("</div>");
+                        h = "position:absolute;";
+                        if (1 == a || 0 == la(A.wordwrap)) h += "white-space:nowrap;";
+                        0 == b && (h += "height:100%;");
                         C = 1;
-                        l && 0 < x ? (C = x * ba, h += _[521] + Math.ceil(x) + _[209]) : C = 0;
-                        0 == a && (h += _[584] + r.imagewidth + _[224]);
+                        l && 0 < x ? (C = x * ba, h += "border:" + Math.ceil(x) + "px solid transparent;") : C = 0;
+                        0 == a && (h += "width:" + r.imagewidth + "px;overflow:hidden;");
                         e = unescape(e);
-                        e = '<div style="' + h + '">' + e + _[88];
+                        e = '<div style="' + h + '">' + e + "</div>";
                         J && J.parentNode == r.sprite && (N = J, J = null);
-                        null == J && (J = Fa(), O = J.style, la(A.selectable) && (O.webkitUserSelect = O.MozUserSelect = O.msUserSelect = O.oUserSelect = O.userSelect = "text", O.cursor = "text"), O.position = _[0], O.left = O.top = -C + "px", _[5] == r._type && 1 == r.DATA.distorted ? (O.width = "100%", O.height = "100%", O[qb] = "") : (O[Tc] = "0 0", O[qb] = _[151] + ba + ")", O.width = 100 / ba + "%", O.height = 100 / ba + "%"), O.fontSize = "12px", O.fontFamily = "Arial", O.lineHeight = _[58]);
+                        null == J && (J = Fa(), O = J.style, la(A.selectable) && (O.webkitUserSelect = O.MozUserSelect = O.msUserSelect = O.oUserSelect = O.userSelect = "text", O.cursor = "text"), O.position = "absolute", O.left = O.top = -C + "px", "hotspot" == r._type && 1 == r.DATA.distorted ? (O.width = "100%", O.height = "100%", O[qb] = "") : (O[Tc] = "0 0", O[qb] = "scale(" + ba + ")", O.width = 100 / ba + "%", O.height = 100 / ba + "%"), O.fontSize = "12px", O.fontFamily = "Arial", O.lineHeight = "normal");
                         J.innerHTML = e;
                         g();
                         a = r.interactivecontent;
                         if (b = J.getElementsByTagName("a"))
                             if (e = b.length, 0 < e)
                                 for (a = !0, h = 0; h < e; h++)
-                                    if (l = b[h]) x = "" + l.href, _[587] == x.toLowerCase().slice(0, 6) && (l.href = _[183] + V.viewerlayer.id + _[452] + x.slice(6).split("'").join('"') + "','" + r.getfullpath() + "');"), d.touch && m(l);
-                        0 < J.getElementsByTagName(_[590]).length && (a = !0);
+                                    if (l = b[h]) x = "" + l.href, "event:" == x.toLowerCase().slice(0, 6) && (l.href = "javascript:document.getElementById('" + V.viewerlayer.id + "').call('" + x.slice(6).split("'").join('"') + "','" + r.getfullpath() + "');"), d.touch && m(l);
+                        0 < J.getElementsByTagName("iframe").length && (a = !0);
                         J.style.pointerEvents = a ? "auto" : "none";
-                        _[5] == r._type && (r.forceupdate = !0);
+                        "hotspot" == r._type && (r.forceupdate = !0);
                         k(J);
                         y = !1;
                         r.loaded = !0;
@@ -9609,8 +9609,8 @@ function embedhtml5(Wd, Lc) {
                             }
                         }
                         if (0 < g) {
-                            if (d = r.DATA.enabled, r.DATA.enabled = !d, r.enabled = d, O.top = O.left = -C + "px", y = !0, N && N.parentNode == r.sprite ? (O.visibility = _[16], r.sprite.replaceChild(J, N), N = null) : (e(N), N = null, O.visibility = _[16], r.sprite.appendChild(J)), 0 != a || 0 != b)
-                                if (f = a ? Math.round(f) : r.imagewidth, g = b ? Math.round(g) : r.imageheight, f != r.DATA.width || g != r.DATA.height) a && b ? r.registersize(f, g) : a ? r.registersize(f, null) : b && r.registersize(null, g), r.updatepluginpos(_[453]), _[5] == r._type && Nd(!0, r.index), r.onautosized && Z.callaction(r.onautosized, r, !0)
+                            if (d = r.DATA.enabled, r.DATA.enabled = !d, r.enabled = d, O.top = O.left = -C + "px", y = !0, N && N.parentNode == r.sprite ? (O.visibility = "visible", r.sprite.replaceChild(J, N), N = null) : (e(N), N = null, O.visibility = "visible", r.sprite.appendChild(J)), 0 != a || 0 != b)
+                                if (f = a ? Math.round(f) : r.imagewidth, g = b ? Math.round(g) : r.imageheight, f != r.DATA.width || g != r.DATA.height) a && b ? r.registersize(f, g) : a ? r.registersize(f, null) : b && r.registersize(null, g), r.updatepluginpos("textfield"), "hotspot" == r._type && Nd(!0, r.index), r.onautosized && Z.callaction(r.onautosized, r, !0)
                         } else c++, 3 > c || hb < F + 1 ? null == z && (z = setTimeout(H, 20)) : (N && N.parentNode == r.sprite && (r.sprite.replaceChild(J, N), N = null), r.DATA.height = 0);
                         h = !1
                     }
@@ -9640,59 +9640,59 @@ function embedhtml5(Wd, Lc) {
                     delete r.html;
                     delete r.css;
                     r._istextfield = !0;
-                    r.ishotspot && _[25] != r.renderer && (r.renderer = _[25], r.processUpdatesHS(131072), r.haschanged_flags &= -131073);
+                    r.ishotspot && "css3d" != r.renderer && (r.renderer = "css3d", r.processUpdatesHS(131072), r.haschanged_flags &= -131073);
                     r.accuracy = 0;
-                    r.registerattribute(_[456], "auto", function(a) {
+                    r.registerattribute("autowidth", "auto", function(a) {
                         u = "auto" == G(a) ? 1 : 2 * la(a);
                         b(1)
                     }, function() {
-                        return 1 == u ? "auto" : 2 == u ? "true" : _[26]
+                        return 1 == u ? "auto" : 2 == u ? "true" : "false"
                     });
-                    r.registerattribute(_[393], "auto", function(a) {
+                    r.registerattribute("autoheight", "auto", function(a) {
                         n = "auto" == G(a) ? 1 : 2 * la(a);
                         b(1)
                     }, function() {
-                        return 1 == n ? "auto" : 2 == n ? "true" : _[26]
+                        return 1 == n ? "auto" : 2 == n ? "true" : "false"
                     });
-                    r.registerattribute(_[236], !1);
-                    a(1, _[512], !1);
-                    a(1, _[55], "2", function(a, c) {
+                    r.registerattribute("interactivecontent", !1);
+                    a(1, "vcenter", !1);
+                    a(1, "padding", "2", function(a, c) {
                         nc(c, 1, " ", I);
                         b(1)
                     });
-                    a(2, _[129], !0);
-                    a(2, _[264], 1);
-                    a(2, _[268], 16777215);
-                    a(1, _[86], !1);
-                    a(1, _[125], 1);
-                    a(2, _[127], 1);
-                    a(2, _[123], 0);
-                    a(2, _[460], "0", function(a, c) {
+                    a(2, "background", !0);
+                    a(2, "backgroundalpha", 1);
+                    a(2, "backgroundcolor", 16777215);
+                    a(1, "border", !1);
+                    a(1, "borderwidth", 1);
+                    a(2, "borderalpha", 1);
+                    a(2, "bordercolor", 0);
+                    a(2, "roundedge", "0", function(a, c) {
                         nc(c, 1, " ", B);
                         b(2)
                     });
-                    a(2, _[598], 0);
-                    a(2, _[377], 4);
-                    a(2, _[374], 45);
-                    a(2, _[384], 0);
-                    a(2, _[386], 1);
-                    a(2, _[400], 0);
-                    a(2, _[276], 4);
-                    a(2, _[286], 45);
-                    a(2, _[283], 0);
-                    a(2, _[275], 1);
-                    a(1, _[412], !1);
-                    a(1, _[487], !0);
-                    a(1, _[556], "");
+                    a(2, "shadow", 0);
+                    a(2, "shadowrange", 4);
+                    a(2, "shadowangle", 45);
+                    a(2, "shadowcolor", 0);
+                    a(2, "shadowalpha", 1);
+                    a(2, "textshadow", 0);
+                    a(2, "textshadowrange", 4);
+                    a(2, "textshadowangle", 45);
+                    a(2, "textshadowcolor", 0);
+                    a(2, "textshadowalpha", 1);
+                    a(1, "selectable", !1);
+                    a(1, "wordwrap", !0);
+                    a(1, "effect", "");
                     r.registerattribute("blur", 0);
-                    r.registerattribute(_[482], 0);
-                    r.registerattribute(_[479], null, function(a) {
+                    r.registerattribute("textblur", 0);
+                    r.registerattribute("autosize", null, function(a) {
                         null != a && "" != a && "none" != ("" + a).toLowerCase() && (n = 2, b(1))
                     }, function() {
-                        return 2 == n ? _[85] : "none"
+                        return 2 == n ? "center" : "none"
                     });
                     0 != u && 0 != n || r.registercontentsize(400, 300);
-                    r.sprite && (r.sprite.style.color = _[38], r.sprite.style[_[67]] = "none", r.sprite.style.pointerEvents = "none");
+                    r.sprite && (r.sprite.style.color = "#000000", r.sprite.style["-webkit-text-size-adjust"] = "none", r.sprite.style.pointerEvents = "none");
                     a(1, "html", c ? c : "");
                     a(1, "css", d ? d : "")
                 };
@@ -9701,7 +9701,7 @@ function embedhtml5(Wd, Lc) {
                     r = p = z = O = J = N = null
                 };
                 this.onvisibilitychanged = function(a) {
-                    a && _[5] == r._type && (r.forceupdate = !0);
+                    a && "hotspot" == r._type && (r.forceupdate = !0);
                     return !1
                 };
                 this.onresize = function(a, b) {
@@ -9711,7 +9711,7 @@ function embedhtml5(Wd, Lc) {
                         var d = 2 == u || 1 == u && 0 == r.haveUserWidth(),
                             e = 2 == n || 1 == n && 0 == r.haveUserHeight();
                         r.registercontentsize(a, b);
-                        J && (_[5] != r._type || 1 != r.DATA.distorted ? (O[qb] = _[151] + ba + ")", O.width = 100 / ba + "%", O.height = 100 / ba + "%") : (O[qb] = "", O.width = "100%", O.height = "100%"), y && (O.left = O.top = -C + "px"), 0 == d && (J.childNodes[0].style.width = a + "px"), 0 == e && (J.childNodes[0].style.height = b + "px"), d || e ? (y = !1, r.sprite && (d && (r.sprite.style.width = 0), e && (r.sprite.style.height = 0)), c = 0, F = hb, null == z && (z = setTimeout(H, 10))) : (0 == d && (O.width = a + 2 * C + "px"), 0 == e && (O.height = b + "px")))
+                        J && ("hotspot" != r._type || 1 != r.DATA.distorted ? (O[qb] = "scale(" + ba + ")", O.width = 100 / ba + "%", O.height = 100 / ba + "%") : (O[qb] = "", O.width = "100%", O.height = "100%"), y && (O.left = O.top = -C + "px"), 0 == d && (J.childNodes[0].style.width = a + "px"), 0 == e && (J.childNodes[0].style.height = b + "px"), d || e ? (y = !1, r.sprite && (d && (r.sprite.style.width = 0), e && (r.sprite.style.height = 0)), c = 0, F = hb, null == z && (z = setTimeout(H, 10))) : (0 == d && (O.width = a + 2 * C + "px"), 0 == e && (O.height = b + "px")))
                     }
                     return !1
                 };
@@ -9722,7 +9722,7 @@ function embedhtml5(Wd, Lc) {
                 function a() {
                     var a = G(l.renderer),
                         f = l.webGL,
-                        f = _[25] == a ? !1 : d.webgl;
+                        f = "css3d" == a ? !1 : d.webgl;
                     if (l.webGL = f) {
                         if (b.sprite) {
                             try {
@@ -9736,13 +9736,13 @@ function embedhtml5(Wd, Lc) {
                 var b = this;
                 b.prototype = Qb;
                 this.prototype.call(this);
-                b._type = _[5];
+                b._type = "hotspot";
                 b.ishotspot = !0;
                 var l = b.DATA;
                 l.webGL = d.webgl;
                 l.mx_RR = Ka();
-                b.createVars([_[476], l.webGL ? _[65] : _[25], 131072, "ath", 0, 8, "atv", 0, 8, "zoom", !1, 1048576, _[433], !1, 1048576, _[150], "", 8, "depth", 1E3, 2048, _[572], 0, 8, "rx", 0, 262144, "ry", 0, 262144, "rz", 0, 262144, _[267], !1, 262144, "tx", 0, 524288, "ty", 0, 524288, "tz", 0, 524288]);
-                b.edge = _[85];
+                b.createVars(["renderer", l.webGL ? "webgl" : "css3d", 131072, "ath", 0, 8, "atv", 0, 8, "zoom", !1, 1048576, "distorted", !1, 1048576, "stereo", "", 8, "depth", 1E3, 2048, "flying", 0, 8, "rx", 0, 262144, "ry", 0, 262144, "rz", 0, 262144, "inverserotation", !1, 262144, "tx", 0, 524288, "ty", 0, 524288, "tz", 0, 524288]);
+                b.edge = "center";
                 b.accuracy = 1;
                 b.scaleflying = !0;
                 b.zorder2 = 0;
@@ -9753,7 +9753,7 @@ function embedhtml5(Wd, Lc) {
                 var f = b.create;
                 b.create = function() {
                     f();
-                    b.createVars([_[142], b.polyline ? la(b.polyline) : !1, 2097152, _[430], b.fillcolor ? Number(b.fillcolor) : 11184810, 2097152, _[428], b.fillalpha ? Number(b.fillalpha) : .5, 2097152, _[125], b.borderwidth ? Number(b.borderwidth) : 3, 2097152, _[123], b.bordercolor ? Number(b.bordercolor) : 11184810, 2097152, _[127], b.borderalpha ? Number(b.borderalpha) : 1, 2097152]);
+                    b.createVars(["polyline", b.polyline ? la(b.polyline) : !1, 2097152, "fillcolor", b.fillcolor ? Number(b.fillcolor) : 11184810, 2097152, "fillalpha", b.fillalpha ? Number(b.fillalpha) : .5, 2097152, "borderwidth", b.borderwidth ? Number(b.borderwidth) : 3, 2097152, "bordercolor", b.bordercolor ? Number(b.bordercolor) : 11184810, 2097152, "borderalpha", b.borderalpha ? Number(b.borderalpha) : 1, 2097152]);
                     a()
                 };
                 b.processUpdatesHS = function() {
@@ -9801,8 +9801,8 @@ function embedhtml5(Wd, Lc) {
                 this.fullscreen = d.fullscreensupport;
                 this.touch = this.versioninfo = !0;
                 this.customstyle = null;
-                this.enterfs = _[421];
-                this.exitfs = _[288];
+                this.enterfs = "ȫ��";
+                this.exitfs = "Exit Fullscreen";
                 this.item = new ub(function() {
                     this.visible = this.enabled = !0;
                     this.caption = null;
@@ -9817,14 +9817,14 @@ function embedhtml5(Wd, Lc) {
                     l = 0;
                     d.isrotating = !0;
                     d.ispaused = !1;
-                    ya(_[242])
+                    ya("onautorotatestart")
                 }
 
                 function b() {
                     d.currentmovingspeed = 0;
                     d.isrotating = !1;
                     d.ispaused = !1;
-                    ya(_[248])
+                    ya("onautorotatestop")
                 }
                 var d = this;
                 d.enabled = !1;
@@ -9856,14 +9856,14 @@ function embedhtml5(Wd, Lc) {
                     d.ispaused = !1
                 };
                 d.interrupt = function() {
-                    bb(_[219])
+                    bb("autorotate.interrupt")
                 };
                 d.checkIdletime = function(w, G) {
                     var r = d.enabled;
-                    g != r && (g = r, d.ispaused = !1, ya(_[231]));
+                    g != r && (g = r, d.ispaused = !1, ya("onautorotatechange"));
                     if (r) {
                         if (!d.isrotating) {
-                            if (d.ispaused) return bb(_[222]), !1;
+                            if (d.ispaused) return bb("autorotate.ispaused"), !1;
                             (w - G) / 1E3 > d.waittime && (e = w, a())
                         }
                         if (d.isrotating)
@@ -9883,7 +9883,7 @@ function embedhtml5(Wd, Lc) {
                                 d.currentmovingspeed = y;
                                 A += v * y;
                                 if (0 < y && 0 > k || 0 > y && 0 < k) k = y, l++;
-                                if (360 <= Math.abs(A - f) || 2 == l && (0 < y ? 0 < A : 0 > A)) f = A, l = 0, ya(_[220]);
+                                if (360 <= Math.abs(A - f) || 2 == l && (0 < y ? 0 < A : 0 > A)) f = A, l = 0, ya("onautorotateoneround");
                                 v = Math.abs(v * y);
                                 t._hlookat = A;
                                 A = parseFloat(d.horizon);
@@ -9926,7 +9926,7 @@ function embedhtml5(Wd, Lc) {
         oc.init = function(a) {
             oc.so = a;
             d.runDetection(a);
-            if (d.css3d || d.webgl) qb = d.browser.css.transform, ze = qb + "Style", Tc = qb + _[92];
+            if (d.css3d || d.webgl) qb = d.browser.css.transform, ze = qb + "Style", Tc = qb + "Origin";
             Qd = d.browser.css.backgroundsize;
             Sb = d.browser.css.boxshadow;
             var b = 0;
@@ -9939,27 +9939,27 @@ function embedhtml5(Wd, Lc) {
             da.getMousePos = V.getMousePos;
             ja.htmltarget = V.htmltarget;
             ja.viewerlayer = V.viewerlayer;
-            va(1, _[149] + l.version + _[470] + l.build + (l.debugmode ? _[523] : ")"));
+            va(1, "krpano " + l.version + " (build " + l.build + (l.debugmode ? " debug)" : ")"));
             b = !0;
-            a.html5 && 0 <= G(a.html5).indexOf(_[25]) && (b = !1);
+            a.html5 && 0 <= G(a.html5).indexOf("css3d") && (b = !1);
             fb.setup(d.webgl && b ? 2 : 1);
             va(1, d.infoString + fb.infoString);
             a && a.basepath && "" != a.basepath && (na.swfpath = a.basepath);
             V.onResize(null);
             eb.registerControls(V.controllayer);
             Yd.start(Gf);
-            if (!d.css3d && !d.webgl && 0 > G(a.html5).indexOf(_[580])) cb(_[166]);
+            if (!d.css3d && !d.webgl && 0 > G(a.html5).indexOf("always")) cb("A HTML5 Browser with WebGL or CSS-3D-Transforms support is required!");
             else {
                 var x, f, e = [],
                     b = !0,
                     k = 0,
                     m = [],
                     g = "360etours.net clickcwb.com.br afu360.com webvr.net webvr.cn aero-scan.ru shambalaland.com littlstar.com d3uo9a4kiyu5sk.cloudfront.net vrvideo.com lapentor.com roundme.com".split(" "),
-                    w = _[162].split(" "),
+                    w = "panofree freeuser figgler teameat eatusebuy no-mail chen44 .lestra. gfreidinger an37almk jornmagnus ihrinternetservice alexandermett mail@mail.ru hiteks.fr lilyandtommy roundme".split(" "),
                     H = null,
                     r = null,
                     A = Kb(100),
-                    p = G(_[171]).split(";"),
+                    p = G("kr;user;mail=;domain;file:;id;chen4490;teameat;figgler").split(";"),
                     v, u;
                 if (null != Lc && "" != Lc) {
                     var n = na.b64u8(Lc),
@@ -9977,7 +9977,7 @@ function embedhtml5(Wd, Lc) {
                             var C = y[v],
                                 z = C.length;
                             for (u = 0; u < z; u++) B += C.charCodeAt(u) & 255;
-                            if (!(4 > z) && (u = C.slice(3), "" != u)) switch (_[187].indexOf(C.slice(0, 3)) / 3 | 0) {
+                            if (!(4 > z) && (u = C.slice(3), "" != u)) switch ("xx=lz=rg=ma=dm=ed=eu=ek=rd=pt=id=".indexOf(C.slice(0, 3)) / 3 | 0) {
                                 case 1:
                                     La = parseInt(u);
                                     b = 0 == (La & 1);
@@ -10023,11 +10023,11 @@ function embedhtml5(Wd, Lc) {
                     B != parseInt(I) && (k = 1);
                     v = ca.location;
                     v = G(v.search || v.hash);
-                    if (0 < v.indexOf(_[112])) {
-                        cb(e.join(", "), G(_[112]).toUpperCase());
+                    if (0 < v.indexOf("showlicenseinfo")) {
+                        cb(e.join(", "), G("showlicenseinfo").toUpperCase());
                         return
                     }
-                    0 < v.indexOf(_[271]) && (null == a.vars && (a.vars = {}), a.vars.consolelog = !0, La = La & 1 | 14);
+                    0 < v.indexOf("consolelog=true") && (null == a.vars && (a.vars = {}), a.vars.consolelog = !0, La = La & 1 | 14);
                     y = null
                 }
                 Sc = e = G(ca[p[3]]);
@@ -10036,8 +10036,8 @@ function embedhtml5(Wd, Lc) {
                 } catch (h) {
                     v = "" + h.stack, y = v.indexOf("://"), 0 < y && (y += 3, n = v.indexOf("/", y), v = v.slice(y, n), n = v.indexOf(":"), 0 < n && (v = v.slice(0, n)), Sc = v)
                 }
-                0 == e.indexOf(_[601]) && (e = e.slice(4));
-                p = "" == e || _[444] == e || _[445] == e || 0 == e.indexOf(p[4]);
+                0 == e.indexOf("www.") && (e = e.slice(4));
+                p = "" == e || "localhost" == e || "127.0.0.1" == e || 0 == e.indexOf(p[4]);
                 d.browser.domain = p ? null : e;
                 if (0 == (La & 2) && p) k = 3;
                 else if (!p) {
@@ -10045,7 +10045,7 @@ function embedhtml5(Wd, Lc) {
                     0 > e.indexOf(".", v) && (v = 0);
                     p = e;
                     e = e.slice(v);
-                    0 == e.indexOf(_[547]) && _[128] != e && (k = 2);
+                    0 == e.indexOf("krpano.") && "krpano.com" != e && (k = 2);
                     for (v = 0; v < g.length; v++)
                         if (g[v] == e) {
                             k = 2;
@@ -10060,13 +10060,13 @@ function embedhtml5(Wd, Lc) {
                 }
                 if (x || f)
                     for (f = ("." + x + "." + f).toLowerCase(), v = 0; v < w.length; v++) 0 <= f.indexOf(w[v]) && (k = 1);
-                if (null != H && new Date > H) cb(_[291]), null != r && setTimeout(function() {
+                if (null != H && new Date > H) cb("LICENSE EXPIRED"), null != r && setTimeout(function() {
                     T.location = r
                 }, 500);
-                else if (0 < k) cb(_[120] + ["", _[282], _[240]][k - 1]);
+                else if (0 < k) cb("LICENSE ERROR" + ["", " - WRONG DOMAIN", " - NO LOCAL USAGE"][k - 1]);
                 else {
                     Va && (La &= -129, va(1, Va[0]));
-                    0 == b && (x ? va(1, _[294] + x) : b = !0);
+                    0 == b && (x ? va(1, "Registered to: " + x) : b = !0);
                     (b || 0 == (La & 1)) && V.log(A);
                     x = null;
                     a.xml && (x = a.xml);
@@ -10075,7 +10075,7 @@ function embedhtml5(Wd, Lc) {
                     La & 16 && (l[Pb[0]] = l[Pb[1]] = !1);
                     f = V.viewerlayer;
                     La & 8 ? (f.get = Mb(S), f.set = Mb(Y), f.call = Qe) : (f.set = function() {
-                        va(2, _[191])
+                        va(2, "Javascript Interface disabled!")
                     }, f.get = Va ? Mb(S) : f.set, f.call = Mb(Z.SAcall));
                     f.screentosphere = t.screentosphere;
                     f.spheretoscreen = t.spheretoscreen;
@@ -10091,7 +10091,7 @@ function embedhtml5(Wd, Lc) {
 
     var _ = ["absolute", "string", "mouseup", "right", "bottom", "hotspot", "default", "hidden", "mousedown", "mousemove", "pointer", "action", "pointerover", "transparent", "pointerout", "function", "visible", "height", "moveto", "mouse", "sans-serif", "mouseover", "container", "mouseout", "color", "css3d", "false", "translateZ(+2000000000000px)", " - xml parsing failed!", "visibilitychange", "Courier New", "contextmenu", "parsererror", "onmouseup", "px solid ", "cylinder", "text/xml", "position", "#000000", "onclick", "cursor", "error", "-webkit-tap-highlight-color", "Invalid expression", "MSPointerOver", "MSPointerOut", "onmousedown", "touchstart", "touchmove", "cubestrip", "touchend", "pagehide", "fontSize", "boolean", "#FFFFFF", "padding", "mobile", "krpano", "normal", "linear", "sphere", "iphone", "plugin", "layer", "width", "webgl", "align", "-webkit-text-size-adjust", "sh,ch,aa,mx,ot,tm", "webkitUserSelect", "mozUserSelect", "image.level[", "translate3D(", "onmousewheel", "<container>", "easeoutquad", "userSelect", "fontFamily", "translate(", "].content", "onresize", "fisheye", "display", "keydown", "lefttop", "center", "border", "object", "</div>", "webkit", "LOOKTO", "scene[", "Origin", "vx,tx", "abort", "data:", "image", "keyup", "1px solid rgba(0,255,0,0.5)", "http://www.w3.org/2000/svg", "webkitvisibilitychange", " - loading failed! (", "mozvisibilitychange", "msvisibilitychange", "experimental-webgl", "]]]]\\x3e<![CDATA[>", "orientationchange", "uniform vec3 cc;", "deg) translateZ(", "Unknown action: ", "MSGestureChange", "text/javascript", "showlicenseinfo", "get:calc:data:", "MSGestureStart", "DOMMouseScroll", "onloadcomplete", "MSInertiaStart", "WebGL-Error: ", "opacity 0.25s", "LICENSE ERROR", "px) rotateZ(", "MSGestureEnd", "bordercolor", "preserve-3d", "borderwidth", "scene.count", "borderalpha", "krpano.com", "background", "mousewheel", "fullscreen", "undefined", "underline", "moz-webgl", "webkit-3d", "</krpano>", "marginTop", "relative", "<krpano>", "rotateY(", "offrange", "polyline", "-10000px", "include", "#0FFF00", "plugin[", "lambert", "onkeyup", "krpano ", "stereo", "scale(", "resize", " edge/", "opaque", "Chrome", "iPhone", "tablet", "layer[", "scroll", "parent", "&nbsp;", "panofree freeuser figgler teameat eatusebuy no-mail chen44 .lestra. gfreidinger an37almk jornmagnus ihrinternetservice alexandermett mail@mail.ru hiteks.fr lilyandtommy roundme", "There is already a blocking lookto() action, the current call will be skipped!", "gl_FragColor=vec4(texture2D(sm,(tx-ct)/mix(1.0,zf,1.0-aa)+ct).rgb,aa);", "gl_FragColor=vec4(mix(texture2D(sm,tx).rgb,cc,2.0*(1.0-aa)),aa*2.0);", "A HTML5 Browser with WebGL or CSS-3D-Transforms support is required!", " - invalid name! Names need to begin with an alphabetic character!", "abs acos asin atan ceil cos exp floor log round sin sqrt tan", "gl_FragColor=vec4(texture2D(sm,tx).rgb+(1.0-aa)*cc,aa);", "uniform sampler2D sm;varying vec2 tx;uniform float aa;", "kr;user;mail=;domain;file:;id;chen4490;teameat;figgler", "delayedcall(interval_%1,%2,setinterval(%1,%2,%3);%3);", "<div style='padding-top:2.5px; padding-bottom:5px;' ", "uniform vec2 ap;uniform float zf;uniform float bl;", "if(%1,%2;delayedcall(0,asyncloop(%1,%2,%3));,%3);", "there is already a html element with this id: ", "<div style='padding:8px; text-align:center;'>", "-webkit-radial-gradient(circle, white, black)", "gl_FragColor=vec4(texture2D(sm,tx).rgb,aa);", "", "if(%1,%2,delayedcall(0,callwhen(%1,%2)));", "there is no html element with this id: ", "javascript:document.getElementById('", "left front right back up down cube", "uniform vec3 fp;uniform float bl;", "uniform vec2 ct;uniform float zf;", "xx=lz=rg=ma=dm=ed=eu=ek=rd=pt=id=", "c.a*=1.0-length(mod(tt,1.0)-tt);", "1px solid rgba(255,255,255,0.5)", "color:#FF0000;font-weight:bold;", "Javascript Interface disabled!", " - loading or parsing failed!", "1px solid rgba(255,255,0,0.5)", "translateZ(+1000000000000px) ", "No compatible pano image...", ".idlecheck.mouse.down+moved", "Calling deprecated action: ", "loading or parsing failed!", "' is not a krpano plugin!", "krpano embedding error: ", " (not a cubestrip image)", "precision mediump float;", "webkitRequestFullscreen", "architecturalonlymiddle", "webkitRequestFullScreen", "hotspot css3d distorted", "(-webkit-transform-3d)", " - invalid encryption!", "px solid transparent;", " skipped flash file: ", "preservedrawingbuffer", " - wrong encryption!", "hotspot css3d normal", " - style not found: ", "mozRequestFullScreen", "<span style='color:#", "translateZ(+1000px) ", "unlock viewing range", "autorotate.interrupt", "onautorotateoneround", "px,0px) translateY(", "autorotate.ispaused", "<div style='margin:", "px;overflow:hidden;", "xml parsing failed!", "white-space:nowrap;", "0px 0px 8px #FFFFFF", "addlayer/addplugin(", "msRequestFullscreen", "-webkit-box-shadow", "onautorotatechange", "-ms-overflow-style", "preview.striporder", "</td></tr></table>", "position:absolute;", "interactivecontent", "Internet Explorer", "distortionfovlink", "http://krpano.com", " - NO LOCAL USAGE", "onenterfullscreen", "onautorotatestart", "<krpano></krpano>", "WebkitPerspective", "Microsoft.XMLHTTP", "requestFullscreen", "onpreviewcomplete", "onautorotatestop", "__defineGetter__", "framebufferscale", "actions overflow", "FullscreenChange", "onexitfullscreen", " loading error: ", "layer.touchstart", "movetoaccelerate", "access permitted", "fullscreenchange", "rgba(0,0,0,0.01)", "px) perspective(", "__defineSetter__", "deg) translate(", "pano.mousewheel", "backgroundalpha", "4px 4px 0px 4px", "backgroundColor", "inverserotation", "backgroundcolor", "krpanoSWFObject", " <small>(build ", "consolelog=true", "mouseaccelerate", "0px 4px 4px 4px", "layer.mousedown", "textshadowalpha", "textshadowrange", "pano.multitouch", "pano.touchstart", "events.dispatch", "-moz-box-shadow", "ignoring image ", " - WRONG DOMAIN", "textshadowcolor", "caseinsensitive", "movetoyfriction", "textshadowangle", "Android Browser", "Exit Fullscreen", "1px solid white", "WebkitBoxShadow", "LICENSE EXPIRED", "able autorotate", "MSPointerCancel", "Registered to: ", "color:#333333;", "userviewchange", "translateZ(0) ", "backgroundSize", "movetofriction", "visiblePainted", "pointer-events", ")</small><br/>", "color:#007700;", "color:#AA7700;", "mouseyfriction", "Microsoft Edge", "pano.touchmove", "pointercancel", " FATAL ERROR:", "scalechildren", "deg) rotateZ(", "pointerEvents", "mobile safari", "onviewchanged", "MSPointerDown", "touchfriction", "MSPointerMove", "for(,%1,,%2);", "windows phone", "gesturechange", "return false;", "deg) rotateX(", "easeInOutSine", "#FFF 0px 0px ", "stereographic", "EventListener", "deg) rotateY(", "mousefriction", "HTML5/Desktop", "textfield.swf", " translate3D(", "paddingBottom", " not allowed!", "onxmlcomplete", "maskchildren", "&nbsp;</div>", "loading of '", "Amazon Silk ", "MozBoxShadow", "pano.mouseup", "perspective(", "paddingRight", "onremovepano", "removescenes", ") translate(", "dragfriction", "stroke-width", "</encrypted>", "layer.ondown", "hlookatrange", "keephotspots", "gesturestart", "vlookatrange", "image.tablet", "onviewchange", "image.mobile", "px) rotateX(", "height:100%;", "actioncaller", "preview.type", "easeincubic", "touchcancel", "<encrypted>", "perspective", "keepplugins", "versioninfo", "paddingLeft", "pointerdown", "MSPointerUp", "px) rotate(", "bgroundedge", "stageheight", "translateZ(", "shadowangle", "addhotspot(", "preview.url", "shadowrange", "easeInCubic", "pointermove", "movetospeed", "BlackBerry ", "easeoutsine", "setinterval", "shadowcolor", "onloaderror", "shadowalpha", "blackberry", "box-shadow", "rim tablet", "stagewidth", "%FIRSTXML%", "gestureend", "autoheight", "onnewscene", "FATALERROR", "keepscenes", "showerrors", "ondowncrop", "LIGHTBLEND", "textshadow", "onovercrop", "2016-09-09", "mousespeed", "handcursor", "stagescale", "px #FFFFFF", "yesontrue1", "1px solid ", "' failed: ", "COLORBLEND", "CURRENTXML", "selectable", "keepmoving", "the file '", "whiteSpace", " Simulator", "ignorekeep", "px) scale(", "paddingTop", "distortion", "全屏", "SLIDEBLEND", "layer.move", "javascript", "descending", "bgcapture", "textAlign", "fillalpha", "timertick", "fillcolor", "parsing '", "__swfpath", "distorted", "</center>", "frameloop", "onkeydown", "onnewpano", "autoalpha", "fullrange", "Viewer...", "interval_", "asyncloop", "].onstart", "localhost", "127.0.0.1", "keepimage", "encrypted", "mousetype", "transform", "boxShadow", "touchtype", "').call('", "textfield", "framerate", "' failed!", "autowidth", "<![CDATA[", "nopreview", "pointerup", "roundedge", "ZOOMBLEND", "useragent", " (Chrome)", "OPENBLEND", "pageshow", "HOTSPOTS", "keyboard", "bgborder", "bgshadow", " (build ", "pre-line", "overflow", "__fte1__", "0px 0px ", "</small>", "renderer", "<center>", "SAMSUNG ", "autosize", "Calling ", "distance", "textblur", "Panorama", "asyncfor", "callwhen", "layer.up", "wordwrap", "ap,zf,bl", "00000000", "breakall", "Firefox ", "1.19-pr7", "iemobile", "scale3D(", " style='", "<=>=!===", "panotour", "videourl", " - WebGL", " - CSS3D", "HTMLPATH", "FIRSTXML", "jsplugin", "keepview", "__fte2__", "</span> ", "keepbase", "keepall", "actions", "bglayer", "numeric", "vcenter", "SWFPATH", "BASEDIR", "preinit", "onstart", "preview", "WARNING", "current", "protect", "border:", "devices", " debug)", "BGLAYER", "webkit/", "Tablet ", ".child[", "polygon", "plugin:", "bgcolor", "Mobile ", "bgalpha", "fovtype", "lighter", "opacity", "action(", "trident", "android", "<small>", "Firefox", " - iOS:", "Android", "pannini", "action[", "stopall", "integer", "krpano.", "].value", "Chrome ", "Version", ".parent", "enabled", "50% 50%", "desktop", "remove", "effect", "origin", "Safari", "smooth", "Opera ", "_blank", "delete", "Mobile", "onidle", "switch", "Tablet", "zorder", "rotate", "points", " Build", "Gecko/", "flying", "style[", "lfrbud", "Webkit", "logkey", "LAYERS", "lookto", "image.", "always", "layers", "canvas", "stagey", "width:", "0FFF00", "AACCFF", "event:", "&apos;", "&quot;", "iframe", "FFFF00", "stagex", "]]\\x3e", "number", "blend(", "drag2d", "random", "shadow", "CriOS/", "stroke", "www."];
     Lc = "";
-    _ && _[132] != typeof krpanoJS && (new sd).init(Wd)
+    _ && "undefined" != typeof krpanoJS && (new sd).init(Wd)
 };
 
 function embedpanoJS(p) {
