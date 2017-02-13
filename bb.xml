@@ -1,7 +1,7 @@
 ﻿<krpano onstart="loadscene(stpeterssquare,null,MERGE);">
 
     <layer name="map" keep="true"
-           url="bingmaps.swf" alturl="./plugins/bingmaps.js"
+           url="bingmaps.swf" alturl="./plugins/leaflet.js"
            align="lefttop" x="0" y="0" width="30%" height="100%"
            key="AIzaSyD8zAwIBmvpNHY7oKkGD06qIiZ6OssapuM"
            maptype="satellite"

@@ -210,9 +210,10 @@ var krpanoplugin = function () {
             _viewRadarOBJECT = new viewRadarClass;
             updateSpots();      // 刷新每一个点
             scaleSpotArray();   // 缩放到所有点
-            initMapView();
+            initMapView();      // 初始化地图控件XML
+
             _has_init = true;
-            _krpanointerface.call(_pluginobject_xml.onmapready, _pluginobject_xml);
+            _krpanointerface.call(_pluginobject_xml.onmapready, _pluginobject_xml);                 // 调用地图载入完成事件
             Microsoft.Maps.Events.addHandler(_document_div_maps, "imagerychanged", changeMaps);     // 切换地图事件
             Microsoft.Maps.Events.addHandler(_document_div_maps, "viewchange", updateEnve)          // 地图范围刷新事件
         }
@@ -223,6 +224,7 @@ var krpanoplugin = function () {
     }
     // 鼠标滚动
     function mousewheelEvents(a) {
+        // 其实没什么用
         a && (_krpanointerface &&
         _krpanointerface.control &&
         true === _krpanointerface.control.disablewheel ?
@@ -233,19 +235,20 @@ var krpanoplugin = function () {
     }
     // 切换地图
     function changeMaps() {
+        // 获取新地图参数 > 切换地图 > 调用xml绑定的切换地图事件
         if (_document_div_maps) {
-            var a = _document_div_maps.getOptions(),
-              c = _document_div_maps.getImageryId(),
-              b = "satellite";
+            var map_options = _document_div_maps.getOptions(),
+              map_img_id = _document_div_maps.getImageryId(),
+              map_type_string = "satellite";
 
-            "Road" == c ?
-            b = "normal" :
-            "Aerial" == c &&
-            (b = 1 == a.labelOverlay ?
+            "Road" == map_img_id ?
+            map_type_string = "normal" :
+            "Aerial" == map_img_id &&
+            (map_type_string = 1 == map_options.labelOverlay ?
             "satellite" : "hybrid");
 
-            if (b != _mapTypeString) {
-                _mapTypeString = b;
+            if (map_type_string != _mapTypeString) {
+                _mapTypeString = map_type_string;
                 if (_mapTypeChangeOBJ) _mapTypeChangeOBJ.onMapTypeChanged(_mapTypeString);
                 _krpanointerface.call(_pluginobject_xml.onmaptypechanged, _pluginobject_xml)
             }
@@ -1875,8 +1878,6 @@ var krpanoplugin = function () {
             a.innerHTML = "._krp_bingmaps_pin_cursor{cursor:pointer!important;}";
             document.getElementsByTagName("head")[0].appendChild(a)
         };
-
-        debugger;
 
         _krpanointerface = krpanointerface;     // krpano.js 对象
         _pluginobject_xml = pluginobject;       // bingmaps.xml 对象
