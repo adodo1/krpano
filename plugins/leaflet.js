@@ -13,13 +13,14 @@ var krpanoplugin = function () {
     }
     // 设置视野范围标记SVG
     function setViewRadarSVG(dwidth, dheight) {
-        debugger;
         var b = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         b.setAttribute("width", dwidth);
         b.setAttribute("height", dheight);
         b.style.position = "absolute";
         b.style.left = -dwidth / 2 + "px";
         b.style.top = -dheight / 2 + "px";
+        b.style.zIndex = 999;
+
         var f = document.createElementNS("http://www.w3.org/2000/svg", "path");
         f.style.pointerEvents = "visiblePainted";
         f.style.cursor = "pointer";
@@ -116,7 +117,6 @@ var krpanoplugin = function () {
     }
     // 设置背景色
     function setBGColor() {
-        debugger;
         if (_pluginobject_xml) {
             var a = Number(_pluginobject_xml.bgcolor),
               c = Number(_pluginobject_xml.bgalpha);
@@ -195,13 +195,14 @@ var krpanoplugin = function () {
             };
             // 创建地图
             debugger;
-            //_document_div_maps = new Microsoft.Maps.Map(_document_div, parameters);
-            _document_div_maps = new L.map(_document_div).setView([41.90050, 12.46705], 13);
+            var center = new L.latLng(_pluginobject_xml.lat, _pluginobject_xml.lng);  // 地图中心点
+            var zoom = _map_zoom;	// 缩放等级
+            _document_div_maps = new L.map(_document_div).setView(center, _map_zoom);
 
-            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-                    maxZoom: 18,
-                    id: 'mapbox.streets'
-                }).addTo(_document_div_maps);
+            // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+            //         maxZoom: 18,
+            //         id: 'mapbox.streets'
+            //     }).addTo(_document_div_maps);
 
             setBGColor();
             
@@ -1190,26 +1191,34 @@ var krpanoplugin = function () {
         _this_viewRadar.update = function () {
             _this_viewRadar.needredraw = true
         };
+        var _isinit = false;
         // 刷新视野雷达
         _this_viewRadar.updatehandler = function () {
+
+         
+
             if (_document_div_maps &&
                 (null == marker &&
                     null != _this_viewRadar.bmspot &&
-                    (marker = new L.marker(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng), {
-                        icon: otherPoint.src,
-                        anchor: {
-                            x: 0,
-                            y: 0
-                        },
-                        width: 64,
-                        height: 64,
-                        zIndex: 0
-                    }),
-                        alert('添加图钉2')
-                        //_document_div_maps.addLayer(marker)
+                    (
+                        marker = new L.marker(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng)),
+                        // marker = new L.marker(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng), {
+                        //     icon: otherPoint.src,
+                        //     anchor: {
+                        //         x: 0,
+                        //         y: 0
+                        //     },
+                        //     width: 64,
+                        //     height: 64,
+                        //     zIndex: 0
+                        // }),
+                        //marker.addTo(_document_div_maps)
+                        _document_div_maps.addLayer(marker)
                     ),
                     null != marker)) {
-                if (null == marker._krpdom) {
+                //if (0 == marker._icon.childNodes.length) {
+                if (_isinit == false) {
+                    _isinit = true;
                     a: {
                         var d_lookat = marker, d_fov;
                         for (d_fov in d_lookat)
@@ -1222,13 +1231,15 @@ var krpanoplugin = function () {
                                 d_lookat._krpimg = d_lookat[d_fov].dom.childNodes[0];
                                 break a
                             }
-                    }
-                    if (null == marker._krpdom) return;
+                    };
+                    //if (null == marker._krpdom) return;
+                    console.log("%%%%%%%%%%%%%%%%%%%");
                     radarSVG = setViewRadarSVG(500, 500);
                     initViewRadar();
-                    marker._krpimg.style.display = "none";
-                    marker._krpdom.style.overflow = "visible";
-                    marker._krpdom.appendChild(radarSVG.svg);
+                    //marker._krpimg.style.display = "none";
+                    marker._icon.style.overflow = "visible";
+                    marker.getPane().appendChild(radarSVG.svg);
+                    //marker._icon.appendChild(radarSVG.svg);
                     _krpanointerface_events.mouse &&
                         radarSVG.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
                     _krpanointerface_events.touch &&
@@ -1246,7 +1257,7 @@ var krpanoplugin = function () {
                         _bmspot_lng != _this_viewRadar.bmspot.lng) {
                         _bmspot_lat = _this_viewRadar.bmspot.lat;
                         _bmspot_lng = _this_viewRadar.bmspot.lng;
-                        marker.setLocation(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
+                        marker.setLatLng(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
                     }
                     if (_this_viewRadar.bmspot != t || d_lookat != y || d_fov != p) {
                         t = _this_viewRadar.bmspot;
@@ -1256,8 +1267,8 @@ var krpanoplugin = function () {
                     }
                     if (_this_viewRadar.needredraw) {
                         marker &&
-                        marker._krpdom &&
-                        (marker._krpdom.style.overflow = "visible");
+                        marker._icon &&
+                        (marker._icon.style.overflow = "visible");
                         var f = _this_viewRadar.zoomwithmap ?
                             Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
                             f = 1 * _this_viewRadar.size * f * _krpanointerface_device_pixelratio;
@@ -1269,6 +1280,11 @@ var krpanoplugin = function () {
                             radarSVG.svg.setAttribute("height", d),
                             radarSVG.svg.style.left = -d / 2 + "px",
                             radarSVG.svg.style.top = -d / 2 + "px",
+
+                            // DoDo
+                            radarSVG.svg.style.left = "0px",
+                            radarSVG.svg.style.top = "0px",
+
                             radarSVG.centerx = d / 2,
                             radarSVG.centery = d / 2);
                             radarSVG.drawpie(d / 2, d / 2, f, d_lookat - .5 * d_fov, d_lookat + .5 * d_fov)
@@ -1507,7 +1523,6 @@ var krpanoplugin = function () {
         // 对图片处理 比如按比例缩放
         function dealWithIMG(img, scale) {
             debugger;
-            return;
             x = img;
             scale || (scale = _this_Spot.zoomwithmap ?
                   Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel) :
@@ -1539,7 +1554,7 @@ var krpanoplugin = function () {
             l + Math.floor(f / 2)),
             h = k,
             k = l);
-            w = {
+            _pushpin_image = {
                 icon: d.src,
                 anchor: {
                     x: h,
@@ -1551,11 +1566,11 @@ var krpanoplugin = function () {
                 typeName: "_krp_bingmaps_pin_cursor"
             };
             _pushpin &&
-            (_pushpin.setOptions(w),
+            (_pushpin.setOptions(_pushpin_image),
              _pushpin._krpimg &&
              (_pushpin._krpimg.style[_pluginpath_transform + "Origin"] = "0 0",
              _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + m + "," + m + ")"));
-            return w
+            return _pushpin_image
         }
         // 这个函数不明白暂定这个名称 作用是补全图钉图标如果注释掉只出现1/4个图标
         function drawPushPinOnMAP(a) {
@@ -1630,7 +1645,7 @@ var krpanoplugin = function () {
           x = null,
           y = null,
           _pushpin = null,      // 图钉
-          w = null,
+          _pushpin_image = null,
           _pushpin_last = inpushPin;    // 上次选中的图钉
         _this_Spot.xmlobject = _pushpin_last;
 
@@ -1648,7 +1663,7 @@ var krpanoplugin = function () {
                     var a = false;
                     if (_document_div_maps) {
                         var d = !isNaN(_this_Spot.lat) && !isNaN(_this_Spot.lng),
-                          h = d ?
+                          pushpin_latlng = d ?
                             new L.latLng(_this_Spot.lat, _this_Spot.lng) :
                             new L.latLng(0, 0);
                         null == _pushpin && d ?
@@ -1657,24 +1672,24 @@ var krpanoplugin = function () {
                                 d.activeurl_bitmapdata :
                                 d.url_bitmapdata,
                             _pushpin = null,
-                            w = dealWithIMG(a),
-                            _pushpin = new L.marker(h, w),
-                            alert('添加图钉到地图上'),
-                            //_document_div_maps.addLayer(_pushpin),
+                            _pushpin_image = dealWithIMG(a),
+                            //_pushpin = new L.marker(pushpin_latlng, _pushpin_image),
+                            _pushpin = new L.marker(pushpin_latlng),
+                            _document_div_maps.addLayer(_pushpin),
                             //drawPushPinOnMAP(_pushpin),
-                            h = d.scale,
-                            void 0 !== a.naturalScale && (h *= a.naturalScale),
+                            pushpin_latlng = d.scale,
+                            void 0 !== a.naturalScale && (pushpin_latlng *= a.naturalScale),
                             _this_Spot.zoomwithmap &&
-                            (h *= Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel)),
-                            h *= _krpanointerface_device_pixelratio, _pushpin._krpimg ?
+                            (pushpin_latlng *= Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel)),
+                            pushpin_latlng *= _krpanointerface_device_pixelratio, _pushpin._krpimg ?
                                 (_pushpin._krpimg.style[_pluginpath_transform + "Origin"] = "0 0",
-                                 _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + h + "," + h + ")") :
+                                 _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + pushpin_latlng + "," + pushpin_latlng + ")") :
                                  _spot_need_redraw = _this_Spot.needdom = true,
                             //Microsoft.Maps.Events.addHandler(_pushpin, "click", pushpinClick),
                             //Microsoft.Maps.Events.addHandler(_pushpin, "mouseover", pushpinMouseOver),
                             //Microsoft.Maps.Events.addHandler(_pushpin, "mouseout", pushpinMouseOut),
                             a = true) : _pushpin && d &&
-                          (_pushpin.setLocation(h), a = true)
+                          (_pushpin.setLatLng(pushpin_latlng), a = true)
                     }
                     a && (m &= -3)
                 }
@@ -1725,7 +1740,7 @@ var krpanoplugin = function () {
         _this_Spot.destroy = function () {
             debugger;
             _pushpin && _document_div_maps && _document_div_maps.entities.remove(_pushpin);
-            x = _pushpin_last = w = _pushpin = null
+            x = _pushpin_last = _pushpin_image = _pushpin = null
         };
         _pushpin_last.event_out = pushpinMouseOut;
 
@@ -2128,7 +2143,6 @@ var krpanoplugin = function () {
             script.onreadystatechange = function () {
                 if (script.readyState == "loaded" || script.readyState == "complete") {
                     script.onreadystatechange = null;
-                    alert('IE');
                     callback();
                 }
             };
@@ -2142,14 +2156,12 @@ var krpanoplugin = function () {
     };
     // 卸载插件
     this.unloadplugin = function () {
-        debugger;
         _has_init = false;
         null != _timers && (clearInterval(_timers), _timers = null);
         _krpanointerface = _pluginobject_xml = _document_div_maps = _document_div = null
     };
     // 窗口改变
     this.onresize = function (a, c) {
-        debugger;
         var b = Math.floor(a * _krpanointerface.stagescale),
           d = Math.floor(c * _krpanointerface.stagescale);
         _document_div && 

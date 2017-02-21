@@ -972,6 +972,7 @@ var krpanoplugin = function () {
         var l = l * _krpanointerface_device_pixelratio,
           z = document.createElement("div");
         z.style.position = "absolute";
+        alert("this is dom.");
         this.dom = z;
         var m = null,
           x = null,

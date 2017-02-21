@@ -675,36 +675,40 @@ var krpanoplugin = function () {
             }
             radarItemClass.prototype = new google.maps.OverlayView;     // 扩展了OverlayView类
             radarItemClass.prototype.draw = function () {
-                var a = this.getPanes();
-                if (a && a.overlayImage) {
-                    var c = this._krpdom,
-                        d = this._krpdom2;
-                    c || (c = this._krpdom = document.createElement("DIV"),
-                    c.style.border = "none",
-                    c.style.position = "absolute",
-                    c.style.cursor = "pointer",
-                    d = this._krpdom2 = document.createElement("DIV"),
-                    d.style.border = "none",
-                    d.style.position = "absolute",
-                    d.style.cursor = "pointer",
+                var marker_panes = this.getPanes();     // 画布
+                if (marker_panes && marker_panes.overlayImage) {
+                    var marker_krpdom1 = this._krpdom,
+                        marker_krpdom2 = this._krpdom2;
+                    marker_krpdom1 || (marker_krpdom1 = this._krpdom = document.createElement("DIV"),
+                    marker_krpdom1.style.border = "none",
+                    marker_krpdom1.style.position = "absolute",
+                    marker_krpdom1.style.cursor = "pointer",
+                    marker_krpdom2 = this._krpdom2 = document.createElement("DIV"),
+                    marker_krpdom2.style.border = "none",
+                    marker_krpdom2.style.position = "absolute",
+                    marker_krpdom2.style.cursor = "pointer",
                     radarSVG1 = setViewRadarSmart(500, 500),
                     radarSVG2 = setViewRadarSmart(500, 500),
                     initViewRadar(),
-                    c.style.overflow = "visible",
-                    c.appendChild(radarSVG1.svg),
-                    d.style.opacity = 0,
-                    d.style.overflow = "visible",
-                    d.appendChild(radarSVG2.svg),
+                    marker_krpdom1.style.overflow = "visible",
+                    marker_krpdom1.appendChild(radarSVG1.svg),
+                    marker_krpdom2.style.opacity = 0,
+                    marker_krpdom2.style.overflow = "visible",
+                    marker_krpdom2.appendChild(radarSVG2.svg),
+
                     _krpanointerface_device.browser.events.mouse &&
                     radarSVG2.path.addEventListener("mousedown", radarMouseDown, true),
                     _krpanointerface_device.browser.events.touch &&
                     radarSVG2.path.addEventListener(_krpanointerface_device.browser.events.touchstart, radarMouseDown, true),
-                    a.overlayImage.appendChild(d), a.markerLayer.appendChild(c));
-                    if (a = this.getProjection().fromLatLngToDivPixel(this.latlng_))
-                        c.style.left = a.x + "px",
-                        c.style.top = a.y + "px",
-                        d.style.left = a.x + "px",
-                        d.style.top = a.y + "px"
+
+                    marker_panes.overlayImage.appendChild(marker_krpdom2),
+                    marker_panes.markerLayer.appendChild(marker_krpdom1));
+                    
+                    if (marker_panes = this.getProjection().fromLatLngToDivPixel(this.latlng_))
+                        marker_krpdom1.style.left = marker_panes.x + "px",
+                        marker_krpdom1.style.top = marker_panes.y + "px",
+                        marker_krpdom2.style.left = marker_panes.x + "px",
+                        marker_krpdom2.style.top = marker_panes.y + "px"
                 }
             };
             radarItemClass.prototype.remove = function () {
