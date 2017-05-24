@@ -13,34 +13,36 @@ var krpanoplugin = function () {
     }
     // 设置视野范围标记SVG
     function setViewRadarSVG(dwidth, dheight) {
-        var b = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        b.setAttribute("width", dwidth);
-        b.setAttribute("height", dheight);
-        b.style.position = "absolute";
-        b.style.left = -dwidth / 2 + "px";
-        b.style.top = -dheight / 2 + "px";
-        b.style.zIndex = 999;
+        var svgNode = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svgNode.setAttribute("width", dwidth);
+        svgNode.setAttribute("height", dheight);
+        svgNode.style.position = "absolute";
+        svgNode.style.left = -dwidth / 2 + "px";
+        svgNode.style.top = -dheight / 2 + "px";
+        svgNode.style.zIndex = 999;
 
-        var f = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        f.style.pointerEvents = "visiblePainted";
-        f.style.cursor = "pointer";
-        f.setAttribute("stroke", "rgba(255,0,0,1.0)");
-        f.setAttribute("stroke-width", 2);
-        f.setAttribute("fill", "rgba(0,255,0,0.5)");
-        b.appendChild(f);
-        var d = {};
-        d.svg = b;
-        d.path = f;
-        d.centerx = dwidth / 2;
-        d.centery = dheight / 2;
+        var pathNode = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathNode.style.pointerEvents = "visiblePainted";
+        pathNode.style.cursor = "pointer";
+        pathNode.setAttribute("stroke", "rgba(255,0,0,1.0)");
+        pathNode.setAttribute("stroke-width", 2);
+        pathNode.setAttribute("fill", "rgba(0,255,0,0.5)");
+        svgNode.appendChild(pathNode);
+        
+        var svgOBJ = {};
+        svgOBJ.svg = svgNode;
+        svgOBJ.path = pathNode;
+        svgOBJ.centerx = dwidth / 2;
+        svgOBJ.centery = dheight / 2;
         var e = -1;
-        d.hide = function () {
-            0 != e && (e = 0, b.style.display = "none")
+        svgOBJ.hide = function () {
+            0 != e && (e = 0, svgNode.style.display = "none")
         };
-        d.show = function () {
-            1 != e && (e = 1, b.style.display = "")
+        svgOBJ.show = function () {
+            1 != e && (e = 1, svgNode.style.display = "")
         };
-        d.drawpie = function (a, b, c, e, d) {
+        // 圆点X 圆点Y 半径 边线角度1 边线角度2
+        svgOBJ.drawpie = function (centorxx, centoryy, rradius, e, d) {
             var h, u;
             e > d && (h = d, d = e, e = h);
             e = e * Math.PI / 180;
@@ -51,13 +53,13 @@ var krpanoplugin = function () {
             u >= 2 * Math.PI && (u = 2 * Math.PI - .01);
             e = h - u / 2;
             d = h + u / 2;
-            h = a + c * Math.sin(e);
-            e = b - c * Math.cos(e);
-            u = a + c * Math.sin(d);
-            d = b - c * Math.cos(d);
-            f.setAttribute("d", "M " + a + "," + b + " L " + h + "," + e + " A " + c + "," + c + " 0 " + k + " 1 " + u + "," + d + " Z")
+            h = centorxx + rradius * Math.sin(e);
+            e = centoryy - rradius * Math.cos(e);
+            u = centorxx + rradius * Math.sin(d);
+            d = centoryy - rradius * Math.cos(d);
+            pathNode.setAttribute("d", "M " + centorxx + "," + centoryy + " L " + h + "," + e + " A " + rradius + "," + rradius + " 0 " + k + " 1 " + u + "," + d + " Z")
         };
-        return d
+        return svgOBJ;
     }
     // 显示DEMO标记
     function showDemoText() {
@@ -103,17 +105,16 @@ var krpanoplugin = function () {
         }, false);
         b.src = _krpanointerface.parsePath(url)
     }
-    // 重新加载必应地图
+    // 重新加载必应地图 其实就是做一个回调加载地图
     function reinitBingMap() {
-        debugger;
+        // 这里删掉变量值 可以删掉
         null != _krpano_bmap_cb_var &&
         (window[_krpano_bmap_cb_var] = null,
         delete window[_krpano_bmap_cb_var],
         _krpano_bmap_cb_var = null);
 
-        _krpanointerface &&
-        _pluginobject_xml &&
-        setTimeout(initBingMap, 10)
+        if (_krpanointerface && _pluginobject_xml)
+            setTimeout(initBingMap, 10);
     }
     // 设置背景色
     function setBGColor() {
@@ -234,10 +235,12 @@ var krpanoplugin = function () {
             //Microsoft.Maps.Events.addHandler(_document_div_maps, "viewchange", updateEnve)          // 地图范围刷新事件
         }
     }
-    // 停止
-    function stopActions(a) {
-        debugger;
-        a && (a.preventDefault(), a.stopPropagation())
+    // 停止阻 止事件继续传递
+    function stopActions(ev) {
+        if (ev != null) {
+            ev.preventDefault();
+            ev.stopPropagation();
+        }
     }
     // 鼠标滚动
     function mousewheelEvents(a) {
@@ -320,7 +323,7 @@ var krpanoplugin = function () {
         if (_has_init) {
             // 刷新控件
             _redraw_mapcontrol &&
-            updateControls();
+            updateMapControls();
             // 刷新点
             if (_spot_need_redraw) {
                 _spot_need_redraw = false;
@@ -386,22 +389,30 @@ var krpanoplugin = function () {
         }, function () {
             return _maptypecontrol._y
         });
-        updateControls()
+        updateMapControls()
     }
-    // 刷新控件
-    function updateControls() {
-        debugger;
-        if (_has_init) {
-            var a = _document_div;
-            _maptypecontrol._visible ?
-            (null == _mapTypeChangeOBJ &&
-            (_mapTypeChangeOBJ = new mapTypeChangeClass(_maptypecontrol),
-             a.appendChild(_mapTypeChangeOBJ.dom)),
-             _mapTypeChangeOBJ.setControlPosition(_maptypecontrol._align, Number(_maptypecontrol._x), Number(_maptypecontrol._y))) :
-             null != _mapTypeChangeOBJ &&
-             (a.removeChild(_mapTypeChangeOBJ.dom), _mapTypeChangeOBJ = null);
-            _redraw_mapcontrol = false
-        }
+    // 刷新地图控件
+    function updateMapControls() {
+        
+        // if (_has_init) {
+        //     var a = _document_div;
+        //     // 其实就是加上一个 地图切换的控件 没有太大的作用
+        //     if (_maptypecontrol._visible) {
+        //         if (null == _mapTypeChangeOBJ) {
+        //             _mapTypeChangeOBJ = new mapTypeChangeClass(_maptypecontrol);
+        //             a.appendChild(_mapTypeChangeOBJ.dom);
+        //         }
+        //         _mapTypeChangeOBJ.setControlPosition(_maptypecontrol._align, Number(_maptypecontrol._x), Number(_maptypecontrol._y));
+        //     }
+        //     else {
+        //         if (null != _mapTypeChangeOBJ) {
+        //             a.removeChild(_mapTypeChangeOBJ.dom);
+        //             _mapTypeChangeOBJ = null
+        //         }
+        //     }
+
+        //     _redraw_mapcontrol = false
+        // }
     }
     // 创建点样式集合
     function createSpotsStyle() {
@@ -955,181 +966,204 @@ var krpanoplugin = function () {
     }
     // 地图类型切换
     function mapTypeChangeClass(a) {
-        debugger;
-        // 地图切换的3个按钮
-        function mapTypeButton(a) {
-            var b = document.createElement("div");
-            b.style.position = "absolute";
-            b.style.width = p[0] + "px";
-            b.style.height = p[1] + "px";
-            b.style.fontFamily = "Arial";
-            b.style.fontSize = p[2] + "px";
-            b.style.fontWeight = "bold";
-            g && (b.style[_pluginpath_backgroundsize] = p[0] + "px " + 3 * p[1] + "px");
-            b.innerHTML = "<div style='vertical-align:middle;padding-top:" + p[3] + "px;'><center>" + a + "</center></div>";
-            return b
-        }
-        // 地图切换按钮的边框
-        function mapTypeButtonStyle(a, b, c) {
-            a.style.border =
-              c ? "1px solid rgba(100,100,100,0.3)" : "1px solid #acafb8";
-            a.style.color = c ? "#ffffff" : "#4f5459";
-            a.style.textShadow = c ? "#4f5459 0px -1px 1px" : "#f2f3f5 0px 1px 1px";
-            var f = _pluginpath_prefix;
-            if ("Microsoft Internet Explorer" == navigator.appName || 0 <= navigator.userAgent.indexOf("MSIE ") || 0 <= navigator.userAgent.indexOf("Trident")) f = "ms";
-            "" != f && (f = "-" + f + "-");
-            a.style.backgroundImage = "webkit" == _pluginpath_prefix ? c ? "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#b0b4ba), to(#6d7580))" : "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#f3f4f5), to(#bdc0ca))" :
-              "-ms-" == f ? c ? f + "linear-gradient(top, #b0b4ba, #6d7580)" : f + "linear-gradient(top, #f3f4f5, #bdc0ca)" : c ? f + "linear-gradient(to bottom, #b0b4ba, #6d7580)" : f + "linear-gradient(to bottom, #f3f4f5, #bdc0ca)";
-            g && (a.style.backgroundPosition = "0px " + -(b - 1) * p[1] + "px")
-        }
-        // 鼠标抬起事件处理
-        function mouseupEventsMAP(a) {
-            a && (a.stopPropagation(), a.preventDefault(), a.stopImmediatePropagation())
-        }
-        // 切换普通地图
-        function setMAP_normal(a) {
-            a && (mouseupEventsMAP(a), setMaptype("normal"));
-            mapTypeButtonStyle(m, 1, true);
-            mapTypeButtonStyle(x, 2, false);
-            mapTypeButtonStyle(r, 3, false)
-        }
-        // 切换街景图
-        function setMAP_satellite(a) {
-            a && (mouseupEventsMAP(a), setMaptype("satellite"));
-            mapTypeButtonStyle(m, 1, false);
-            mapTypeButtonStyle(x, 2, true);
-            mapTypeButtonStyle(r, 3, false)
-        }
-        // 切换混合地图
-        function setMAP_hybrid(a) {
-            a && (mouseupEventsMAP(a), setMaptype("hybrid"));
-            mapTypeButtonStyle(m, 1, false);
-            mapTypeButtonStyle(x, 2, false);
-            mapTypeButtonStyle(r, 3, true)
-        }
-        var g = "v" == String(a.buttonalign).toLowerCase(),
-          l = Number(a.scale),
-          n = String(a.buttontexts).split("|");
-        3 != n.length && (n = ["Map", "Satellite", "Hybrid"]);
-        isNaN(l) && (l = 1);
-        _krpanointerface.ismobile && (l *= .5);
-        var l = l * _krpanointerface_device_pixelratio,
-          z = document.createElement("div");
-        z.style.position = "absolute";
-        this.dom = z;
-        var m = null,
-          x = null,
-          r = null,
-          p = [80 * l, 26 * l, 12 * l, 6 * l],
-          t = [0, 0];
-        this.onMapTypeChanged = function (a) {
-            "normal" == a ?
-                setMAP_normal() :
-                "satellite" == a ?
-                    setMAP_satellite() :
-                    "hybrid" == a &&
-            setMAP_hybrid()
-        };
-        // 
-        this.setControlPosition = function (a, b, c) {
-            var f = Math.floor(_pluginobject_xml.pixelwidth * _krpanointerface.stagescale),
-                e = Math.floor(_pluginobject_xml.pixelheight * _krpanointerface.stagescale),
-              k = g ? p[0] : 3 * p[0],
-              u = g ? 3 * p[1] : p[1],
-              k = k + t[0],
-              u = u + t[1],
-              l = 0 <= a.indexOf("left") && 0 > a.indexOf("right");
-            a = 0 <= a.indexOf("top") && 0 > a.indexOf("bottom");
-            b = b * _krpanointerface.stagescale * _krpanointerface_device_pixelratio;
-            c = c * _krpanointerface.stagescale * _krpanointerface_device_pixelratio;
-            l || (b = f - k - b);
-            a || (c = e - u - c);
-            z.style.left = b + "px";
-            z.style.top = c + "px"
-        };
-        (function () {
-            z.style.borderRadius = 7 * l + "px";
-            z.style.borderBottom = "2px solid rgba(100,100,100,0.5)";
-            z.style.boxShadow = z.style.MozBoxShadow = z.style.webkitBoxShadow = "2px 2px 4px rgba(0,0,0,0.5)";
-            g ? (z.style.width =
-              p[0] + "px", z.style.height = 3 * p[1] + 1 + "px") : (z.style.width = 3 * p[0] + "px", z.style.height = p[1] + 1 + "px");
-            m = mapTypeButton(n[0]);
-            x = mapTypeButton(n[1]);
-            r = mapTypeButton(n[2]);
-            var a = 5 * l + "px";
-            g ? (m.style.borderRadius = a + " " + a + " 0px 0px", r.style.borderRadius = "0px 0px " + a + " " + a, t = [4, 4], m.style.top = "0px", x.style.top = p[1] + "px", r.style.top = 2 * p[1] + "px") : (m.style.borderRadius = a + " 0px 0px " + a, r.style.borderRadius = "0px " + a + " " + a + " 0px", t = [4, 4], m.style.left = "0px", x.style.left = p[0] + "px", r.style.left = 2 * p[0] + "px");
-            z.appendChild(m);
-            z.appendChild(x);
-            z.appendChild(r);
-            _krpanointerface_events.mouse && (m.addEventListener("mousedown", setMAP_normal), m.addEventListener("mouseup", mouseupEventsMAP));
-            _krpanointerface_events.touch && (m.addEventListener(_krpanointerface_events_touchstart, setMAP_normal), m.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
-            _krpanointerface_events.mouse && (x.addEventListener("mousedown", setMAP_satellite), x.addEventListener("mouseup", mouseupEventsMAP));
-            _krpanointerface_events.touch && (x.addEventListener(_krpanointerface_events_touchstart, setMAP_satellite), x.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
-            _krpanointerface_events.mouse && (r.addEventListener("mousedown", setMAP_hybrid), r.addEventListener("mouseup", mouseupEventsMAP));
-            _krpanointerface_events.touch && (r.addEventListener(_krpanointerface_events_touchstart, setMAP_hybrid), r.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
-            a = _mapTypeString;
-            "normal" == a ?
-            setMAP_normal() :
-            "satellite" == a ?
-            setMAP_satellite() :
-            "hybrid" == a &&
-            setMAP_hybrid()
-        })()
+        
+        // // 地图切换的3个按钮
+        // function mapTypeButton(a) {
+        //     var b = document.createElement("div");
+        //     b.style.position = "absolute";
+        //     b.style.width = p[0] + "px";
+        //     b.style.height = p[1] + "px";
+        //     b.style.fontFamily = "Arial";
+        //     b.style.fontSize = p[2] + "px";
+        //     b.style.fontWeight = "bold";
+        //     g && (b.style[_pluginpath_backgroundsize] = p[0] + "px " + 3 * p[1] + "px");
+        //     b.innerHTML = "<div style='vertical-align:middle;padding-top:" + p[3] + "px;'><center>" + a + "</center></div>";
+        //     return b
+        // }
+        // // 地图切换按钮的边框
+        // function mapTypeButtonStyle(a, b, c) {
+        //     a.style.border =
+        //       c ? "1px solid rgba(100,100,100,0.3)" : "1px solid #acafb8";
+        //     a.style.color = c ? "#ffffff" : "#4f5459";
+        //     a.style.textShadow = c ? "#4f5459 0px -1px 1px" : "#f2f3f5 0px 1px 1px";
+        //     var f = _pluginpath_prefix;
+        //     if ("Microsoft Internet Explorer" == navigator.appName || 0 <= navigator.userAgent.indexOf("MSIE ") || 0 <= navigator.userAgent.indexOf("Trident")) f = "ms";
+        //     "" != f && (f = "-" + f + "-");
+        //     a.style.backgroundImage = "webkit" == _pluginpath_prefix ? c ? "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#b0b4ba), to(#6d7580))" : "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#f3f4f5), to(#bdc0ca))" :
+        //       "-ms-" == f ? c ? f + "linear-gradient(top, #b0b4ba, #6d7580)" : f + "linear-gradient(top, #f3f4f5, #bdc0ca)" : c ? f + "linear-gradient(to bottom, #b0b4ba, #6d7580)" : f + "linear-gradient(to bottom, #f3f4f5, #bdc0ca)";
+        //     g && (a.style.backgroundPosition = "0px " + -(b - 1) * p[1] + "px")
+        // }
+        // // 鼠标抬起事件处理
+        // function mouseupEventsMAP(ev) {
+        //     if (ev != null) {
+        //         ev.stopPropagation();
+        //         ev.preventDefault();
+        //         ev.stopImmediatePropagation();
+        //     }
+        // }
+        // // 切换普通地图
+        // function setMAP_normal(a) {
+        //     a && (mouseupEventsMAP(a), setMaptype("normal"));
+        //     mapTypeButtonStyle(m, 1, true);
+        //     mapTypeButtonStyle(x, 2, false);
+        //     mapTypeButtonStyle(r, 3, false)
+        // }
+        // // 切换街景图
+        // function setMAP_satellite(a) {
+        //     a && (mouseupEventsMAP(a), setMaptype("satellite"));
+        //     mapTypeButtonStyle(m, 1, false);
+        //     mapTypeButtonStyle(x, 2, true);
+        //     mapTypeButtonStyle(r, 3, false)
+        // }
+        // // 切换混合地图
+        // function setMAP_hybrid(a) {
+        //     a && (mouseupEventsMAP(a), setMaptype("hybrid"));
+        //     mapTypeButtonStyle(m, 1, false);
+        //     mapTypeButtonStyle(x, 2, false);
+        //     mapTypeButtonStyle(r, 3, true)
+        // }
+        // var g = "v" == String(a.buttonalign).toLowerCase(),
+        //   l = Number(a.scale),
+        //   n = String(a.buttontexts).split("|");
+        // 3 != n.length && (n = ["Map", "Satellite", "Hybrid"]);
+        // isNaN(l) && (l = 1);
+        // _krpanointerface.ismobile && (l *= .5);
+        // var l = l * _krpanointerface_device_pixelratio,
+        //   z = document.createElement("div");
+        // z.style.position = "absolute";
+        // this.dom = z;
+        // var m = null,
+        //   x = null,
+        //   r = null,
+        //   p = [80 * l, 26 * l, 12 * l, 6 * l],
+        //   t = [0, 0];
+        // this.onMapTypeChanged = function (a) {
+        //     "normal" == a ?
+        //         setMAP_normal() :
+        //         "satellite" == a ?
+        //             setMAP_satellite() :
+        //             "hybrid" == a &&
+        //     setMAP_hybrid()
+        // };
+        // // 
+        // this.setControlPosition = function (a, b, c) {
+        //     var f = Math.floor(_pluginobject_xml.pixelwidth * _krpanointerface.stagescale),
+        //         e = Math.floor(_pluginobject_xml.pixelheight * _krpanointerface.stagescale),
+        //       k = g ? p[0] : 3 * p[0],
+        //       u = g ? 3 * p[1] : p[1],
+        //       k = k + t[0],
+        //       u = u + t[1],
+        //       l = 0 <= a.indexOf("left") && 0 > a.indexOf("right");
+        //     a = 0 <= a.indexOf("top") && 0 > a.indexOf("bottom");
+        //     b = b * _krpanointerface.stagescale * _krpanointerface_device_pixelratio;
+        //     c = c * _krpanointerface.stagescale * _krpanointerface_device_pixelratio;
+        //     l || (b = f - k - b);
+        //     a || (c = e - u - c);
+        //     z.style.left = b + "px";
+        //     z.style.top = c + "px"
+        // };
+        // (function () {
+        //     z.style.borderRadius = 7 * l + "px";
+        //     z.style.borderBottom = "2px solid rgba(100,100,100,0.5)";
+        //     z.style.boxShadow = z.style.MozBoxShadow = z.style.webkitBoxShadow = "2px 2px 4px rgba(0,0,0,0.5)";
+        //     g ? (z.style.width =
+        //       p[0] + "px", z.style.height = 3 * p[1] + 1 + "px") : (z.style.width = 3 * p[0] + "px", z.style.height = p[1] + 1 + "px");
+        //     m = mapTypeButton(n[0]);
+        //     x = mapTypeButton(n[1]);
+        //     r = mapTypeButton(n[2]);
+        //     var a = 5 * l + "px";
+        //     g ? (m.style.borderRadius = a + " " + a + " 0px 0px", r.style.borderRadius = "0px 0px " + a + " " + a, t = [4, 4], m.style.top = "0px", x.style.top = p[1] + "px", r.style.top = 2 * p[1] + "px") : (m.style.borderRadius = a + " 0px 0px " + a, r.style.borderRadius = "0px " + a + " " + a + " 0px", t = [4, 4], m.style.left = "0px", x.style.left = p[0] + "px", r.style.left = 2 * p[0] + "px");
+        //     z.appendChild(m);
+        //     z.appendChild(x);
+        //     z.appendChild(r);
+        //     _krpanointerface_events.mouse && (m.addEventListener("mousedown", setMAP_normal), m.addEventListener("mouseup", mouseupEventsMAP));
+        //     _krpanointerface_events.touch && (m.addEventListener(_krpanointerface_events_touchstart, setMAP_normal), m.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
+        //     _krpanointerface_events.mouse && (x.addEventListener("mousedown", setMAP_satellite), x.addEventListener("mouseup", mouseupEventsMAP));
+        //     _krpanointerface_events.touch && (x.addEventListener(_krpanointerface_events_touchstart, setMAP_satellite), x.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
+        //     _krpanointerface_events.mouse && (r.addEventListener("mousedown", setMAP_hybrid), r.addEventListener("mouseup", mouseupEventsMAP));
+        //     _krpanointerface_events.touch && (r.addEventListener(_krpanointerface_events_touchstart, setMAP_hybrid), r.addEventListener(_krpanointerface_events_touchend, mouseupEventsMAP));
+        //     a = _mapTypeString;
+        //     "normal" == a ?
+        //     setMAP_normal() :
+        //     "satellite" == a ?
+        //     setMAP_satellite() :
+        //     "hybrid" == a &&
+        //     setMAP_hybrid()
+        // })()
+
+
     }
     // 视野范围类视野雷达
     function viewRadarClass() {
         debugger;
-        function a(a) {
-            a && (a.preventDefault(),
-              a.stopImmediatePropagation(), a.stopPropagation())
+        // 停止事件继续传递
+        function stopEventFun(ev) {
+            if (ev != null) {
+                ev.preventDefault()
+                ev.stopImmediatePropagation();
+                ev.stopPropagation();
+            }
         }
         // 鼠标按下
-        function stroke_MouseDownEvent(c) {
-            _this_viewRadar.dragable &&
-            (m = true,
-            stroke_MouseMoveEvent(c),
-            _krpanointerface_events.mouse &&
-            (window.addEventListener("mousemove", stroke_MouseMoveEvent, true),
-             window.addEventListener("mouseup", stroke_MouseUpEvent, true)),
-             _krpanointerface_events.touch &&
-             (window.addEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true),
-             window.addEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true),
-             window.addEventListener(_krpanointerface_events_touchend, stroke_MouseUpEvent, true)),
-             a(c))
+        function stroke_MouseDownEvent(ev) {
+            if (_this_viewRadar.dragable) {
+                start_draging = true;
+                stroke_MouseMoveEvent(ev);
+                if (_krpanointerface_events.mouse) {
+                    window.addEventListener("mousemove", stroke_MouseMoveEvent, true);
+                    window.addEventListener("mouseup", stroke_MouseUpEvent, true);
+                }
+                if (_krpanointerface_events.touch) {
+                    window.addEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true);
+                    window.addEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true);
+                    window.addEventListener(_krpanointerface_events_touchend, stroke_MouseUpEvent, true);
+                }
+                stopEventFun(ev);
+            }
         }
         // 鼠标抬起
         function stroke_MouseUpEvent(c) {
-            _krpanointerface_events.mouse && (window.removeEventListener("mousemove", stroke_MouseMoveEvent, true), window.removeEventListener("mouseup", stroke_MouseUpEvent, true));
-            _krpanointerface_events.touch && (window.removeEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true), window.removeEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true), window.removeEventListener(_krpanointerface_events_touchend,
-              stroke_MouseUpEvent, true));
-            a(c)
+            if (_krpanointerface_events.mouse) {
+                window.removeEventListener("mousemove", stroke_MouseMoveEvent, true);
+                window.removeEventListener("mouseup", stroke_MouseUpEvent, true);
+            }
+            if (_krpanointerface_events.touch) {
+                window.removeEventListener(_krpanointerface_events_touchmove, stroke_MouseMoveEvent, true);
+                window.removeEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true);
+                window.removeEventListener(_krpanointerface_events_touchend, stroke_MouseUpEvent, true);
+            }
+            stopEventFun(c)
         }
         // 鼠标移动
-        function stroke_MouseMoveEvent(a) {
-            if (null == _krpanointerface) stroke_MouseUpEvent(a);
+        function stroke_MouseMoveEvent(ev) {
+            if (null == _krpanointerface) stroke_MouseUpEvent(ev);
             else if (null != radarSVG && null != _this_viewRadar.bmspot) {
-                var f = 0, d = 0;
-                var c = { x: 0, y: 0 };
+                var xxxx = 0, yyyy = 0;
+                var view_hlookat_ = { x: 0, y: 0 };
                 var I = radarSVG.svg.parentNode.getBoundingClientRect();
-                _krpanointerface_events &&
-                _krpanointerface_events.touch ?
-                (a = a.changedTouches ?
-                a.changedTouches :
-                [a], 0 < a.length &&
-                (d = a[0],
-                f = Math.round(d.clientX - I.left),
-                d = Math.round(d.clientY - I.top))) :
-                (f = Math.round(a.clientX - I.left),
-                d = Math.round(a.clientY - I.top));
-                c = 180 * Math.atan2(d - c.y, f - c.x) / Math.PI;
-                c -= _this_viewRadar.bmspot.heading;
-                if (1 == m)
-                    r = c - Number(_krpanointerface.view.hlookat),
-                    m = false;
+
+                if (_krpanointerface_events && _krpanointerface_events.touch) {
+                    (ev = ev.changedTouches ?
+                    ev.changedTouches :
+                    [ev], 0 < ev.length &&
+                    (yyyy = ev[0],
+                    xxxx = Math.round(yyyy.clientX - I.left),
+                    yyyy = Math.round(yyyy.clientY - I.top)));
+                }
                 else {
-                    for (c -= r; 180 < c;) c -= 360;
-                    for (; -180 > c;) c += 360;
-                    _krpanointerface.view.hlookat = c
+                    xxxx = Math.round(ev.clientX - I.left);
+                    yyyy = Math.round(ev.clientY - I.top);
+                }
+
+                view_hlookat_ = 180 * Math.atan2(yyyy - view_hlookat_.y, xxxx - view_hlookat_.x) / Math.PI;
+                view_hlookat_ -= _this_viewRadar.bmspot.heading;
+                if (true == start_draging)
+                    unknow_var_r = view_hlookat_ - Number(_krpanointerface.view.hlookat),
+                    start_draging = false;
+                else {
+                    for (view_hlookat_ -= unknow_var_r; 180 < view_hlookat_;) view_hlookat_ -= 360;
+                    for (; -180 > view_hlookat_;) view_hlookat_ += 360;
+                    _krpanointerface.view.hlookat = view_hlookat_
                 }
                 _this_viewRadar.needredraw = true
             }
@@ -1137,13 +1171,15 @@ var krpanoplugin = function () {
         // 初始化视野范围样式
         function initViewRadar() {
             _this_viewRadar.needredraw = true;
-            radarSVG && 
-            (radarSVG.path.setAttribute("stroke", setRGB(_this_viewRadar.linecolor)),
-            radarSVG.path.setAttribute("stroke-width", _this_viewRadar.linewidth),
-            radarSVG.path.setAttribute("stroke-opacity", _this_viewRadar.linealpha * _this_viewRadar.alpha),
-            radarSVG.path.setAttribute("fill", setRGB(_this_viewRadar.fillcolor)),
-            radarSVG.path.setAttribute("fill-opacity", _this_viewRadar.fillalpha * _this_viewRadar.alpha))
+            if (radarSVG) {
+                radarSVG.path.setAttribute("stroke", setRGB(_this_viewRadar.linecolor));
+                radarSVG.path.setAttribute("stroke-width", _this_viewRadar.linewidth);
+                radarSVG.path.setAttribute("stroke-opacity", _this_viewRadar.linealpha * _this_viewRadar.alpha);
+                radarSVG.path.setAttribute("fill", setRGB(_this_viewRadar.fillcolor));
+                radarSVG.path.setAttribute("fill-opacity", _this_viewRadar.fillalpha * _this_viewRadar.alpha);
+            }
         }
+
         var radarSVG = null;
         var _this_viewRadar = this;
         _this_viewRadar.visible = false;
@@ -1163,16 +1199,17 @@ var krpanoplugin = function () {
         _this_viewRadar.headingoffset = 90;
         _this_viewRadar.bmspot = null;
         _this_viewRadar.needredraw = true;
-        var marker = null,
-          n = null,
-          m = false,
-          r = 0,
-          t = null,
-          y = 0,
-          p = 0,
-          _bmspot_lat = -1000,
-          _bmspot_lng = -1000,
-          sa = -1;
+
+        var marker = null;
+        var unknow_var_n = null;
+        var start_draging = false;
+        var unknow_var_r = 0;
+        var unknow_var_t = null;
+        var unknow_var_y = 0;
+        var unknow_var_p = 0;
+        var _bmspot_lat = -1000;
+        var _bmspot_lng = -1000;
+        var sa = -1;
         var _radarOBJ = _pluginobject_xml.radar;
 
         if (_radarOBJ == null) {
@@ -1180,12 +1217,13 @@ var krpanoplugin = function () {
             _krpanointerface.set(_pluginpath + ".radar.visible", false);
             _radarOBJ = _pluginobject_xml.radar;
         }
+
         // 雷达销毁
         _this_viewRadar.destroy = function () {
             _this_viewRadar.bmspot = null;
-            n && _document_div_maps.entities.remove(n);
+            unknow_var_n && _document_div_maps.entities.remove(unknow_var_n);
             marker && _document_div_maps.entities.remove(marker);
-            n = marker = null
+            unknow_var_n = marker = null
         };
         // 雷达更新
         _this_viewRadar.update = function () {
@@ -1257,35 +1295,41 @@ var krpanoplugin = function () {
                         _bmspot_lng = _this_viewRadar.bmspot.lng;
                         marker.setLatLng(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
                     }
-                    if (_this_viewRadar.bmspot != t || d_lookat != y || d_fov != p) {
-                        t = _this_viewRadar.bmspot;
-                        y = d_lookat;
-                        p = d_fov;
+                    if (_this_viewRadar.bmspot != unknow_var_t || d_lookat != unknow_var_y || d_fov != unknow_var_p) {
+                        unknow_var_t = _this_viewRadar.bmspot;
+                        unknow_var_y = d_lookat;
+                        unknow_var_p = d_fov;
                         _this_viewRadar.needredraw = true;
                     }
                     if (_this_viewRadar.needredraw) {
-                        marker &&
-                        marker._icon &&
-                        (marker._icon.style.overflow = "visible");
-                        var f = _this_viewRadar.zoomwithmap ?
+                        if (marker && marker._icon)
+                            marker._icon.style.overflow = "visible";
+
+                        var radar_radius = _this_viewRadar.zoomwithmap ?
                             Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
-                            f = 1 * _this_viewRadar.size * f * _krpanointerface_device_pixelratio;
-                        2800 < f && (f = 2800);
+                            radar_radius = 1 * _this_viewRadar.size * radar_radius * _krpanointerface_device_pixelratio;
+                        2800 < radar_radius && (radar_radius = 2800);
+
+                        // 有一块SVG的正方形画布
+                        // 画布里 1/2 中心点有一个PATH的圆弧
+                        // 绘制出来的雷达位于地图的左上角 0,0 点
                         if (radarSVG) {
-                            var d = 16 * (Math.floor(2 * f / 16) + 1) + 16;
-                            d != sa &&
-                            (sa = d, radarSVG.svg.setAttribute("width", d),
-                            radarSVG.svg.setAttribute("height", d),
-                            radarSVG.svg.style.left = -d / 2 + "px",
-                            radarSVG.svg.style.top = -d / 2 + "px",
+                            var extsize = 16 * (Math.floor(2 * radar_radius / 16) + 1) + 16;
 
-                            // DoDo
-                            radarSVG.svg.style.left = "0px",
-                            radarSVG.svg.style.top = "0px",
+                            if (extsize != sa) {
+                                sa = extsize;
+                                radarSVG.svg.setAttribute("width", extsize);
+                                radarSVG.svg.setAttribute("height", extsize);
+                                radarSVG.svg.style.left = -extsize / 2 + "px";
+                                radarSVG.svg.style.top = -extsize / 2 + "px";
 
-                            radarSVG.centerx = d / 2,
-                            radarSVG.centery = d / 2);
-                            radarSVG.drawpie(d / 2, d / 2, f, d_lookat - .5 * d_fov, d_lookat + .5 * d_fov)
+                                radarSVG.centerx = extsize / 2,
+                                radarSVG.centery = extsize / 2;
+                            }
+
+
+                            // 圆点X 圆点Y 半径 边线角度1 边线角度2
+                            radarSVG.drawpie(extsize / 2, extsize / 2, radar_radius, d_lookat - .5 * d_fov, d_lookat + .5 * d_fov)
                         }
                     }
                     _this_viewRadar.needredraw = false
@@ -2063,7 +2107,7 @@ var krpanoplugin = function () {
             _pluginobject_xml.zoomtospotsextent = zoomTospotsextent;
             _pluginobject_xml.resetspots = removeAllspots;
             _pluginobject_xml.updatespots = updateSpots;
-            _pluginobject_xml.updatecontrols = updateControls;
+            _pluginobject_xml.updatecontrols = updateMapControls;
             createSpotsStyle();
             createSpots();
             //绘制Demo不需要
@@ -2175,7 +2219,7 @@ var krpanoplugin = function () {
         // }), 
         
         setBGColor());
-        updateControls();
+        updateMapControls();
         return false;
     }
 };
