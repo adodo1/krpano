@@ -34,30 +34,30 @@ var krpanoplugin = function () {
         svgOBJ.path = pathNode;
         svgOBJ.centerx = dwidth / 2;
         svgOBJ.centery = dheight / 2;
-        var e = -1;
+        var unknow_flag_e = -1;
         svgOBJ.hide = function () {
-            0 != e && (e = 0, svgNode.style.display = "none")
+            0 != unknow_flag_e && (unknow_flag_e = 0, svgNode.style.display = "none")
         };
         svgOBJ.show = function () {
-            1 != e && (e = 1, svgNode.style.display = "")
+            1 != unknow_flag_e && (unknow_flag_e = 1, svgNode.style.display = "")
         };
         // 圆点X 圆点Y 半径 边线角度1 边线角度2
-        svgOBJ.drawpie = function (centorxx, centoryy, rradius, e, d) {
+        svgOBJ.drawpie = function (centorxx, centoryy, rradius, edge1, edge2) {
             var h, u;
-            e > d && (h = d, d = e, e = h);
-            e = e * Math.PI / 180;
-            d = d * Math.PI / 180;
-            u = d - e;
-            h = (e + d) / 2;
+            edge1 > edge2 && (h = edge2, edge2 = edge1, edge1 = h);
+            edge1 = edge1 * Math.PI / 180;
+            edge2 = edge2 * Math.PI / 180;
+            u = edge2 - edge1;
+            h = (edge1 + edge2) / 2;
             var k = u > Math.PI ? 1 : 0;
             u >= 2 * Math.PI && (u = 2 * Math.PI - .01);
-            e = h - u / 2;
-            d = h + u / 2;
-            h = centorxx + rradius * Math.sin(e);
-            e = centoryy - rradius * Math.cos(e);
-            u = centorxx + rradius * Math.sin(d);
-            d = centoryy - rradius * Math.cos(d);
-            pathNode.setAttribute("d", "M " + centorxx + "," + centoryy + " L " + h + "," + e + " A " + rradius + "," + rradius + " 0 " + k + " 1 " + u + "," + d + " Z")
+            edge1 = h - u / 2;
+            edge2 = h + u / 2;
+            h = centorxx + rradius * Math.sin(edge1);
+            edge1 = centoryy - rradius * Math.cos(edge1);
+            u = centorxx + rradius * Math.sin(edge2);
+            edge2 = centoryy - rradius * Math.cos(edge2);
+            pathNode.setAttribute("d", "M " + centorxx + "," + centoryy + " L " + h + "," + edge1 + " A " + rradius + "," + rradius + " 0 " + k + " 1 " + u + "," + edge2 + " Z")
         };
         return svgOBJ;
     }
@@ -233,6 +233,10 @@ var krpanoplugin = function () {
             _krpanointerface.call(_pluginobject_xml.onmapready, _pluginobject_xml);                 // 调用地图载入完成事件
             //Microsoft.Maps.Events.addHandler(_document_div_maps, "imagerychanged", changeMaps);     // 切换地图事件
             //Microsoft.Maps.Events.addHandler(_document_div_maps, "viewchange", updateEnve)          // 地图范围刷新事件
+
+            _document_div_maps.on('move', updateEnve);
+            
+
         }
     }
     // 停止阻 止事件继续传递
@@ -276,30 +280,32 @@ var krpanoplugin = function () {
             }
         }
     }
-    // 更新地图区域 同时更新视野雷达图
+    // 地图的位置或比例发生变化的时候 通知插件
     function updateEnve() {
-        debugger;
         if (_document_div_maps) {
-            var a = _document_div_maps.getCenter();
-            if (_map_lat != a.latitude || _map_lng != a.longitude)
-                _map_lat = a.latitude,
-                _map_lng = a.longitude,
+            // 通知插件地图已经移动
+            var center = _document_div_maps.getCenter();
+            if (_map_lat != center.latitude || _map_lng != center.longitude) {
+                _map_lat = center.latitude;
+                _map_lng = center.longitude;
                 _krpanointerface.call(_pluginobject_xml.onmapmoved, _pluginobject_xml);
-
-            a = _document_div_maps.getZoom();
-            _map_zoom != a &&
-            (_viewRadarOBJECT &&
-            (_viewRadarOBJECT.needredraw = true),
-            _map_zoom = a,
-            _krpanointerface.call(_pluginobject_xml.onmapzoomed, _pluginobject_xml),
-            _viewRadarOBJECT &&
-            _viewRadarOBJECT.updatehandler(),
-            scaleSpotArray())
+            }
+            // 通知插件地图比例已经更新
+            var zoom = _document_div_maps.getZoom();
+            if (_map_zoom != zoom) {
+                if(_viewRadarOBJECT) {
+                    _viewRadarOBJECT.needredraw = true;
+                    _map_zoom = zoom;
+                    _krpanointerface.call(_pluginobject_xml.onmapzoomed, _pluginobject_xml);
+                    _viewRadarOBJECT.updatehandler();
+                    scaleSpotArray();
+                }
+            }
         }
     }
     // 缩放到点集合范围
     function scaleSpotArray() {
-        debugger;
+        //debugger;
         var a = _pluginobject_xml.spot.getArray(),
           c = null;
         for (var ii = 0; ii < a.length; ii++)
@@ -1233,6 +1239,7 @@ var krpanoplugin = function () {
         // 刷新视野雷达函数
         _this_viewRadar.updatehandler = function () {
 
+            // 这里这里代码需要梳理
             if (_document_div_maps &&
                 (null == marker &&
                     null != _this_viewRadar.bmspot &&
@@ -1427,19 +1434,17 @@ var krpanoplugin = function () {
     }
     // 地图坐标点类
     function mapSpotClass(a) {
-        debugger;
-        function c(a) {
+        function updateSpotCCC(a) {
             void 0 === a && (a = false);
-            var c = this_spot.xmlobject.name,
-              e = _pluginobject_xml.spot.getArray(),
-              h = null,
-              g, k;
-            k = e.length;
-            for (g = 0; g < k; g++)
-                h = e[g].internalObject,
-                h.spotstyle == c &&
-                (0 == a || h.active) &&
-                h.update(1)
+
+            var c = this_spot.xmlobject.name;
+            var e = _pluginobject_xml.spot.getArray();
+
+            for (var ii = 0; ii < e.length; ii++) {
+                var h = e[ii].internalObject;
+                if (h.spotstyle == c && (0 == a || h.active))
+                    h.update(1);
+            }
         }
         // <spotstyle> 属性
         // name
@@ -1479,18 +1484,21 @@ var krpanoplugin = function () {
         this_spot.overurl_bitmapdata = null;
         this_spot.activeurl_bitmapdata = currentPoint;
         this_spot.xmlobject = a;
+
+        // 注册属性 SET GET
         a.registerattribute("url", this_spot.url, function (a) {
             if ("" == a || "null" == a) a = null;
             a != this_spot.url &&
             (this_spot.url = a, null != this_spot.url ?
                 createImgElement(this_spot.url, function (a) {
                     this_spot.url_bitmapdata = a;
-                    c()
+                    updateSpotCCC()
                 }) :
-                (this_spot.url_bitmapdata = otherPoint, c()))
+                (this_spot.url_bitmapdata = otherPoint, updateSpotCCC()))
         }, function () {
             return this_spot.url
         });
+        // 注册属性 
         a.registerattribute("overurl", this_spot.overurl, function (a) {
             if ("" == a || "null" == a) a = null;
             a != this_spot.overurl &&
@@ -1502,6 +1510,7 @@ var krpanoplugin = function () {
         }, function () {
             return this_spot.overurl
         });
+        // 注册属性 
         a.registerattribute("activeurl", this_spot.activeurl, function (a) {
             if ("" == a || "null" == a) a = null;
             a != this_spot.activeurl &&
@@ -1510,32 +1519,37 @@ var krpanoplugin = function () {
             createImgElement(this_spot.activeurl,
               function (a) {
                   this_spot.activeurl_bitmapdata = a;
-                  c(true)
+                  updateSpotCCC(true)
               }) :
-              (this_spot.activeurl_bitmapdata = currentPoint, c(true)))
+              (this_spot.activeurl_bitmapdata = currentPoint, updateSpotCCC(true)))
         }, function () {
             return this_spot.activeurl
         });
+        // 注册属性 
         a.registerattribute("edge", this_spot.edge, function (a) {
             this_spot.edge = String(a)
         }, function () {
             return this_spot.edge
         });
+        // 注册属性 
         a.registerattribute("x", this_spot.x, function (a) {
             this_spot.x = Number(a)
         }, function () {
             return this_spot.x
         });
+        // 注册属性 
         a.registerattribute("y", this_spot.y, function (a) {
             this_spot.y = Number(a)
         }, function () {
             return this_spot.y
         });
+        // 注册属性 
         a.registerattribute("shadow", this_spot.shadow, function (a) {
             this_spot.shadow = activeSpotEnabled(a)
         }, function () {
             return this_spot.shadow
         });
+        // 注册属性 
         a.registerattribute("scale", this_spot.scale, function (a) {
             this_spot.scale = Number(a)
         }, function () {
@@ -1551,24 +1565,29 @@ var krpanoplugin = function () {
 
         // 初始化样式
         function initSpotStyle() {
-            debugger;
-            var a = _pluginobject_xml.spotstyle.getItem(_this_Spot.spotstyle),
-                b = null;
-            return null == a ?
-                        (a = "bingmaps plugin - spot[" + _pushpin_last.name + '] - spotstyle "' + _this_Spot.spotstyle + '" not found!',
-                        a != y &&
-                        (y = a,
-                        _krpanointerface.trace(3, a)),
-                        null) :
-                        b = a.internalObject
+            var this_spot_spotstyle = _pluginobject_xml.spotstyle.getItem(_this_Spot.spotstyle);
+            if (null == this_spot_spotstyle) {
+                // 不存在样式 跑出异常
+                this_spot_spotstyle = "bingmaps plugin - spot[" + _pushpin_last.name + '] - spotstyle "' + _this_Spot.spotstyle + '" not found!';
+                if (this_spot_spotstyle != y) {
+                    y = this_spot_spotstyle;
+                    _krpanointerface.trace(3, this_spot_spotstyle);
+                }
+                return null;
+            }
+            else { return this_spot_spotstyle.internalObject; }
         }
+
         // 对图片处理 比如按比例缩放
         function dealWithIMG(img, scale) {
             debugger;
             x = img;
-            scale || (scale = _this_Spot.zoomwithmap ?
-                  Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel) :
-                  1);
+
+            if (!scale) {
+                if (_this_Spot.zoomwithmap) scale = Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel);
+                else scale = 1;
+            }
+
             var d = x,
               e = d ? d.naturalWidth : 12,
               f = d ? d.naturalHeight : 12,
@@ -1598,10 +1617,7 @@ var krpanoplugin = function () {
             k = l);
             _pushpin_image = {
                 icon: d.src,
-                anchor: {
-                    x: h,
-                    y: k
-                },
+                anchor: { x: h, y: k },
                 width: e,
                 height: f,
                 zIndex: _this_Spot.active ? 2 : 1,
@@ -1892,15 +1908,15 @@ var krpanoplugin = function () {
         naturalWidth: 64,
         naturalHeight: 64,
         naturalScale: .5
-    },
+    };
     // 当前点
-        currentPoint = {
+    var currentPoint = {
           src: "data:image/png;base64,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",
           naturalWidth: 64,
           naturalHeight: 64,
           naturalScale: .5
-      },
-      _krpanointerface = null,
+      };
+    var _krpanointerface = null,
       _pluginobject_xml = null,
       _pluginpath = null,
       _krpanointerface_device = null,

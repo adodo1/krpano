@@ -257,6 +257,8 @@ var krpanoplugin = function () {
     // 更新地图区域 同时更新视野雷达图
     function updateEnve() {
         if (_document_div_maps) {
+            console.log(111);
+
             var a = _document_div_maps.getCenter();
             if (_map_lat != a.latitude || _map_lng != a.longitude)
                 _map_lat = a.latitude,
