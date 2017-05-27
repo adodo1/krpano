@@ -1,7 +1,7 @@
 ﻿<krpano onstart="loadscene(stpeterssquare,null,MERGE);">
 
     <layer name="map" keep="true"
-           url="bingmaps.swf" alturl="./plugins/leaflet.js"
+           url="bingmaps.swf" alturl="./plugins/leafletmaps.js"
            align="lefttop" x="0" y="0" width="30%" height="100%"
            key="AIzaSyD8zAwIBmvpNHY7oKkGD06qIiZ6OssapuM"
            maptype="satellite"
@@ -21,7 +21,7 @@
 
     <scene name="stpeterssquare">
         <preview type="grid(cube,64,64,512,0xCCCCCC,0xF6F6F6,0x999999);" />
-        <view hlookat="103" vlookat="-2" fov="100" />
+        <view hlookat="0" vlookat="-2" fov="40" />
     </scene>
 
     <scene name="fourrivers">

@@ -1330,39 +1330,45 @@ var krpanoplugin = function () {
                     marker._icon.style.overflow = "visible";
                     marker.getPane().appendChild(radarSVG.svg);
                     //marker._icon.appendChild(radarSVG.svg);
-                    _krpanointerface_events.mouse &&
+                    if (_krpanointerface_events.mouse)
                         radarSVG.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
-                    _krpanointerface_events.touch &&
+                    if (_krpanointerface_events.touch)
                         radarSVG.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
                 }
-                if (null == _this_viewRadar.bmspot || 0 == _this_viewRadar.visible)
-                    radarSVG && radarSVG.hide();
+                if (null == _this_viewRadar.bmspot || 0 == _this_viewRadar.visible) {
+                    if (radarSVG) radarSVG.hide();
+                }
                 else {
-                    radarSVG && radarSVG.show();
-                    d_lookat = Number(_krpanointerface.view.hlookat);    // 朝向
-                    d_fov = Number(_krpanointerface.view.hfov);         // 视角大小
+                    if (radarSVG) radarSVG.show();
+                    d_lookat = Number(_krpanointerface.view.hlookat);       // 朝向
+                    d_fov = Number(_krpanointerface.view.hfov);             // 视角大小
                     d_lookat += _this_viewRadar.bmspot.heading;
                     d_lookat += _this_viewRadar.headingoffset;
+                    // 
                     if (_bmspot_lat != _this_viewRadar.bmspot.lat ||
                         _bmspot_lng != _this_viewRadar.bmspot.lng) {
                         _bmspot_lat = _this_viewRadar.bmspot.lat;
                         _bmspot_lng = _this_viewRadar.bmspot.lng;
                         marker.setLatLng(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng));
                     }
+                    // 
                     if (_this_viewRadar.bmspot != unknow_var_t || d_lookat != unknow_var_y || d_fov != unknow_var_p) {
                         unknow_var_t = _this_viewRadar.bmspot;
                         unknow_var_y = d_lookat;
                         unknow_var_p = d_fov;
                         _this_viewRadar.needredraw = true;
                     }
+                    // 
                     if (_this_viewRadar.needredraw) {
+                        //
                         if (marker && marker._icon)
                             marker._icon.style.overflow = "visible";
-
+                        //
                         var radar_radius = _this_viewRadar.zoomwithmap ?
-                            Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1,
-                            radar_radius = 1 * _this_viewRadar.size * radar_radius * _krpanointerface_device_pixelratio;
-                        2800 < radar_radius && (radar_radius = 2800);
+                            Math.pow(2, _document_div_maps.getZoom()) / 1E4 : 1;
+                        //
+                        radar_radius = 1 * _this_viewRadar.size * radar_radius * _krpanointerface_device_pixelratio;
+                        if (2800 < radar_radius) radar_radius = 2800;
 
                         // 有一块SVG的正方形画布
                         // 画布里 1/2 中心点有一个PATH的圆弧
