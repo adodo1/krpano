@@ -1286,62 +1286,68 @@ var krpanoplugin = function () {
         // 刷新视野雷达函数
         _this_viewRadar.updatehandler = function () {
 
+            if (_document_div_maps) {
+                if(null == marker && null != _this_viewRadar.bmspot) {
+                    var icon = L.divIcon({className: 'svg-icon', iconSize: [0, 0]});
+                    var position = new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng);
+                    marker = new L.marker(position, { icon: icon });
+                    _document_div_maps.addLayer(marker);
+                }
+            }
+
             // 这里这里代码需要梳理
-            if (_document_div_maps &&
-                (null == marker &&
-                    null != _this_viewRadar.bmspot &&
-                    (
-                        marker = new L.marker(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng)),
-                        // marker = new L.marker(new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng), {
-                        //     icon: otherPoint.src,
-                        //     anchor: {
-                        //         x: 0,
-                        //         y: 0
-                        //     },
-                        //     width: 64,
-                        //     height: 64,
-                        //     zIndex: 0
-                        // }),
-                        //marker.addTo(_document_div_maps)
-                        _document_div_maps.addLayer(marker)
-                    ),
-                    null != marker)) {
+            if (_document_div_maps && null != marker) {
                 //if (0 == marker._icon.childNodes.length) {
+                // 初始化
                 if (_isinit == false) {
                     _isinit = true;
-                    a: {
-                        var d_lookat = marker, d_fov;
-                        for (d_fov in d_lookat)
-                            if (d_lookat[d_fov] &&
-                                "object" === typeof d_lookat[d_fov] &&
-                                d_lookat[d_fov].dom &&
-                                d_lookat[d_fov].dom.childNodes &&
-                                d_lookat[d_fov].dom.childNodes[0]) {
-                                d_lookat._krpdom = d_lookat[d_fov].dom;
-                                d_lookat._krpimg = d_lookat[d_fov].dom.childNodes[0];
-                                break a
-                            }
-                    };
+                    // 因为marker里也没有_krpimg属性所以这里都是废代码
+                    // a: {
+                    //     var markero = marker;
+
+                    //     for (var item in markero) {
+                    //         if (markero[item] &&
+                    //             typeof markero[item] === "object" &&
+                    //             markero[item].dom &&
+                    //             markero[item].dom.childNodes &&
+                    //             markero[item].dom.childNodes[0])
+                    //         {
+                    //             markero._krpdom = markero[item].dom;
+                    //             markero._krpimg = markero[item].dom.childNodes[0];
+                    //             break a
+                    //         }
+                    //     }
+                    // };
+                    //
                     //if (null == marker._krpdom) return;
+
+                    // 查找
+
+                    debugger;
+                    
                     console.log("%%%%%%%%%%%%%%%%%%%");
                     radarSVG = setViewRadarSVG(500, 500);
                     initViewRadar();
                     //marker._krpimg.style.display = "none";
                     marker._icon.style.overflow = "visible";
-                    marker.getPane().appendChild(radarSVG.svg);
+                    //marker.getPane().appendChild(radarSVG.svg);
+                    marker._icon.appendChild(radarSVG.svg);         // 这是关键 把雷达加到图上
                     //marker._icon.appendChild(radarSVG.svg);
+
                     if (_krpanointerface_events.mouse)
                         radarSVG.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
                     if (_krpanointerface_events.touch)
                         radarSVG.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
                 }
+
+
                 if (null == _this_viewRadar.bmspot || 0 == _this_viewRadar.visible) {
                     if (radarSVG) radarSVG.hide();
                 }
                 else {
                     if (radarSVG) radarSVG.show();
-                    d_lookat = Number(_krpanointerface.view.hlookat);       // 朝向
-                    d_fov = Number(_krpanointerface.view.hfov);             // 视角大小
+                    var d_lookat = Number(_krpanointerface.view.hlookat);       // 朝向
+                    var d_fov = Number(_krpanointerface.view.hfov);             // 视角大小
                     d_lookat += _this_viewRadar.bmspot.heading;
                     d_lookat += _this_viewRadar.headingoffset;
                     // 
