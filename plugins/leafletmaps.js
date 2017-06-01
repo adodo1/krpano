@@ -207,9 +207,9 @@ var krpanoplugin = function () {
             var zoom = _map_zoom;	// 缩放等级
             _document_div_maps = new L.map(_document_div).setView(center, _map_zoom);
 
-            // L.tileLayer('http://mt1.google.cn/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
-            //     maxZoom: 22
-            // }).addTo(_document_div_maps);
+            L.tileLayer('http://mt1.google.cn/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
+                maxZoom: 22
+            }).addTo(_document_div_maps);
 
             
 
@@ -865,12 +865,16 @@ var krpanoplugin = function () {
                     }
                     alert("缩放到范围");
 
+                    window.mmm = _document_div_maps;
+                    _document_div_maps.fitBounds([[lat_min, lng_min],[lat_max, lng_max]]);
+
+                    //fitBounds([[40.712, -74.227], [40.774, -74.125]]);
                     // var locationRect = new Microsoft.Maps.LocationRect.fromCorners(new Microsoft.Maps.Location(lat1, lng1), new Microsoft.Maps.Location(lat2, lng2));
                     // _document_div_maps.setView({
                     //     animate: false,
                     //     bounds: locationRect
                     // });
-                    updateEnve()
+                    updateEnve();
                 }
         }
     }
@@ -1670,54 +1674,55 @@ var krpanoplugin = function () {
 
         // 对图片处理 比如按比例缩放
         function dealWithIMG(img, scale) {
-            x = img;
 
-            if (!scale) {
-                if (_this_Spot.zoomwithmap) scale = Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel);
-                else scale = 1;
-            }
+            // x = img;
 
-            var d = x,
-              e = d ? d.naturalWidth : 12,
-              f = d ? d.naturalHeight : 12,
-              h = Math.floor(e / 2),
-              k = Math.floor(f / 2),
-              l = initSpotStyle(),
-              m = 1 * scale * _krpanointerface_device_pixelratio;
-            l &&
-            x &&
-            (m = Number(l.scale) * scale * _krpanointerface_device_pixelratio, d &&
-            void 0 !== d.naturalScale &&
-            (m *= d.naturalScale),
-            e *= m,
-            f *= m,
-            h = l.edge,
-            k = l.x,
-            l = l.y,
-            0 <= h.indexOf("left") ||
-            (k = 0 <= h.indexOf("right") ?
-            k + e :
-            k + Math.floor(e / 2)),
-            0 <= h.indexOf("top") ||
-            (l = 0 <= h.indexOf("bottom") ?
-            l + f :
-            l + Math.floor(f / 2)),
-            h = k,
-            k = l);
-            _pushpin_image = {
-                icon: d.src,
-                anchor: { x: h, y: k },
-                width: e,
-                height: f,
-                zIndex: _this_Spot.active ? 2 : 1,
-                typeName: "_krp_bingmaps_pin_cursor"
-            };
-            _pushpin &&
-            (_pushpin.setOptions(_pushpin_image),
-             _pushpin._krpimg &&
-             (_pushpin._krpimg.style[_pluginpath_transform + "Origin"] = "0 0",
-             _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + m + "," + m + ")"));
-            return _pushpin_image
+            // if (!scale) {
+            //     if (_this_Spot.zoomwithmap) scale = Math.pow(2, _map_zoom) / Math.pow(2, _this_Spot.zoombaselevel);
+            //     else scale = 1;
+            // }
+
+            // var d = x,
+            //   e = d ? d.naturalWidth : 12,
+            //   f = d ? d.naturalHeight : 12,
+            //   h = Math.floor(e / 2),
+            //   k = Math.floor(f / 2),
+            //   l = initSpotStyle(),
+            //   m = 1 * scale * _krpanointerface_device_pixelratio;
+            // l &&
+            // x &&
+            // (m = Number(l.scale) * scale * _krpanointerface_device_pixelratio, d &&
+            // void 0 !== d.naturalScale &&
+            // (m *= d.naturalScale),
+            // e *= m,
+            // f *= m,
+            // h = l.edge,
+            // k = l.x,
+            // l = l.y,
+            // 0 <= h.indexOf("left") ||
+            // (k = 0 <= h.indexOf("right") ?
+            // k + e :
+            // k + Math.floor(e / 2)),
+            // 0 <= h.indexOf("top") ||
+            // (l = 0 <= h.indexOf("bottom") ?
+            // l + f :
+            // l + Math.floor(f / 2)),
+            // h = k,
+            // k = l);
+            // _pushpin_image = {
+            //     icon: d.src,
+            //     anchor: { x: h, y: k },
+            //     width: e,
+            //     height: f,
+            //     zIndex: _this_Spot.active ? 2 : 1,
+            //     typeName: "_krp_bingmaps_pin_cursor"
+            // };
+            // _pushpin &&
+            // (_pushpin.setOptions(_pushpin_image),
+            //  _pushpin._krpimg &&
+            //  (_pushpin._krpimg.style[_pluginpath_transform + "Origin"] = "0 0",
+            //  _pushpin._krpimg.style[_pluginpath_transform] = "scale(" + m + "," + m + ")"));
+            // return _pushpin_image
         }
         // 这个函数不明白暂定这个名称 作用是补全图钉图标如果注释掉只出现1/4个图标
         function drawPushPinOnMAP(a) {
