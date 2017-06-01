@@ -2,7 +2,7 @@
 
     <layer name="map" keep="true"
            url="bingmaps.swf" alturl="./plugins/leafletmaps.js"
-           align="lefttop" x="0" y="0" width="50%" height="100%"
+           align="lefttop" x="0" y="0" width="30%" height="100%"
            key="AIzaSyD8zAwIBmvpNHY7oKkGD06qIiZ6OssapuM"
            maptype="satellite"
            lat="41.90050" lng="12.46705" zoom="15"
