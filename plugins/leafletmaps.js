@@ -59,7 +59,8 @@ var krpanoplugin = function () {
             edge1 = centoryy - rradius * Math.cos(edge1);
             u = centorxx + rradius * Math.sin(edge2);
             edge2 = centoryy - rradius * Math.cos(edge2);
-            pathNode.setAttribute("d", "M " + centorxx + "," + centoryy + " L " + h + "," + edge1 + " A " + rradius + "," + rradius + " 0 " + k + " 1 " + u + "," + edge2 + " Z")
+            pathNode.setAttribute("d", "M " + centorxx + "," + centoryy + " L " + h + "," + edge1 + " A " + rradius + "," + rradius + " 0 " + k + " 1 " + u + "," + edge2 + " Z");
+            
         };
         return svgOBJ;
     }
@@ -206,10 +207,55 @@ var krpanoplugin = function () {
             var zoom = _map_zoom;	// 缩放等级
             _document_div_maps = new L.map(_document_div).setView(center, _map_zoom);
 
-            // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-            //         maxZoom: 18,
-            //         id: 'mapbox.streets'
+            //_document_div_maps.on("mousemove", function(ev) { console.log("mousemove"); });
+            _document_div_maps.on("movestart", function(ev) {
+                //L.DomEvent.stop(ev.target);
+                //L.DomEvent.stopPropagation();
+                //ev.target._stop();
+                //L.DomEvent.stop(ev);
+                console.log("movestart"); });
+            _document_div_maps.on("moveend", function(ev) { console.log("moveend"); });
+            _document_div_maps.on("move", function(ev) { console.log("move"); });
+            _document_div_maps.on("dragstart", function(ev) { console.log("dragstart"); });
+            _document_div_maps.on("dragend", function(ev) { console.log("dragend"); });
+
+            _document_div_maps.on("mousedown", function(ev) {
+                //ev.target._stop();
+                //L.DomEvent.stop(ev);
+                console.log("mousedown"); });
+
+            _document_div_maps.on("click", function(ev) {
+                
+                //ev.target._stop();
+                //L.DomEvent.stop(ev);
+                console.log("click"); });
+
+            L.DomEvent.on(_document_div_maps, 'movestart', function (ev) {
+                // console.log('aaaa');
+                // L.DomEvent.stopPropagation(ev);
+                // L.DomEvent.stop(ev);
+                // L.DomEvent.stop(ev.target);
+            });
+
+            L.DomEvent.on(_document_div_maps, 'movestart', function (ev) {
+                console.log('bbbb');
+                //L.DomEvent.stopPropagation(ev);
+                //L.DomEvent.stop(ev);
+                //this.stop(ev);
+            });
+
+            L.DomEvent.on(_document_div_maps, 'movestart', function (ev) {
+                console.log('eee');
+            });
+
+
+            // _document_div_maps.on("moveend", function(ev) { console.log("moveend"); });
+
+            // L.tileLayer('http://mt1.google.cn/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
+            //         maxZoom: 22
             //     }).addTo(_document_div_maps);
+
+            
 
             setBGColor();
             
@@ -249,21 +295,29 @@ var krpanoplugin = function () {
     function stopActions(ev) {
         //pass
         if (ev != null) {
-            ev.preventDefault();
-            ev.stopPropagation();
+            // ev.preventDefault();
+            // ev.stopPropagation();
+
+            L.DomEvent.stop(ev);
         }
     }
     // 鼠标滚动
     function mousewheelEvents(ev) {
         //pass
-        // 其实没什么用
-        ev && (_krpanointerface &&
-        _krpanointerface.control &&
-        true === _krpanointerface.control.disablewheel ?
-            ev.handled = true :
-            ev.originalEvent &&
-            (ev.originalEvent.preventDefault(),
-             ev.originalEvent.stopPropagation()))
+        if (ev) {
+            if (_krpanointerface && _krpanointerface.control) {
+                if (true === _krpanointerface.control.disablewheel) {
+                    ev.handled = true;
+                } else {
+                    if (ev.originalEvent) {
+                        // ev.originalEvent.preventDefault();
+                        // ev.originalEvent.stopPropagation();
+
+                        L.DomEvent.stop(ev.originalEvent);
+                    }
+                }
+            }
+        }
     }
     // 切换地图
     function changeMaps() {
@@ -1149,9 +1203,16 @@ var krpanoplugin = function () {
         function stopEventFun(ev) {
             //pass
             if (ev != null) {
-                ev.preventDefault()
-                ev.stopImmediatePropagation();
-                ev.stopPropagation();
+                //ev.preventDefault();                // 阻止事件默认的动作发生
+                //ev.stopImmediatePropagation();
+                //ev.stopPropagation();               // 停止事件向父元素传播
+
+                // // leaflet 事件处理
+                // L.DomEvent.preventDefault();
+                // L.DomEvent.stopPropagation();
+                L.DomEvent.stop(ev);
+                L.DomEvent.stop(ev.target);
+                console.log("stopEventFun-----" + ev.type);
             }
         }
         // 鼠标按下
@@ -1173,7 +1234,7 @@ var krpanoplugin = function () {
             }
         }
         // 鼠标抬起
-        function stroke_MouseUpEvent(c) {
+        function stroke_MouseUpEvent(ev) {
             //pass
             if (_krpanointerface_events.mouse) {
                 window.removeEventListener("mousemove", stroke_MouseMoveEvent, true);
@@ -1184,7 +1245,7 @@ var krpanoplugin = function () {
                 window.removeEventListener(_krpanointerface_events_touchcancel, stroke_MouseUpEvent, true);
                 window.removeEventListener(_krpanointerface_events_touchend, stroke_MouseUpEvent, true);
             }
-            stopEventFun(c)
+            stopEventFun(ev);
         }
         // 鼠标移动
         function stroke_MouseMoveEvent(ev) {
@@ -1218,7 +1279,8 @@ var krpanoplugin = function () {
                     for (; -180 > view_hlookat_;) view_hlookat_ += 360;
                     _krpanointerface.view.hlookat = view_hlookat_
                 }
-                _this_viewRadar.needredraw = true
+                
+                _this_viewRadar.needredraw = true;
             }
         }
         // 初始化视野范围样式
@@ -1252,6 +1314,7 @@ var krpanoplugin = function () {
         _this_viewRadar.headingoffset = 90;
         _this_viewRadar.bmspot = null;
         _this_viewRadar.needredraw = true;
+        _this_inner_mapdiv = null;
 
         var marker = null;
         var unknow_var_n = null;
@@ -1287,11 +1350,49 @@ var krpanoplugin = function () {
         _this_viewRadar.updatehandler = function () {
 
             if (_document_div_maps) {
+                _this_inner_mapdiv = _document_div_maps;
+
                 if(null == marker && null != _this_viewRadar.bmspot) {
-                    var icon = L.divIcon({className: 'svg-icon', iconSize: [0, 0]});
+                    var icon = L.divIcon({className: 'svg-icon', iconSize: [0, 0] });
                     var position = new L.latLng(_this_viewRadar.bmspot.lat, _this_viewRadar.bmspot.lng);
                     marker = new L.marker(position, { icon: icon });
                     _document_div_maps.addLayer(marker);
+
+                    // var draggable = new L.Draggable(marker);
+                    // draggable.enable();
+
+                    //marker.dragging.enable();
+
+                   	// L.DomEvent.preventDefault();
+                    // L.DomEvent.stopPropagation();
+                    // marker.on('mousedown', function(ev) {
+                    // L.DomEvent.preventDefault(ev);
+                    // L.DomEvent.preventDefault(ev.target);
+                    // L.DomEvent.stopPropagation(ev.target);
+                    // L.DomEvent.stopPropagation(ev.target);
+                    //  });
+
+                    //  L.DomEvent.on(icon, 'mousedown', function(ev) {
+                    //      debugger;
+                    //  });
+
+                    // L.DomEvent.on(marker, 'mousedown', function(ev) {
+                        
+                    //     // // leaflet 事件处理
+                    //     // L.DomEvent.preventDefault();
+                    //     // L.DomEvent.stopPropagation();
+                    //     L.DomEvent.stop(ev);
+                    //     L.DomEvent.stop(ev.target);
+
+                    //     this._map.dragging.disable();
+                    //     console.log('cccc');
+                    // }, _document_div_maps);
+                    // L.DomEvent.on(_document_div_maps, 'mouseup', function(ev) {
+                    //     this.dragging.enable();
+                    //     console.log('dddd');
+                    // });
+
+                    //marker.dragging.enable();
                 }
             }
 
@@ -1334,10 +1435,64 @@ var krpanoplugin = function () {
                     marker._icon.appendChild(radarSVG.svg);         // 这是关键 把雷达加到图上
                     //marker._icon.appendChild(radarSVG.svg);
 
+                    var draggable = new L.Draggable(radarSVG.path);
+                    draggable.enable();
+                    //draggable._onDown = function(e) {};
+                    draggable._onMove = function(e) {};
+                    //draggable._updatePosition = function(e) {};
+                    //draggable._onUp = function(e) {};
+
+
+
+                    
+                    draggable.on('dragstart', function(ev) {
+                        //this.finishDrag();
+                        // L.DomEvent.stop(ev);
+                        // this._onUp(ev);
+                        // console.log('---------------------');
+                        // console.log(this);
+                        
+                    }, draggable);
+                    draggable.on('predrag', function(ev) {
+                        //L.DomEvent.stop(ev);
+                        
+                        this._moved = true;
+                        // this.disable();
+                        // console.log('---------------------');
+                        // console.log(this);
+
+                        console.log('ffff');
+                        //this.enable();
+                    }, draggable);
+                    draggable.on('drag', function(ev) {
+                        //this.disable();
+                        //this._moved = true;
+                        console.log('jjjj');
+                        //this.enable();
+                    }, draggable);
+                    draggable.on('dragend', function(ev) {
+                        //this.enable();
+                        console.log('iiii');
+                    }, draggable);
+                    draggable.on('down', function(ev) {
+                        //this._onUp(ev);
+                        //this._moved = true;
+                        console.log('hhhh');
+                    }, draggable);
+
+                    // _document_div_maps.on("move", function(ev) {
+                    //     console.log('====================');
+                    //     console.log(this);
+                    //     //this.enable();
+                        
+                    // }, draggable);
+
+
                     if (_krpanointerface_events.mouse)
                         radarSVG.path.addEventListener("mousedown", stroke_MouseDownEvent, true);
                     if (_krpanointerface_events.touch)
                         radarSVG.path.addEventListener(_krpanointerface_events_touchstart, stroke_MouseDownEvent, true)
+
                 }
 
 
@@ -1395,7 +1550,8 @@ var krpanoplugin = function () {
 
 
                             // 圆点X 圆点Y 半径 边线角度1 边线角度2
-                            radarSVG.drawpie(extsize / 2, extsize / 2, radar_radius, d_lookat - .5 * d_fov, d_lookat + .5 * d_fov)
+                            radarSVG.drawpie(extsize / 2, extsize / 2, radar_radius, d_lookat - .5 * d_fov, d_lookat + .5 * d_fov);
+                            
                         }
                     }
                     _this_viewRadar.needredraw = false

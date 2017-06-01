@@ -257,8 +257,6 @@ var krpanoplugin = function () {
     // 更新地图区域 同时更新视野雷达图
     function updateEnve() {
         if (_document_div_maps) {
-            console.log(111);
-
             var a = _document_div_maps.getCenter();
             if (_map_lat != a.latitude || _map_lng != a.longitude)
                 _map_lat = a.latitude,
@@ -1039,7 +1037,9 @@ var krpanoplugin = function () {
     function viewRadarClass() {
         function a(a) {
             a && (a.preventDefault(),
-              a.stopImmediatePropagation(), a.stopPropagation())
+              a.stopImmediatePropagation(), a.stopPropagation());
+
+              console.log("stopEventFun-----" + a.type);
         }
         // 鼠标按下
         function stroke_MouseDownEvent(c) {
