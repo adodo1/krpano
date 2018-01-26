@@ -66,34 +66,78 @@ var krpanoplugin = function () {
     }
     // 显示DEMO标记
     function showDemoText() {
-        //pass
-        //debugger;
-        // var a = document.createElement("div");
-        // a.style.position = "absolute";
-        // a.style.left = "50%";
-        // a.style.top = "50%";
-        // a.style.width = "100%";
-        // a.style.zIndex = 999998;
-        // a.style.color = "#FFFFFF";
-        // a.style.opacity = .67;
-        // a.style.fontSize = _krpanointerface.isphone ? "10px" : "16px";
-        // a.style["-webkit-text-size-adjust"] = "none";
-        // a.style.display = "block";
-        // a.style.cursor = "none";
-        // a.style.pointerEvents = "none";
-        // var c = document.createElement("div");
-        // c.style.position = "relative";
-        // c.style.left = "-50%";
-        // c.style.top = _krpanointerface.isphone ? "-64px" : "-46px";
-        // c.style.fontFamily = "sans-serif";
-        // c.style.textShadow = "#000000 1px 1px 2px";
-        // c.innerHTML = "<center><i><b>krpano Bing Maps Plugin<br/>DEMO MODE</b></i></center>";
-        // a.appendChild(c);
+        var a = document.createElement("div");
+        a.style.position = "absolute";
+        a.style.left = "50%";
+        a.style.top = "50%";
+        a.style.width = "100%";
+        a.style.zIndex = 999998;
+        a.style.color = "#FFFFFF";
+        a.style.opacity = .67;
+        a.style.fontSize = _krpanointerface.isphone ? "10px" : "16px";
+        a.style["-webkit-text-size-adjust"] = "none";
+        a.style.display = "block";
+        a.style.cursor = "none";
+        a.style.pointerEvents = "none";
+        var c = document.createElement("div");
+        c.style.position = "relative";
+        c.style.left = "-50%";
+        c.style.top = _krpanointerface.isphone ? "-64px" : "-46px";
+        c.style.fontFamily = "sans-serif";
+        c.style.textShadow = "#000000 1px 1px 2px";
+        c.innerHTML = "<center><i><b id='lookatinfo'>柳州市勘察测绘院</b></i></center>";
+        a.appendChild(c);
 
-        // _pluginobject_xml &&
-        // _pluginobject_xml.sprite &&
-        // _pluginobject_xml.sprite.appendChild(a)
+        _pluginobject_xml &&
+        _pluginobject_xml.sprite &&
+        _pluginobject_xml.sprite.appendChild(a);
+
+        // DoDo 2017.11.29 添加一个Button修正正北角度
+        var btn = document.createElement("button");
+        btn.style.position = "absolute";
+        btn.style.right = "0";
+        btn.innerText = "更新朝向";
+        btn.style.zIndex = 999998;
+        btn.onclick = fixNorth;
+        _pluginobject_xml &&
+        _pluginobject_xml.sprite &&
+        _pluginobject_xml.sprite.appendChild(btn);
+
     }
+    // 修正全景朝向
+    function fixNorth() {
+        if (!_krpanointerface || !_this_viewRadar) return;
+        var lookat = Number(_krpanointerface.view.hlookat);
+        var uid = /uid=([^\\&]*)/i.exec(location.href);
+        if (!uid) return;
+        uid = uid[1];
+        // 朝向不需要添加修正 DoDo 2018.01.26
+        // lookat += _this_viewRadar.bmspot.heading;
+        // lookat += _this_viewRadar.headingoffset;
+
+        lookat = parseInt(lookat) % 360;
+        if (lookat < 0) { lookat = 360 + lookat; }
+
+        //
+        var alink = document.createElement('A');
+        alink.href = "./North?uid=" + uid + "&lookat=" + lookat;
+        var url = decodeURIComponent(alink.href);
+
+        var isIE8 = window.XDomainRequest ? true : false;
+        var request = isIE8 ? new XDomainRequest() : new XMLHttpRequest();
+        request.open("POST", url);
+        request.onload = function () {
+            alert(JSON.parse(request.responseText));
+        };
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                //this.onload();
+            }
+        };
+        request.send();
+        return request;
+    }
+
     // 创建图片要素
     // url: 图片地址
     // func: 图片加载回调函数    
@@ -1379,6 +1423,8 @@ var krpanoplugin = function () {
                 }
                 else {
                     if (radarSVG) radarSVG.show();
+
+
                     var d_lookat = Number(_krpanointerface.view.hlookat);       // 朝向
                     var d_fov = Number(_krpanointerface.view.hfov);             // 视角大小
                     d_lookat += _this_viewRadar.bmspot.heading;
@@ -1408,7 +1454,7 @@ var krpanoplugin = function () {
                         //
                         radar_radius = 1 * _this_viewRadar.size * radar_radius * _krpanointerface_device_pixelratio;
                         if (2800 < radar_radius) radar_radius = 2800;
-
+ 
                         // 有一块SVG的正方形画布
                         // 画布里 1/2 中心点有一个PATH的圆弧
                         // 绘制出来的雷达位于地图的左上角 0,0 点
@@ -1425,6 +1471,12 @@ var krpanoplugin = function () {
                                 radarSVG.centerx = extsize / 2,
                                 radarSVG.centery = extsize / 2;
                             }
+                            // DoDo 2017.11.28标记出全景角度
+                            //_krpanointerface.view.hlookat
+                            var lookatinfo = document.getElementById('lookatinfo');
+                            var m_lookat = parseInt(d_lookat % 360);
+                            if (m_lookat < 0) { m_lookat = 360 + m_lookat; }
+                            if (lookatinfo) lookatinfo.innerText = '' + m_lookat;
 
 
                             // 圆点X 圆点Y 半径 边线角度1 边线角度2
@@ -2237,7 +2289,7 @@ var krpanoplugin = function () {
             createSpotsStyle();
             createSpots();
             //绘制Demo不需要
-            //0 == _krpanointerface.haveLicense("maps") && setTimeout(showDemoText, 100);
+            setTimeout(showDemoText, 100);
             _pluginobject_xml.registercontentsize(400, 300);
             krpanointerface = Math.floor(_pluginobject_xml.pixelwidth * _krpanointerface.stagescale);
             pluginpath = Math.floor(_pluginobject_xml.pixelheight * _krpanointerface.stagescale);

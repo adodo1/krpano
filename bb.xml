@@ -2,10 +2,10 @@
 
     <layer name="map" keep="true"
            url="bingmaps.swf" alturl="./plugins/leafletmaps.js"
-           align="lefttop" x="0" y="0" width="30%" height="100%"
+           align="rightbottom" x="0" y="0" width="30%" height="30%"
            key="AIzaSyD8zAwIBmvpNHY7oKkGD06qIiZ6OssapuM"
            maptype="satellite"
-           lat="41.90050" lng="12.46705" zoom="15"
+           lat="41.90050" lng="12.46705" zoom="14"
            >
         <spot name="stpeterssquare" active="true"
               lat="41.90255" lng="12.45708" heading="64.5"
@@ -21,7 +21,7 @@
 
     <scene name="stpeterssquare">
         <preview type="grid(cube,64,64,512,0xCCCCCC,0xF6F6F6,0x999999);" />
-        <view hlookat="0" vlookat="-2" fov="100" />
+        <view hlookat="80" vlookat="-2" fov="100" />
     </scene>
 
     <scene name="fourrivers">
